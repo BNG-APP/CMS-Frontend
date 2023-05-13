@@ -1,24 +1,20 @@
-import { Button } from "@material-ui/core";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
-import AddGame from "./Component/AddGame";
-import GameTable from "./Component/GameTable";
+import { Card,Header } from "./CommonComponent";
 
 function App() {
-  const [addGame, setAddGame] = useState(false);
-
-  const onHandleAdd = () => {
-    setAddGame(true);
-  };
+  const navigate=useNavigate()
   return (
-    <div className="m-4 p-4 ">
-      <div className="flex justify-between my-2">
-        <div onClick={() => setAddGame(false)}>XGames</div>
-        <Button variant="contained" onClick={onHandleAdd}>
-          ADD GAME
-        </Button>
+    <div className="App p-4 ">
+      <Header />
+      <div className="flex justify-center my-10 mx-4">
+      <Card item={"XGame"} handleClick={()=>navigate("/xgame")} />
+      <Card item={"Swipe4win"} handleClick={()=>navigate("/swipe4win")}  />
+      <Card item ={"Christianity"} handleClick={()=>navigate("/christianity")}  />
+      <Card item ={"Ibadat"} handleClick={()=>navigate("/christianity")}  />
+      <Card item ={"Education-Portal"} handleClick={()=>navigate("/educ")}  />
       </div>
-      {addGame ? <AddGame /> : <GameTable />}
+     
     </div>
   );
 }

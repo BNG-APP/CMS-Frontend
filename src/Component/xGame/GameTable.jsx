@@ -1,5 +1,8 @@
 import {
+  Box,
+  Button,
   Checkbox,
+  Chip,
   FormControl,
   InputLabel,
   ListItemText,
@@ -7,8 +10,10 @@ import {
   OutlinedInput,
   Select,
   TablePagination,
+  TextField,
+  Typography,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -17,6 +22,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
+import AddGame from "./AddGame";
+import Header from "../../CommonComponent/Header";
+import { Navigate, useNavigate } from "react-router-dom";
 function createData(number, GameUrl, OperatorID, price) {
   return { number, GameUrl, OperatorID, price };
 }
@@ -26,6 +34,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "portrait",
+    operator: ["Ic"],
     gameName: "Phineas And Ferb: Backyard Defense",
     ratings: 4,
     gamePlayed: "11284 Played",
@@ -40,6 +49,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Libyana"],
     gameName: "Ben 10: Wildvine Shoot",
     ratings: 4,
     gamePlayed: "11172 Played",
@@ -54,6 +64,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Congo"],
     gameName: "Ben 10 : Heatblast Fight",
     ratings: 4,
     gamePlayed: "11938 Played",
@@ -68,6 +79,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Ic"],
     gameName: "Adventure Time Angry Betty",
     ratings: 4,
     gamePlayed: "10856 Played",
@@ -84,6 +96,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "portrait",
+    operator: ["Ic"],
     gameName: "Tom and Jerry: Cats Gone Bats",
     ratings: 4,
     gamePlayed: "10208 Played",
@@ -98,6 +111,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Ic", "Zambia"],
     gameName: "Adventure Time Fionna Fights",
     ratings: 4,
     gamePlayed: "10954 Played",
@@ -112,6 +126,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "portrait",
+    operator: ["Ic"],
     gameName: "Beanotown: Bush Chucker Challenge",
     ratings: 4,
     gamePlayed: "11471 Played",
@@ -127,6 +142,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "portrait",
+    operator: ["Camron"],
     gameName: "Ben 10: Tomb of Doom",
     ratings: 4,
     gamePlayed: "12593 Played",
@@ -141,6 +157,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "portrait",
+    operator: ["Ic"],
     gameName: "Blast The Parcel",
     ratings: 4,
     gamePlayed: "12259 Played",
@@ -155,6 +172,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Congo"],
     gameName: "Ben 10 Challenge Stinkfly's Showtime",
     ratings: 4,
     gamePlayed: "10827 Played",
@@ -169,6 +187,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Ic"],
     gameName: "Ben 10: Alien Rush",
     ratings: 4,
     gamePlayed: "12820 Played",
@@ -182,6 +201,7 @@ const rows = [
     id: 12,
     type: "html",
     category: "action",
+    operator: [],
     mode: "landscape",
     gameName: "Ben 10: Hero Time",
     ratings: 4,
@@ -196,6 +216,7 @@ const rows = [
     id: 13,
     type: "html",
     category: "action",
+    operator: ["Ic"],
     mode: "landscape",
     gameName: "Battle Day Brawl",
     ratings: 4,
@@ -210,6 +231,7 @@ const rows = [
     id: 14,
     type: "html",
     category: "action",
+    operator: ["Ic"],
     mode: "landscape",
     gameName: "Ben 10 : World Rescue",
     ratings: 4,
@@ -225,6 +247,7 @@ const rows = [
     type: "html",
     category: "action",
     mode: "landscape",
+    operator: ["Congo"],
     gameName: "Ben 10 : Alien Rivals 2",
     ratings: 4,
     gamePlayed: "12748 Played",
@@ -238,6 +261,7 @@ const rows = [
     id: 16,
     type: "html",
     category: "action",
+    operator: ["Zambia"],
     mode: "landscape",
     gameName: "Battle Of The Behemoths",
     ratings: 4,
@@ -253,6 +277,7 @@ const rows = [
     id: 17,
     type: "html",
     category: "action",
+    operator: ["IC", "Camron"],
     mode: "landscape",
     gameName: "Star Wars: Battle Run",
     ratings: 4,
@@ -263,42 +288,92 @@ const rows = [
     gameDescription:
       "Follow BB-8 as you roll your way through an intense battle on the planet of Crait. You choose how the story will change and whether to help the Resistance or to join the First Order.",
   },
+  {
+    id: 18,
+    type: "html",
+    category: "action",
+    operator: ["Zambia"],
+    mode: "landscape",
+    gameName: "Star Wars: Battle Run",
+    ratings: 4,
+    gamePlayed: "12481 Played",
+    url: "https://xgcloud.bngrenew.com/games/star-wars-battlerungame/index.html",
+    gameImage: "https://xgcloud.bngrenew.com/icons/battle_run.jpg",
+    bannerImage: "https://xgcloud.bngrenew.com/banners/battle_run.jpg",
+    gameDescription:
+      "Follow BB-8 as you roll your way through an intense battle on the planet of Crait. You choose how the story will change and whether to help the Resistance or to join the First Order.",
+  },
+  {
+    id: 19,
+    type: "html",
+    category: "action",
+    operator: ["IC", "Camron"],
+    mode: "landscape",
+    gameName: "Star Wars: Battle Run",
+    ratings: 4,
+    gamePlayed: "12481 Played",
+    url: "https://xgcloud.bngrenew.com/games/star-wars-battlerungame/index.html",
+    gameImage: "https://xgcloud.bngrenew.com/icons/battle_run.jpg",
+    bannerImage: "https://xgcloud.bngrenew.com/banners/battle_run.jpg",
+    gameDescription:
+      "Follow BB-8 as you roll your way through an intense battle on the planet of Crait. You choose how the story will change and whether to help the Resistance or to join the First Order.",
+  },
+  {
+    id: 20,
+    type: "html",
+    category: "action",
+    mode: "landscape",
+    gameName: "Star Wars: Battle Run",
+    ratings: 4,
+    operator: ["IC", "Congo"],
+    gamePlayed: "12481 Played",
+    url: "https://xgcloud.bngrenew.com/games/star-wars-battlerungame/index.html",
+    gameImage: "https://xgcloud.bngrenew.com/icons/battle_run.jpg",
+    bannerImage: "https://xgcloud.bngrenew.com/banners/battle_run.jpg",
+    gameDescription:
+      "Follow BB-8 as you roll your way through an intense battle on the planet of Crait. You choose how the story will change and whether to help the Resistance or to join the First Order.",
+  },
 ];
 const useStyles = makeStyles({
   root: {
-    width:300,
-    m:1,
-    p:2
+    width: 200,
+    m: 1,
+    p: 2,
     // add your custom styles here
   },
+
+  inputLabel: {
+    fontWeight: "bold",
+    paddingLeft: "20px",
+    position: "absolute",
+    top: "-5px",
+  },
 });
+
 function GameTable() {
   const [page, setPage] = useState(0);
   const [rowPerPage, setROwPerPage] = useState(5);
   const [oprId, setOprId] = useState(Array(rows.length).fill([]));
+  const [searchText, setSearchText] = useState("");
+  const [addGame, setAddGame] = useState(false);
+  const navigate=useNavigate()
   const handleChangePage = (e, newpg) => {
     setPage(newpg);
   };
-  // useEffect(() => {
-
-  //   setOprId (Array.from({ length:rows.length }, () => []));
-  // }, [rows]);
 
   const handleChangeRowsPerPage = (e) => {
-    setROwPerPage(parseInt(e.target.value, 10));
+    setROwPerPage(parseInt(e.target.value, 5));
     setPage(0);
   };
-  const OperatorIdList = ["congo", "IC", "Camron", "Zambia"];
+  const OperatorIdList = ["Congo", "IC", "Camron", "Zambia", "Libyana"];
   const handleSelectOption = (e, index) => {
     const value = e.target.value;
     setOprId((prevSelectedOptions) => {
       const newSelectedOptions = [...prevSelectedOptions];
       newSelectedOptions[index] = value;
-      console.log(newSelectedOptions, "newSelectedOptions");
       return newSelectedOptions;
     });
   };
-  console.log(oprId, "op");
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -309,95 +384,165 @@ function GameTable() {
       },
     },
   };
-  // if (!rows) {
-  //   return null;
-  // }
-  const renderValue = (selected) => {
-    if (selected.length === 0) {
-      return <em>Select...</em>;
-    }
-
-    return selected.join(", ");
+  const handleSearchTextChange = (event) => {
+    setSearchText(event.target.value);
   };
-  
+  const filteredData = rows.filter((row) => {
+    const name = row.url.toLowerCase();
+    // const email = row.email.toLowerCase();
+    const searchTextLowerCase = searchText.toLowerCase();
+    return name.includes(searchTextLowerCase);
+  });
   const classes = useStyles();
+  const onHandleAdd = () => {
+   navigate("/addgame")
+  };
   return (
-    <Paper>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell className="text-white text-lg">S.No</TableCell>
-              <TableCell align="center">Game Urls</TableCell>
-              <TableCell align="center">Operator ID</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.length>0&&rows
-              .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
-              .map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell align="center">{row.url}</TableCell>
-                  <TableCell align="center">
-                    {/* <FormControl sx={{ width: 500,p: 2,m:1 }}> */}
-                      {/* <InputLabel id="demo-multiple-checkbox-label">
-                        OpName
-                      </InputLabel> */}
-                      {/* { console.log(Object.values(oprId),"Object.values(oprId)")} */}
-                      {/* {testState[index] = []} */}
-
-                      <Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={oprId?.[row?.id]}
-                        onChange={(event) => handleSelectOption(event, row?.id)}
-                        input={<OutlinedInput label="Select..." />}
-                        renderValue={renderValue}
-                        MenuProps={MenuProps}
-                        classes={{
-                          root: classes.root,
-                        }}
-                      >
-                        {/* {console.log(oprId[row.id])} */}
-                        {OperatorIdList?.map((name, idx) => (
-                          <MenuItem key={name} value={name}>
-                            {/* { console.log(idx)} */}
-                            <Checkbox
-                              checked={
-                                oprId?.[row.id]?.length>0 && oprId[row?.id].indexOf(name) > -1
-                              }
-                            />
-                            <ListItemText primary={name} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    {/* </FormControl> */}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowPerPage}
-        page={page}
-        backIconButtonProps={{
-          "aria-label": "Previous Page",
-        }}
-        nextIconButtonProps={{
-          "aria-label": "Next Page",
-        }}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <div>
+      <Header />
+      <Paper>
+        <TableContainer component={Paper}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px",
+            }}
+          >
+            <Button variant="contained" onClick={onHandleAdd}>
+              ADD GAME
+            </Button>
+            <TextField
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchText}
+              onChange={handleSearchTextChange}
+            />
+          </div>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="h6" className="font-extrabold">
+                    S.No
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h6" className="font-extrabold">
+                    Game Urls
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h6" className="font-extrabold">
+                    Category
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h6" className="font-extrabold">
+                    Operator list
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h6" className="font-extrabold">
+                    Operator ID
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData
+                .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
+                .map((row, index) => (
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scope="row">
+                      {row.id}
+                    </TableCell>
+                    <TableCell align="center">{row.url}</TableCell>
+                    <TableCell align="center">{row.category}</TableCell>
+                    <TableCell align="center">
+                      {row.operator.length > 0 ? (
+                        row.operator.join(", ")
+                      ) : (
+                        <div>...</div>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <FormControl sx={{ m: 1, width: 500 }}>
+                        <InputLabel
+                          id="demo-multiple-chip-label"
+                          classes={{
+                            root: classes.inputLabel,
+                          }}
+                        >
+                          Select
+                        </InputLabel>
+                        <Select
+                          labelId="demo-multiple-checkbox-label"
+                          id="demo-multiple-checkbox"
+                          multiple
+                          value={oprId[row.id - 1]}
+                          onChange={(event) =>
+                            handleSelectOption(event, row.id - 1)
+                          }
+                          input={<OutlinedInput label="Select..." />}
+                          renderValue={(selected) => (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 0.5,
+                              }}
+                            >
+                              {selected.map((value) => (
+                                <Chip key={value} label={value} />
+                              ))}
+                            </Box>
+                          )}
+                          MenuProps={MenuProps}
+                          classes={{
+                            root: classes.root,
+                          }}
+                        >
+                          {/* {console.log(oprId[row.id])} */}
+                          {OperatorIdList?.map((name, idx) => (
+                            <MenuItem key={name} value={name}>
+                              {/* { console.log(idx)} */}
+                              <Checkbox
+                                checked={
+                                  oprId?.[row.id - 1]?.length > 0 &&
+                                  oprId[row.id - 1].indexOf(name) > -1
+                                }
+                              />
+                              <ListItemText primary={name} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowPerPage}
+          page={page}
+          backIconButtonProps={{
+            "aria-label": "Previous Page",
+          }}
+          nextIconButtonProps={{
+            "aria-label": "Next Page",
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </div>
   );
 }
 
