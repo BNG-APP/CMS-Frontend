@@ -6,4 +6,5 @@ import MtnSwaziland from "./MtnSwaziland";
 import MtnZambia from "./MtnZambia";
 import UnitelAngola from "./UnitelAngola";
 import ZainLibyana from "./ZainLibyana";
-export {AisThailand,MtnBenin,MtnCongo,MtnIc,MtnSwaziland,MtnZambia,UnitelAngola,ZainLibyana }
+import EntelPeru from "./EntelPeru";
+export {AisThailand,MtnBenin,MtnCongo,MtnIc,MtnSwaziland,MtnZambia,UnitelAngola,ZainLibyana,EntelPeru }

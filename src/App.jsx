@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App p-4 ">
       <Header />
-      <div className="flex justify-center my-10 mx-4">
+      <div className="flex flex-wrap justify-center my-10 mx-4">
       <Card item={"XGame"} handleClick={()=>navigate("/xgame")} />
       <Card item={"Swipe4win"} handleClick={()=>navigate("/swipe4win")}  />
       <Card item ={"Christianity"} handleClick={()=>navigate("/christianity")}  />

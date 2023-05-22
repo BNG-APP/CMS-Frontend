@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ProtectedRoute } from '../ProtectedRouter.jsx';
 import App from './App.jsx'
 import { AddGame, Christianity, EducationPortal, GameTable, Ibadat, Login, Swipe4win } from './Component/index.jsx';
-import {MtnIc,MtnZambia,MtnCongo} from "./Component/Swipe4win"
+import {MtnIc,MtnZambia,MtnCongo, MtnBenin} from "./Component/Swipe4win"
 
 import './index.css'
 const router = createBrowserRouter([
@@ -31,22 +31,26 @@ const router = createBrowserRouter([
   {
     path: "/swipe4win",
     element: <ProtectedRoute Component={Swipe4win} />,
-    children: [
+  },
       {
-        path: "Zambia",
+        path: "/swipe4win/MtnZambia",
         element: <MtnZambia />,
       },
       {
-        path: "IC",
+        path: "/swipe4win/MtnIC",
         element: <MtnIc />,
       },
       {
-        path: "Congo",
+        path: "/swipe4win/MtnCongo",
         element: <MtnCongo />,
       },
-    ],
+      {
+        path: "MtnBenin",
+        element: <MtnBenin />,
+      },
+   
 
-  },
+
   {
     path: "/christianity",
     element: <ProtectedRoute Component={Christianity} />,

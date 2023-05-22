@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '20vh',
+    height: '35vh',
   },
   paper: {
     padding: theme.spacing(12),

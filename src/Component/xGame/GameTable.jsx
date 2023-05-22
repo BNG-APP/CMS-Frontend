@@ -336,9 +336,9 @@ const rows = [
 ];
 const useStyles = makeStyles({
   root: {
-    width: 200,
+    width: 180,
     m: 1,
-    p: 2,
+    padding: 10,
     // add your custom styles here
   },
 
@@ -346,8 +346,11 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     paddingLeft: "20px",
     position: "absolute",
-    top: "-5px",
+    top: "-8px",
   },
+  row:{
+    padding:"10px"
+  }
 });
 
 function GameTable() {
@@ -380,8 +383,8 @@ function GameTable() {
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
+        width: 200,
+      }
     },
   };
   const handleSearchTextChange = (event) => {
@@ -455,7 +458,9 @@ function GameTable() {
               {filteredData
                 .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
                 .map((row, index) => (
-                  <TableRow key={row.id}>
+                  <TableRow key={row.id}  classes={{
+                    root: classes.row,
+                  }}>
                     <TableCell component="th" scope="row">
                       {row.id}
                     </TableCell>
