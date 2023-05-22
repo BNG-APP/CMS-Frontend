@@ -434,6 +434,11 @@ function GameTable() {
                 </TableCell>
                 <TableCell align="center">
                   <Typography variant="h6" className="font-extrabold">
+                    Game Name
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography variant="h6" className="font-extrabold">
                     Game Urls
                   </Typography>
                 </TableCell>
@@ -464,6 +469,7 @@ function GameTable() {
                     <TableCell component="th" scope="row">
                       {row.id}
                     </TableCell>
+                    <TableCell align="center">{row.gameName}</TableCell>
                     <TableCell align="center">{row.url}</TableCell>
                     <TableCell align="center">{row.category}</TableCell>
                     <TableCell align="center">
