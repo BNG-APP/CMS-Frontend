@@ -43,8 +43,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     position: 'absolute',
     top: 0,
-    left: 0,
-    margin: theme.spacing(2),
+    left: 160,
+    color: 'white',
+    margin: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
