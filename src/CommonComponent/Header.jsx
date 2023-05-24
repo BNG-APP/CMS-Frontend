@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Logo } from "../Utilities/ImageImport";
 import Sidebar from "./Menu";
 
 function Header() {
@@ -12,13 +13,16 @@ function Header() {
     localStorage.setItem("login", false);
   };
   return (
-    <div className="flex justify-between mt-2 mb-6">
+    <div className="flex justify-start mb-6 items-center bg-gray-700 h-16 fixed top-0 left-0 w-full">
+      <img src={Logo} width="50" height={"20px"} className="rounded-xl h-10 mx-2 " />
+      <div className="text-lg text-white font-semibold mr-24 " onClick={() => navigate("/home")}>CMS Portal</div>
       <Sidebar />
-      <div className="text-3xl text-black font-bold mr-24" onClick={()=>navigate("/home")}>CMS Portal</div>
       {login && (
-        <Button variant="contained" onClick={onHandleLogout}>
+        <div className="fixed right-2">
+        <Button variant="contained" onClick={onHandleLogout} >
           LogOut
         </Button>
+        </div>
       )}
     </div>
   );
