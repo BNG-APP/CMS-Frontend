@@ -403,6 +403,7 @@ function GameTable() {
   return (
     <div>
       <Header />
+      <div className="mt-20 w-[90%] flex justify-center">
       <Paper>
         <TableContainer component={Paper}>
           <div
@@ -553,6 +554,7 @@ function GameTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      </div>
     </div>
   );
 }
