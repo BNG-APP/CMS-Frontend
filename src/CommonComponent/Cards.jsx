@@ -22,7 +22,7 @@ export default function Card(props) {
 const navigate=useNavigate()
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper} onClick={props.handleClick}>
+      <Paper className={classes.paper} style={props.style} onClick={props.handleClick}>
         <h1 className='text-xl font-semibold ' >{props.item}</h1>
       </Paper>
     </div>

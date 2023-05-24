@@ -8,11 +8,11 @@ function App() {
     <div className="App p-4 ">
       <Header />
       <div className="flex flex-wrap justify-center my-10 mx-4">
-      <Card item={"XGame"} handleClick={()=>navigate("/xgame")} />
-      <Card item={"Swipe4win"} handleClick={()=>navigate("/swipe4win")}  />
-      <Card item ={"Christianity"} handleClick={()=>navigate("/christianity")}  />
-      <Card item ={"Ibadat"} handleClick={()=>navigate("/christianity")}  />
-      <Card item ={"Education-Portal"} handleClick={()=>navigate("/educ")}  />
+      <Card item={"XGame"} style={{ backgroundColor: 'red' }} handleClick={()=>navigate("/xgame")} />
+      <Card item={"Swipe4win"} style={{ backgroundColor: 'green' }} handleClick={()=>navigate("/swipe4win")}  />
+      <Card item ={"Christianity"} style={{ backgroundColor: 'orange' }} handleClick={()=>navigate("/christianity")}  />
+      <Card item ={"Ibadat"} style={{ backgroundColor: 'purple' }} handleClick={()=>navigate("/ibadat")}  />
+      <Card item ={"Education-Portal"} style={{ backgroundColor: 'yellow' }} handleClick={()=>navigate("/educ")}  />
       </div>
      
     </div>
