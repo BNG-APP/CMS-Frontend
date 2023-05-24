@@ -7,9 +7,9 @@ function App() {
   return (
     <div className="App w-full">
       <Header />
-      <div className="flex justify-center items-center w-full mt-10">
-      <div className="bg-white rounded-md drop-shadow-2xl w-[90%] h-[300px]">
-        <div className="text-black py-5 px-5">All Projects</div>
+      <div className="flex justify-center items-center w-full mt-20">
+      <div className="bg-white rounded-md drop-shadow-2xl w-[90%]">
+        <div className="text-black py-5 px-5 font-bold text-lg">All Projects</div>
         <div className="flex flex-wrap justify-center my-1 mx-4 ">
           <Card
             item={"XGame"}

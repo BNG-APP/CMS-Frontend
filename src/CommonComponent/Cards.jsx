@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "35vh",
+    // height: "35vh",
   },
   paper: {
     width: "200px",
@@ -29,7 +29,7 @@ export default function Card(props) {
         style={props.style}
         onClick={props.handleClick}
       >
-        <h1 className="text-xl font-semibold ">{props.item}</h1>
+        <h1 className="text-xl font-semibold pt-8">{props.item}</h1>
       </Paper>
     </div>
   );
