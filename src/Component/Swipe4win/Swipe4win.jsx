@@ -49,11 +49,14 @@ function Swipe4win() {
   return (
     <div>
       <Header />
-      <div>
-      <div className="mt-20">
+      <div className="flex justify-center items-center w-full mt-20">
+      <div className="bg-white rounded-md drop-shadow-2xl w-[90%] ">
+      <div className="flex justify-around w-full">
+      <div className="flex flex-row">
       {/* <FormControl sx={{ m: 1 }} variant="standard">
         <InputLabel htmlFor="demo-customized-textbox">Select an Swipe4win Service</InputLabel>
       </FormControl> */}
+      <h3 className="text-black mt-7 font-semibold">Country</h3> 
       <FormControl className={classes.formControl}>
       <InputLabel id="demo-customized-select-label">Select</InputLabel>
       <Select
@@ -73,10 +76,11 @@ function Swipe4win() {
     </FormControl>
       </div>
 
-      <div className="mt-20">
+      <div className="flex flex-row">
       {/* <FormControl sx={{ m: 1 }} variant="standard">
         <InputLabel htmlFor="demo-customized-textbox">Select an Swipe4win Service</InputLabel>
       </FormControl> */}
+      <h3 className="text-black mt-7 font-semibold">Operator Id</h3> 
       <FormControl className={classes.formControl}>
       <InputLabel id="demo-customized-select-label">Select</InputLabel>
       <Select
@@ -97,12 +101,16 @@ function Swipe4win() {
       </div>
       </div>
 
-    <div className="mt-20">
+    <div className="flex justify-center">
+    <div className="p-4">
     <Button variant="outlined">View Result</Button>
     </div>
 
-    <div className="mt-20">
+    <div className="p-4">
     <Button variant="outlined">View Entities</Button>
+    </div>
+    </div>
+    </div>
     </div>
     </div>
   );
