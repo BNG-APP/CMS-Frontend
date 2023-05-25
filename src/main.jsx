@@ -13,15 +13,8 @@ import {
   Swipe4win,
 } from "./Component/index.jsx";
 import {
-  MtnIc,
   MtnZambia,
-  MtnCongo,
-  MtnBenin,
-  EntelPeru,
-  AisThailand,
-  MtnSwaziland,
-  UnitelAngola,
-  ZainLibyana,
+
 } from "./Component/Swipe4win";
 import MultiQuestion from "./Component/Swipe4win/MultiQuestion.jsx";
 import SingleQuestion from "./Component/Swipe4win/SingleQuestion.jsx";
@@ -58,39 +51,7 @@ const router = createBrowserRouter([
     path: "/swipe4win/MtnZambia",
     element: <MtnZambia />,
   },
-  {
-    path: "/swipe4win/MtnIC",
-    element: <MtnIc />,
-  },
-  {
-    path: "/swipe4win/MtnCongo",
-    element: <MtnCongo />,
-  },
-  {
-    path: "/swipe4win/MtnBenin",
-    element: <MtnBenin />,
-  },
-  {
-    path: "/swipe4win/EntelPeru",
-    element: <EntelPeru />,
-  },
-  {
-    path: "/swipe4win/AisThailand",
-    element: <AisThailand />,
-  },
-
-  {
-    path: "/swipe4win/MtnSwaziland",
-    element: <MtnSwaziland />,
-  },
-  {
-    path: "/swipe4win/UnitelAngola",
-    element: <UnitelAngola />,
-  },
-  {
-    path: "/swipe4win/ZainLibyana",
-    element: <ZainLibyana />,
-  },
+  
   {
     path: "/swipe4win/SingleQuestion",
     element: <SingleQuestion />,
