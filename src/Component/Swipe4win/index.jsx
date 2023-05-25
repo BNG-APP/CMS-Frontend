@@ -1,10 +1,6 @@
-import AisThailand from "./AisThailand";
-import MtnBenin from "./MtnBenin";
-import MtnCongo from "./MtnCongo";
-import MtnIc from "./MtnIc";
-import MtnSwaziland from "./MtnSwaziland";
+import ViewEntity from "./VeiwEntity";
 import MtnZambia from "./MtnZambia";
-import UnitelAngola from "./UnitelAngola";
-import ZainLibyana from "./ZainLibyana";
-import EntelPeru from "./EntelPeru";
-export {AisThailand,MtnBenin,MtnCongo,MtnIc,MtnSwaziland,MtnZambia,UnitelAngola,ZainLibyana,EntelPeru }
+import ViewResult from "./ViewResult";
+import MultiQuestion from "./MultiQuestion"
+
+export {ViewEntity,ViewResult,MtnZambia,MultiQuestion }
