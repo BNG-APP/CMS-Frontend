@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, makeStyles, MenuItem, Select } from "@material-ui/core";
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, Button } from "@material-ui/core";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header, Card } from "../../CommonComponent";
@@ -49,6 +49,7 @@ function Swipe4win() {
   return (
     <div>
       <Header />
+      <div>
       <div className="mt-20">
       {/* <FormControl sx={{ m: 1 }} variant="standard">
         <InputLabel htmlFor="demo-customized-textbox">Select an Swipe4win Service</InputLabel>
@@ -71,6 +72,38 @@ function Swipe4win() {
       </Select>
     </FormControl>
       </div>
+
+      <div className="mt-20">
+      {/* <FormControl sx={{ m: 1 }} variant="standard">
+        <InputLabel htmlFor="demo-customized-textbox">Select an Swipe4win Service</InputLabel>
+      </FormControl> */}
+      <FormControl className={classes.formControl}>
+      <InputLabel id="demo-customized-select-label">Select</InputLabel>
+      <Select
+        value={selectedItem}
+        onChange={handleChange}
+        className={classes.select}
+        labelId="demo-customized-select-label"
+          id="demo-customized-select"
+          MenuProps={MenuProps}
+      >
+        {names.map((name) => (
+          <MenuItem key={name} value={name}>
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+      </div>
+      </div>
+
+    <div className="mt-20">
+    <Button variant="outlined">View Result</Button>
+    </div>
+
+    <div className="mt-20">
+    <Button variant="outlined">View Entities</Button>
+    </div>
     </div>
   );
 }
