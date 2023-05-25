@@ -8,7 +8,7 @@ function MtnZambia() {
   return (
     <div className=''>
       <Header />
-      <div className='flex justify-center'>
+      <div className='flex justify-center mt-20'>
         <Card item={"Single Question"} style={{ backgroundColor: 'red' }} handleClick={()=>navigate("/swipe4win/SingleQuestion",{state:"Zambia"})} />
         <Card item={"Multi Question"} style={{ backgroundColor: 'green' }} handleClick={()=>navigate("/swipe4win/MultiQuestion",{state:"Zambia"})} />
         <Card item={"View Entity"} style={{ backgroundColor: 'Purple' }} handleClick={()=>navigate("/swipe4win/ViewEntity",{state:"Zambia"})} />

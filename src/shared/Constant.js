@@ -1,6 +1,6 @@
 export const API_BASE_URL = "https://swip4winapiv1.bngrenew.com:5081/swipe4win/"
-export const API_SWIP_URLS = {
-    Config: API_BASE_URL + "config",
+export const API_URLS = {
+    getQuestion: API_BASE_URL + "getquestions/uploadeddata",
     Register: API_BASE_URL + "register",
     Questions: API_BASE_URL + "user/questions",
     Buy: API_BASE_URL + "pack/buy",

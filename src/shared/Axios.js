@@ -29,7 +29,7 @@ export async function GET(path, data, options = {}) {
 export async function POST(path, data, options = {}) {
 window.localStorage.setItem("lang","ar")
   const headers = {
-    // defaultlanguage:"ar",
+    //  defaultlanguage:"ar",
     // operatorid: "s4w_demo2",
     timezone: "+1",
     ...getHeaders()
