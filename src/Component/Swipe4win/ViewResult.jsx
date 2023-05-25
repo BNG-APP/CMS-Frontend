@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -27,15 +27,19 @@ const ViewResult = () => {
   const location=useLocation()
 
 console.log(location);
+window.localStorage.setItem("op",location.state)
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [update,updateConfig,loading]=useFetch(API_URLS,{"operatorId": location.state})
+  const [update,updateConfig,loading]=useFetch(API_URLS.getQuestion,{"operatorId": location.state})
   const [data, setData] = useState([
     { id: 1, name: 'Item 1' },
     { id: 2, name: 'Item 2' },
     { id: 3, name: 'Item 3' },
   ]);
-
+useEffect(()=>{
+  updateConfig()
+},[])
+console.log(update);
   const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedItemId(id);

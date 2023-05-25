@@ -27,10 +27,10 @@ export async function GET(path, data, options = {}) {
 }
 
 export async function POST(path, data, options = {}) {
-window.localStorage.setItem("lang","ar")
+const op=window.localStorage.getItem("op")
   const headers = {
-    //  defaultlanguage:"ar",
-    // operatorid: "s4w_demo2",
+     defaultlanguage:"",
+   operatorid: op,
     timezone: "+1",
     ...getHeaders()
   };
