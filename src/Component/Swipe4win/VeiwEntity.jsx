@@ -39,7 +39,7 @@ window.localStorage.setItem("op",location.state)
 useEffect(()=>{
   updateConfig()
 },[])
-console.log(update);
+console.log(update?.questions);
   const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedItemId(id);
@@ -67,12 +67,19 @@ console.log(update);
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>ID</TableCell>
+           {/* {update?.questions[0].map(item=> {return(
+              {Object.keys(item)}
+            )}
+            )
+           } */}
+         {  console.log(update?.questions[0],"update?.questions[0]")}
+       
+            {update?.questions&&Object.keys(update?.questions[0]).map((key) => {  return (<><TableCell>{key=="setId"?"":key}</TableCell></>)}
+      )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {update?.questions?.map((item) => (
             <TableRow key={item.id}>
               <TableCell>
                 {item.name}
