@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     marginTop: theme.spacing(2),
   },
-  tableContainer:{
-    margin:"10px"
-  }
+  tableContainer: {
+    margin: "10px",
+  },
 }));
 
 const ViewEntity = () => {
@@ -38,7 +38,7 @@ const ViewEntity = () => {
   const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
     operatorId: location.state,
   });
-  
+
   useEffect(() => {
     updateConfig();
   }, []);
@@ -67,97 +67,76 @@ const ViewEntity = () => {
 
   return (
     <>
-    <Header />
-    <div className="mt-20">
-    <TableContainer className="">
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {/* {update?.questions[0].map(item=> {return(
-              {Object.keys(item)}
-            )}
-            )
-           } */}
-            {console.log(update?.questions[0], "update?.questions[0]")}
-            <TableCell>S.No.</TableCell>
-            {update?.questions &&
-              Object.keys(update?.questions[0]).map((key) => {
-                return (
-                  <>
-                 
-                    <TableCell>
-                      {key == "setId" || key == "_id" ? null : key}
-                      {/* {key &&
+      <Header />
+      <div className="mt-20">
+        <TableContainer className="">
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>S.No.</TableCell>
+                {update?.questions &&
+                  Object.keys(update?.questions[0]).map((key) => {
+                    return (
+                      <>
+                        <TableCell>
+                          {key == "setId" || key == "_id" ? null : key}
+                          {/* {key &&
                       Object.keys(update?.questions[0].questionText).map((item) => {
                        
                         return item;
                       })} */}
-                    </TableCell>
-                   
-                  </>
-                );
-              })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {update?.questions?.map((item,idx) => (
-            <TableRow key={item.id}>
-              <TableCell>{idx+1}</TableCell>
-              <TableCell>
-                {DecodeBase64(item?.questionText?.ar)}
-                </TableCell>
-                <TableCell>
-                {item?.answerOption?.option_1}
-                </TableCell>
-                <TableCell>
-                {item?.answerOption?.option_2}
-                </TableCell>
-                {item?.answerOption?.option_3&&<TableCell>{item?.answerOption?.option_3}</TableCell>}
-                {item?.answerOption?.option_4&&<TableCell>{item?.answerOption?.option_4}</TableCell>}
-                <TableCell>
-                {item?.answer}
-                </TableCell>
-                <TableCell>
-                {item?.level}
-                </TableCell>
-                <TableCell>
-                {item?.priority}
-                </TableCell>
-                <TableCell>
-                {item?.setType}
-                </TableCell>
-                <TableCell>
-                {item?.operatorId}
-                </TableCell>
-                <TableCell>
-                <img src={item.imageUrl} width="200" height="200"/>
-                </TableCell>
-                <IconButton
-                  aria-label="more"
-                  aria-controls="menu"
-                  aria-haspopup="true"
-                  onClick={(event) => handleMenuClick(event, item.id)}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-                <Menu
-                  id="menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                  className={classes.menu}
-                >
-                  <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                  <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                </Menu>
-              
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </div>
+                        </TableCell>
+                      </>
+                    );
+                  })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {update?.questions?.map((item, idx) => (
+                <TableRow key={item.id}>
+                  <TableCell>{idx + 1}</TableCell>
+                  <TableCell>{DecodeBase64(item?.questionText?.ar)}</TableCell>
+                  <TableCell>{item?.answerOption?.option_1}</TableCell>
+                  <TableCell>{item?.answerOption?.option_2}</TableCell>
+                  {item?.answerOption?.option_3 && (
+                    <TableCell>{item?.answerOption?.option_3}</TableCell>
+                  )}
+                  {item?.answerOption?.option_4 && (
+                    <TableCell>{item?.answerOption?.option_4}</TableCell>
+                  )}
+                  <TableCell>{item?.answer}</TableCell>
+                  <TableCell>{item?.level}</TableCell>
+                  <TableCell>{item?.priority}</TableCell>
+                  <TableCell>{item?.setType}</TableCell>
+                  <TableCell>{item?.operatorId}</TableCell>
+                  <TableCell>
+                    <img src={item.imageUrl} width="200" height="200" />
+                  </TableCell>
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="menu"
+                    aria-haspopup="true"
+                    onClick={(event) => handleMenuClick(event, item.id)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                    className={classes.menu}
+                  >
+                    <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                  </Menu>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </>
   );
 };
