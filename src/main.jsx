@@ -13,6 +13,7 @@ import {
   Swipe4win,
 } from "./Component/index.jsx";
 import {
+  EditEntity,
   MtnZambia,
 
 } from "./Component/Swipe4win";
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: "/swipe4win/ViewEntity",
     element: <VeiwEntity />,
+  },
+  {
+    path: "/swipe4win/edit/:id",
+    element: <EditEntity />,
   },
   {
     path: "/swipe4win/ViewResult",
