@@ -17,8 +17,8 @@ function MultiQuestion() {
   const [convertedLogoFile, setConvertedLogoFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataUpdload, dataUploadApi, loading] = useFetch(API_URLS.dataUpload, {
-    selectedFile: selectedFile && selectedFile,
-    selectedCSVFile: selectedCSVFile && selectedCSVFile,
+    imageFile: selectedFile && selectedFile,
+    csvFile: selectedCSVFile && selectedCSVFile,
   });
   const navigate = useNavigate();
 
@@ -72,6 +72,13 @@ function MultiQuestion() {
   //   };
   //   reader.readAsDataURL(file);
   // };
+
+    const handleDownload = () => {
+      const downloadLink = document.createElement("a");
+      downloadLink.href = "/sample-file.csv";
+      downloadLink.download = "sample.csv";
+      downloadLink.click();
+    };
   return (
     <div>
       <Header />
@@ -105,7 +112,7 @@ function MultiQuestion() {
         </div>
         <div>
           <Container>
-            <div>Upload Banner Image</div>
+            <div className="text-black">Upload Banner Image</div>
             <Grid
               container
               spacing={2}
@@ -151,7 +158,7 @@ function MultiQuestion() {
         </div>
         <div>
           <Container>
-            <div>Upload Logo Image</div>
+            <div className="text-black">Upload Logo Image</div>
             <Grid
               container
               spacing={2}
@@ -180,6 +187,7 @@ function MultiQuestion() {
             </Grid>
           </Container>
         </div>
+        <Button variant="contained"  onClick={handleDownload}>Download Sample CSV</Button>
         <div className="flex flex-col justify-around mt-3">
           <div className="p-4 font-bold">
             <Button
