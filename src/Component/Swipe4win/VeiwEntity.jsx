@@ -62,13 +62,13 @@ const navigate=useNavigate()
     setSelectedItemId(null);
   };
 
-  const handleEdit = (item,idx) => {
+  // const handleEdit = (item,idx) => {
 
-    // Handle edit logic here
-    console.log("Edit item with ID:", idx);
-    handleMenuClose();
-    navigate(`/edit/${idx}`)
-  };
+  //   // Handle edit logic here
+  //   console.log("Edit item with ID:", idx);
+  //   handleMenuClose();
+  //   navigate(`/edit/${idx}`)
+  // };
 
   const handleDelete = () => {
     // Handle delete logic here
@@ -160,7 +160,8 @@ const navigate=useNavigate()
                     onClose={handleMenuClose}
                     className={classes.menu}
                   >
-                    <MenuItem onClick={()=>handleEdit(item,idx)}>Edit</MenuItem>
+                    {/* onClick={()=>handleEdit(item,idx)} */}
+                    <MenuItem  onClick={() => navigate("/swipe4win/EditDetails",{state:item[idx]})}>Edit</MenuItem>
                     <MenuItem onClick={handleDelete}>Delete</MenuItem>
                   </Menu>
 

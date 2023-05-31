@@ -15,9 +15,9 @@ import {
 import {
   EditEntity,
   MtnZambia,
-
 } from "./Component/Swipe4win";
 import MultiQuestion from "./Component/Swipe4win/MultiQuestion.jsx";
+import EditDetails from "./Component/Swipe4win/EditDetails.jsx";
 import SingleQuestion from "./Component/Swipe4win/SingleQuestion.jsx";
 import VeiwEntity from "./Component/Swipe4win/VeiwEntity.jsx";
 import ViewResult from "./Component/Swipe4win/ViewResult.jsx";
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "/swipe4win/MtnZambia",
     element: <MtnZambia />,
+  },
+  {
+    path: "/swipe4win/EditDetails",
+    element: <EditDetails />,
   },
   
   {

@@ -6,7 +6,8 @@ const EditEntity = () => {
   const history = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({});
-  const rowData = location.state?.rowData;
+  const rowData = location.state;
+  console.log("row data",rowData);
   const { id } = useParams();
   useEffect(() => {
     // Populate the form fields with the rowData
