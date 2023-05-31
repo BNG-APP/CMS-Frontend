@@ -1,0 +1,2 @@
+﻿questionId,question_ar (question text in arabic),question_en (question text in english),question_fr (question text in  French),question_pt( question text in portuguese),question_Sp (question text in Spanish),answer (true/false),difficulty (1-5),imageName (in images folder) ,priority (1),setType(FREESET/NUMSET/TIMESET),operatorId
+1,,Portugal won maximum FIFA world cups,,,Portugal ganÛ la m·xima copa mundial de la FIFA,FALSE,4,q1.jpg,1,NUMSET,entel_peru
