@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import {  useLocation, useNavigate, useParams } from "react-router-dom";
-import { Button, TextField } from "@material-ui/core";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import { convertToPNG } from "../../CommonComponent/CovertToPNG";
 
 const EditEntity = () => {
@@ -8,9 +8,9 @@ const EditEntity = () => {
   const location = useLocation();
   const [formData, setFormData] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
-  const [convertedImage,setConvertedImage] = useState(null);
+  const [convertedImage, setConvertedImage] = useState(null);
   const rowData = location.state;
-  console.log("row data",rowData);
+  console.log("row data", rowData);
   const { id } = useParams();
   useEffect(() => {
     // Populate the form fields with the rowData
@@ -30,7 +30,7 @@ const EditEntity = () => {
     // Handle form submission logic here
     console.log("Form submitted:", formData);
     // Redirect back to the view page after editing
-   // history.push("/view");
+    // history.push("/view");
   };
 
   const handleImageChange = (event) => {
@@ -43,27 +43,34 @@ const EditEntity = () => {
     <div>
       <h2>Edit Row</h2>
       <form onSubmit={handleSubmit}>
-        <img
+        {convertedImage ? <Grid item xs={12}>
+          <Typography variant="h6">Converted Image:</Typography>
+          <img
+            src={URL.createObjectURL(convertedImage)}
+            alt="Converted"
+            style={{ maxWidth: "100%",width:"250px", height: "250px" }}
+          />
+        </Grid> : <img
           label="Image URL"
           name="imageUrl"
-          src={selectedImage?convertedImage:formData.imageUrl || ""}
+          src={formData.imageUrl || ""}
           onChange={handleInputChange}
           fullWidth
           margin="normal"
-        />
-       { console.log("converted image",convertedImage)}
+        />}
+        {console.log("converted image", convertedImage)}
         <input
-        accept="image/*"
-        type="file"
-        id="select-image"
-        style={{ display: "none" }}
-        onChange={handleImageChange}
-      />
-      <label htmlFor="select-image">
-        <Button variant="contained" color="primary" component="span">
-          Upload Image
-        </Button>
-      </label>
+          accept="image/*"
+          type="file"
+          id="select-image"
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+        />
+        <label htmlFor="select-image">
+          <Button variant="contained" color="primary" component="span">
+            Upload Image
+          </Button>
+        </label>
         <TextField
           label="Question Text (Decoded)"
           name="questionText"
@@ -92,7 +99,7 @@ const EditEntity = () => {
         <TextField
           label="Level"
           name="level"
-          value={formData.level|| ""}
+          value={formData.level || ""}
           onChange={handleInputChange}
           fullWidth
           margin="normal"
