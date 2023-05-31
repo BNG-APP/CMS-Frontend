@@ -116,6 +116,7 @@ const navigate=useNavigate()
                 {Object.keys(mappedObject).map((key) => (
                   <TableCell key={key}>{key}</TableCell>
                 ))}
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -148,7 +149,7 @@ const navigate=useNavigate()
                     aria-label="more"
                     aria-controls="menu"
                     aria-haspopup="true"
-                    onClick={(event) => handleMenuClick(event, item)}
+                    onClick={(event) => handleMenuClick(event, item._id)}
                   >
                     <MoreVertIcon />
                   </IconButton>
@@ -156,12 +157,12 @@ const navigate=useNavigate()
                     id="menu"
                     anchorEl={anchorEl}
                     keepMounted
-                    open={Boolean(anchorEl)}
+                    open={Boolean(anchorEl && selectedItemId === item._id)}
                     onClose={handleMenuClose}
                     className={classes.menu}
                   >
                     {/* onClick={()=>handleEdit(item,idx)} */}
-                    <MenuItem  onClick={() => navigate("/swipe4win/EditDetails",{state:item[idx]})}>Edit</MenuItem>
+                    <MenuItem  onClick={() => navigate("/swipe4win/EditDetails",{state:item})}>Edit</MenuItem>
                     <MenuItem onClick={handleDelete}>Delete</MenuItem>
                   </Menu>
 

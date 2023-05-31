@@ -109,6 +109,10 @@ function MultiQuestion() {
           <Button variant="contained" onClick={uploadApi} disabled={isDisabled}>
             Upload
           </Button>
+          <div className="mt-2">
+          <Button variant="contained"  onClick={handleDownload}>Download Sample CSV</Button>
+          </div>
+       
         </div>
         <div>
           <Container>
@@ -187,7 +191,7 @@ function MultiQuestion() {
             </Grid>
           </Container>
         </div>
-        <Button variant="contained"  onClick={handleDownload}>Download Sample CSV</Button>
+       
         <div className="flex flex-col justify-around mt-3">
           <div className="p-4 font-bold">
             <Button
