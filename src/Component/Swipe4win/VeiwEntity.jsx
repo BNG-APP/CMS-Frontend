@@ -14,7 +14,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useFetch from "../../Utilities/useFetch";
 import { API_URLS } from "../../shared/Constant";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header } from "../../CommonComponent";
 
@@ -40,6 +40,7 @@ const ViewEntity = () => {
   const classes = useStyles();
   const location = useLocation();
 const navigate=useNavigate()
+
   window.localStorage.setItem("op", location.state);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -64,7 +65,7 @@ const navigate=useNavigate()
   const handleEdit = (item,idx) => {
 
     // Handle edit logic here
-    console.log("Edit item with ID:", item);
+    console.log("Edit item with ID:", idx);
     handleMenuClose();
     navigate(`/edit/${idx}`)
   };
@@ -132,7 +133,12 @@ const navigate=useNavigate()
                     }    else if (key === "questionText Ar") {
                       const decodedValue = item.questionText?.ar ? DecodeBase64(item.questionText.ar) : "";
                       return <TableCell key={key}>{decodedValue}</TableCell>;
-                    } 
+                    } else if(key=="answerOption option1"){
+                      return<TableCell key={key}>{item.answerOption.option1}</TableCell>
+                    }
+                    else if(key=="answerOption option2"){
+                      return<TableCell key={key}>{item.answerOption.option2}</TableCell>
+                    }
                     else {
                       const cellValue = item[key] !== undefined ? item[key] : ""; // Handle undefined values
                       return <TableCell key={key}>{cellValue}</TableCell>;
@@ -142,7 +148,7 @@ const navigate=useNavigate()
                     aria-label="more"
                     aria-controls="menu"
                     aria-haspopup="true"
-                    onClick={(event) => handleMenuClick(event, item.id)}
+                    onClick={(event) => handleMenuClick(event, item)}
                   >
                     <MoreVertIcon />
                   </IconButton>

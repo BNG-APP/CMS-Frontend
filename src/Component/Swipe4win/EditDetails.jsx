@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 
 const EditEntity = () => {
@@ -7,7 +7,7 @@ const EditEntity = () => {
   const location = useLocation();
   const [formData, setFormData] = useState({});
   const rowData = location.state?.rowData;
-
+  const { id } = useParams();
   useEffect(() => {
     // Populate the form fields with the rowData
     setFormData(rowData);
