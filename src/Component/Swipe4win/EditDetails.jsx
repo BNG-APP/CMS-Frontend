@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import { convertToPNG } from "../../CommonComponent/CovertToPNG";
+import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 
 const EditEntity = () => {
   const history = useNavigate();
@@ -12,6 +13,7 @@ const EditEntity = () => {
   const rowData = location.state;
   console.log("row data", rowData);
   const { id } = useParams();
+  
   useEffect(() => {
     // Populate the form fields with the rowData
     setFormData(rowData);
@@ -19,11 +21,18 @@ const EditEntity = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value, "name and value");
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      // answerOption: {
+      //   ...prevData.answerOption,
+      //   [name]: value,
+      // },
     }));
   };
+
+  console.log(formData, "formData");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,21 +52,25 @@ const EditEntity = () => {
     <div>
       <h2>Edit Row</h2>
       <form onSubmit={handleSubmit}>
-        {convertedImage ? <Grid item xs={12}>
-          <Typography variant="h6">Converted Image:</Typography>
+        {convertedImage ? (
+          <Grid item xs={12}>
+            <Typography variant="h6">Converted Image:</Typography>
+            <img
+              src={URL.createObjectURL(convertedImage)}
+              alt="Converted"
+              style={{ maxWidth: "100%", width: "250px", height: "250px" }}
+            />
+          </Grid>
+        ) : (
           <img
-            src={URL.createObjectURL(convertedImage)}
-            alt="Converted"
-            style={{ maxWidth: "100%",width:"250px", height: "250px" }}
+            label="Image URL"
+            name="imageUrl"
+            src={formData.imageUrl || ""}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
           />
-        </Grid> : <img
-          label="Image URL"
-          name="imageUrl"
-          src={formData.imageUrl || ""}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />}
+        )}
         {console.log("converted image", convertedImage)}
         <input
           accept="image/*"
@@ -74,16 +87,19 @@ const EditEntity = () => {
         <TextField
           label="Question Text (Decoded)"
           name="questionText"
-          value={formData.questionText || ""}
+          value={
+            formData.questionText?.ar &&
+            DecodeBase64(formData.questionText?.ar || "")
+          }
           onChange={handleInputChange}
           fullWidth
           multiline
           margin="normal"
         />
-        <TextField
+        {/* <TextField
           label="Answer Option 1"
           name="answerOption1"
-          value={formData.answerOption?.option1 || ""}
+          value={formData.answerOption?.option1 && formData.answerOption?.option1 || ""}
           onChange={handleInputChange}
           fullWidth
           margin="normal"
@@ -95,7 +111,26 @@ const EditEntity = () => {
           onChange={handleInputChange}
           fullWidth
           margin="normal"
-        />
+        /> */}
+
+<TextField
+  label="Answer Option 1"
+  name="option1"
+  defaultValue={ formData.answerOption?.option1 || "True"}
+  onChange={handleInputChange}
+  fullWidth
+  margin="normal"
+/>
+
+<TextField
+  label="Answer Option 2"
+  name="option2"
+  defaultValue={ formData.answerOption?.option2 || "False"}
+  onChange={handleInputChange}
+  fullWidth
+  margin="normal"
+/>
+
         <TextField
           label="Level"
           name="level"
