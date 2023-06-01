@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header, Card } from "../../CommonComponent";
+import { Header, Card, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
 import { API_BASE_URL, API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
@@ -35,18 +35,6 @@ const MenuProps = {
     },
   },
 };
-
-const names = [
-  "MtnIc",
-  "AisThailand",
-  "MtnZambia",
-  "MtnCongo",
-  "UnitelAngola",
-  "ZainLibyanaLibya",
-  "MtnBenin",
-  "MtnSwaziland",
-  "EntelPeru",
-];
 
 function Swipe4win() {
   const navigate = useNavigate();
@@ -75,6 +63,8 @@ function Swipe4win() {
   console.log(FilterOpID,"oprID");
   return (
     <div>
+      {loading?<Loader />:
+      <>
       <Header />
       <div className="flex justify-center items-center w-full mt-20">
         <div className="bg-white rounded-md drop-shadow-2xl w-[90%] ">
@@ -129,18 +119,9 @@ function Swipe4win() {
             </div>
             <Button  variant="outlined" onClick={()=>{navigate("/swipe4win/MultiQuestion")}}>Show</Button>
           </div>
-{/* 
-          <div className="flex justify-around ">
-            <div className="p-4 font-bold">
-              <Button variant="outlined" onClick={()=>{navigate("/swipe4win/ViewResult")}}>View Result</Button>
-            </div>
-
-            <div className="p-4">
-              <Button variant="outlined" onClick={()=>{navigate("/swipe4win/ViewEntity")}}>View Entities</Button>
-            </div>
-          </div> */}
         </div>
       </div>
+      </>}
     </div>
   );
 }

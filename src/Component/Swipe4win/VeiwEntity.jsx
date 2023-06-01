@@ -16,7 +16,7 @@ import useFetch from "../../Utilities/useFetch";
 import { API_URLS } from "../../shared/Constant";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
-import { Header } from "../../CommonComponent";
+import { Header, Loader } from "../../CommonComponent";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -107,6 +107,7 @@ const navigate=useNavigate()
   return (
     <>
       <Header />
+      {loading?<Loader />:
       <div className="mt-20">
         <TableContainer className={classes.tableContainer}>
           <Table aria-label="simple table">
@@ -172,7 +173,7 @@ const navigate=useNavigate()
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </div>}
     </>
   );
 };
