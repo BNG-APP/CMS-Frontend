@@ -13,6 +13,7 @@ const EditEntity = () => {
   const [formData, setFormData] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
   const [convertedImage, setConvertedImage] = useState(null);
+  const [savedText, setSavedText] = React.useState('');
   const rowData = location.state;
   console.log("row data", rowData);
   const { id } = useParams();
@@ -104,6 +105,12 @@ const EditEntity = () => {
     option4: 'Enter text in Portuguese',
     option5: 'Enter text in Spanish',
     option6: 'Enter text in Thai',
+  };
+
+  const handleSaveClick = () => {
+    setSavedText(inputText);
+    setIsModalOpen(false);
+    setInputText('');
   };
 
   
@@ -236,12 +243,19 @@ const EditEntity = () => {
             fullWidth
           />
           <div className="flex justify-center pt-4">
-          <Button variant="contained" color="primary" onClick={handleModalClose}>
+          <Button variant="contained" color="primary" onClick={handleSaveClick}>
             Save
           </Button>
           </div>
         </div>
       </Modal>
+
+      <TextField
+        label="Added text"
+        value={savedText}
+        fullWidth
+        readOnly
+      />
 
         {/* <TextField
           label="Answer Option 1"
