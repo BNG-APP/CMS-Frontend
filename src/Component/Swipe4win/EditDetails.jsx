@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import { Button, Grid, TextField, Typography, FormControl, InputLabel, MenuItem, Select, Modal } from "@material-ui/core";
 import { convertToPNG } from "../../CommonComponent/CovertToPNG";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
+import useFetch from "../../Utilities/useFetch";
+import { API_URLS } from "../../shared/Constant";
 
 const EditEntity = () => {
   const history = useNavigate();
@@ -13,6 +16,96 @@ const EditEntity = () => {
   const rowData = location.state;
   console.log("row data", rowData);
   const { id } = useParams();
+  const [edit, editApiCall, loading] = useFetch(API_URLS.Edit, {
+    operatorId: location.state,
+    questionId: rowData._id,
+  });
+  const [selectedValue, setSelectedValue] = React.useState('');
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [inputText, setInputText] = React.useState('');
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+  const dropdownStyles = {
+    width: '200px',
+    padding: '10px',
+    backgroundColor: '#f5f5f5',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    fontSize: '16px',
+    color: '#333',
+  };
+  
+  const focusedStyles = {
+    outline: 'none',
+    borderColor: '#007bff',
+    boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
+  };
+
+  const modalStyles = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    outline: 'none',
+  };
+  
+  const modalContainerStyles = {
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '20px',
+    width: '400px',
+  };
+
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setInputText('');
+  };
+
+  const isButtonDisabled = selectedValue === '';
+
+  const handleInputChangeModal = (event) => {
+    const { value } = event.target;
+    const language = selectedValue;
+
+    if (language === 'option1') {
+      // Arabic
+      setInputText(value.replace(/[^ء-ي\s]/g, ''));
+    } else if (language === 'option2') {
+      // English
+      setInputText(value.replace(/[^A-Za-z\s]/g, ''));
+    } else if (language === 'option3') {
+      // French
+      setInputText(value.replace(/[^A-Za-z\sàâçéèêëîïôûùüÿñæœ]/g, ''));
+    } else if (language === 'option4') {
+      // Portuguese
+      setInputText(value.replace(/[^A-Za-z\sàáâãçéèêíîóôõúü]/g, ''));
+    } else if (language === 'option5') {
+      // Spanish
+      setInputText(value.replace(/[^A-Za-z\sáéíñóúü]/g, ''));
+    } else if (language === 'option6') {
+      // Thai
+      setInputText(value.replace(/[^ก-๙\s]/g, ''));
+    }
+  };
+
+  const languageToPlaceholder = {
+    option1: 'Enter text in Arabic',
+    option2: 'Enter text in English',
+    option3: 'Enter text in French',
+    option4: 'Enter text in Portuguese',
+    option5: 'Enter text in Spanish',
+    option6: 'Enter text in Thai',
+  };
+
   
   useEffect(() => {
     // Populate the form fields with the rowData
@@ -96,6 +189,60 @@ const EditEntity = () => {
           multiline
           margin="normal"
         />
+
+<FormControl>
+      <InputLabel id="dropdown-label">Select an option</InputLabel>
+      <Select
+        labelId="dropdown-label"
+        id="dropdown"
+        value={selectedValue}
+        onChange={handleChange}
+        style={dropdownStyles} // Apply the styles
+        inputProps={{ style: focusedStyles }} // Apply focused styles
+      >
+        <MenuItem value="option1">Arabic</MenuItem>
+        <MenuItem value="option2">English</MenuItem>
+        <MenuItem value="option3">French</MenuItem>
+        <MenuItem value="option4">Portuguese</MenuItem>
+        <MenuItem value="option5">Spanish</MenuItem>
+        <MenuItem value="option6">Thai</MenuItem>
+      </Select>
+    </FormControl>
+
+    <Button
+        variant="contained"
+        color="primary"
+        onClick={handleButtonClick}
+        disabled={isButtonDisabled} // Disable the button if no value is selected
+        style={{ margin: '25px' }}
+      >
+        Add text
+      </Button>
+
+      <Modal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+        style={modalStyles}
+      >
+        <div style={modalContainerStyles}>
+          <h2 id="modal-title">Modal Title</h2>
+          <TextField
+            id="modal-input"
+            label={languageToPlaceholder[selectedValue]}
+            value={inputText}
+            onChange={handleInputChangeModal}
+            fullWidth
+          />
+          <div className="flex justify-center pt-4">
+          <Button variant="contained" color="primary" onClick={handleModalClose}>
+            Save
+          </Button>
+          </div>
+        </div>
+      </Modal>
+
         {/* <TextField
           label="Answer Option 1"
           name="answerOption1"

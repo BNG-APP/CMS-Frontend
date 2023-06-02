@@ -3,7 +3,7 @@ export const API_URLS = {
     getQuestion: API_BASE_URL + "getquestions/uploadeddata",
     dataUpload: API_BASE_URL + "servicedata/zip/upload",
     opertordata: API_BASE_URL + "data/alloperators",
-    Buy: API_BASE_URL + "pack/buy",
+    Edit: API_BASE_URL + "cms/questions/edit",
     Delete: API_BASE_URL + "cms/questions/delete",
     Start: API_BASE_URL + "quiz/start",
     End: API_BASE_URL + "quiz/end",
