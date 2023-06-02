@@ -17,6 +17,7 @@ import { API_URLS } from "../../shared/Constant";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header, Loader } from "../../CommonComponent";
+import { POST } from "../../shared/Axios";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -40,7 +41,7 @@ const ViewEntity = () => {
   const classes = useStyles();
   const location = useLocation();
 const navigate=useNavigate()
-
+const op=window.localStorage.getItem("op")
   window.localStorage.setItem("op", location.state);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -70,9 +71,16 @@ const navigate=useNavigate()
   //   navigate(`/edit/${idx}`)
   // };
 
-  const handleDelete = () => {
+  const handleDelete = (item) => {
     // Handle delete logic here
-    console.log("Delete item with ID:", selectedItemId);
+    console.log("Delete item with ID:",item);
+    const data={
+      "operatorId": op,
+    "questionId": item._id
+    }
+POST(API_URLS.Delete,data).then((res)=>{
+  console.log(res);
+}).catch((err)=>{console.log(err)})
     handleMenuClose();
   };
 
@@ -164,7 +172,7 @@ const navigate=useNavigate()
                   >
                     {/* onClick={()=>handleEdit(item,idx)} */}
                     <MenuItem  onClick={() => navigate("/swipe4win/EditDetails",{state:item})}>Edit</MenuItem>
-                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                    <MenuItem onClick={()=>handleDelete(item)}>Delete</MenuItem>
                   </Menu>
 
                 </TableRow>

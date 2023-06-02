@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #ccc", // Border style
     borderRadius: 4, // Optional: Adding border radius
   },
+  button:{
+    margin: theme.spacing(1.5),
+  },
 }));
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 6;
@@ -59,8 +62,13 @@ function Swipe4win() {
     setSelectedOp(event.target.value);
    
   };
-  const FilterOpID=oprData&&Object.keys(oprData).find(country=>country==selectedItem)
-  console.log(FilterOpID,"oprID");
+  useEffect(() => {
+  if(selectedOp){
+localStorage.setItem("op",oprData[selectedItem].operators[0].operatorId)
+  }
+  }, [selectedOp])
+  
+  
   return (
     <div>
       {loading?<Loader />:
@@ -117,7 +125,7 @@ function Swipe4win() {
                 </Select>
               </FormControl>
             </div>
-            <Button  variant="outlined" onClick={()=>{navigate("/swipe4win/MultiQuestion")}}>Show</Button>
+            <Button className={classes.button} variant="outlined" onClick={()=>{navigate("/swipe4win/MultiQuestion")}}>Show</Button>
           </div>
         </div>
       </div>

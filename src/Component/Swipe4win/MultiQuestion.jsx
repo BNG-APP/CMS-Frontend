@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../CommonComponent";
 import { convertToPNG } from "../../CommonComponent/CovertToPNG";
+import { POST } from "../../shared/Axios";
 import { API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
 
@@ -17,8 +18,8 @@ function MultiQuestion() {
   const [convertedLogoFile, setConvertedLogoFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataUpdload, dataUploadApi, loading] = useFetch(API_URLS.dataUpload, {
-    imageFile: selectedFile && selectedFile,
-    csvFile: selectedCSVFile && selectedCSVFile,
+    imageFile: selectedFile,
+    csvFile:  selectedCSVFile,
   });
   const navigate = useNavigate();
 
@@ -34,7 +35,15 @@ function MultiQuestion() {
   }, [selectedCSVFile, selectedFile]);
 
   const uploadApi = () => {
-    dataUploadApi();
+    console.log(selectedFile,selectedCSVFile,"selected file");
+    const data={ "imageFile": selectedFile,
+      "csvFile":  selectedCSVFile,}
+    POST(API_URLS.dataUpload,data).then((res)=>{
+      console.log(res)
+    }).catch((err)=>{console.log(err);})
+      
+    
+   
   };
 
   const handleCSVUpload = (e) => {
@@ -51,27 +60,6 @@ function MultiQuestion() {
     convertToPNG(file, setConvertedLogoFile);
   };
 
-  // const convertToPNG = (file) => {
-  //   const reader = new FileReader();
-  //   reader.onload = function (event) {
-  //     const img = new Image();
-  //     img.onload = function () {
-  //       const canvas = document.createElement("canvas");
-  //       canvas.width = img.width;
-  //       canvas.height = img.height;
-  //       const ctx = canvas.getContext("2d");
-  //       ctx.drawImage(img, 0, 0);
-  //       canvas.toBlob((blob) => {
-  //         const converted = new File([blob], "converted.png", {
-  //           type: "image/png",
-  //         });
-  //         setConvertedFile(converted);
-  //       }, "image/png");
-  //     };
-  //     img.src = event.target.result;
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
 
     const handleDownload = () => {
       const downloadLink = document.createElement("a");

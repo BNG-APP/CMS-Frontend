@@ -4,7 +4,7 @@ export const API_URLS = {
     dataUpload: API_BASE_URL + "servicedata/zip/upload",
     opertordata: API_BASE_URL + "data/alloperators",
     Buy: API_BASE_URL + "pack/buy",
-    Answer: API_BASE_URL + "user/question/answer",
+    Delete: API_BASE_URL + "cms/questions/delete",
     Start: API_BASE_URL + "quiz/start",
     End: API_BASE_URL + "quiz/end",
     LeaderBoard: API_BASE_URL + "user/leaderboard",
