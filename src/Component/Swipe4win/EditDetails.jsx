@@ -191,7 +191,7 @@ const EditEntity = () => {
         />
 
 <FormControl>
-      <InputLabel id="dropdown-label">Select an option</InputLabel>
+      <InputLabel id="dropdown-label">Select Language</InputLabel>
       <Select
         labelId="dropdown-label"
         id="dropdown"
