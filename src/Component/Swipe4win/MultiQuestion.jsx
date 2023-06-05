@@ -1,5 +1,11 @@
-import { Button, Container, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Container,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../CommonComponent";
 import { convertToPNG } from "../../CommonComponent/CovertToPNG";
@@ -7,8 +13,33 @@ import { POST } from "../../shared/Axios";
 import { API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(6),
+    background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
+    padding: theme.spacing(2),
+    color: "black",
+    borderRadius: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing(2),
+    },
+  },
+  section: {
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(2),
+  },
+  imageUpload: {
+    marginBottom: theme.spacing(2),
+  },
+  uploadButton: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 function MultiQuestion() {
+  const classes = useStyles();
   const location = useLocation();
+  const op=window.localStorage.getItem("op")
   const MAX_FILE_SIZE_KB = 1024;
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCSVFile, setSelectedCSVFile] = useState(null);
@@ -17,11 +48,19 @@ function MultiQuestion() {
   const [convertedFile, setConvertedFile] = useState(null);
   const [convertedLogoFile, setConvertedLogoFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [dataUpdload, dataUploadApi, loading] = useFetch(API_URLS.dataUpload, {
+  const [dataUpload, dataUploadApi, loading] = useFetch(API_URLS.dataUpload, {
     imageFile: selectedFile,
-    csvFile:  selectedCSVFile,
+    csvFile: selectedCSVFile,
   });
-  
+  const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload, {
+    imageFile: convertedFile&&convertedFile,
+    "operatorId": op
+  });
+  const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload, {
+    imageFile: convertedLogoFile&&convertedLogoFile,
+    "operatorId": op
+  });
+
   const navigate = useNavigate();
 
   const handleUpload = (e) => {
@@ -30,193 +69,179 @@ function MultiQuestion() {
 
   useEffect(() => {
     if (selectedCSVFile && selectedFile) {
-      console.log("inside");
       setIsDisabled(false);
     }
   }, [selectedCSVFile, selectedFile]);
 
   const uploadApi = () => {
-    console.log(selectedFile,selectedCSVFile,"selected file");
-    const data={ "imageFile": selectedFile,
-      "csvFile":  selectedCSVFile,}
-    POST(API_URLS.dataUpload,data).then((res)=>{
-      console.log(res)
-    }).catch((err)=>{console.log(err);})
-      
-    
-   
+    const data = {
+      imageFile: selectedFile,
+      csvFile: selectedCSVFile,
+    };
+    POST(API_URLS.dataUpload, data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleCSVUpload = (e) => {
     setSelectedCSVFile(e.target.files[0]);
   };
+
   const handleBannerChange = (event) => {
     const file = event.target.files[0];
     setSelectedBannerFile(file);
     convertToPNG(file, setConvertedFile);
   };
+
   const handleLogoChange = (event) => {
     const file = event.target.files[0];
     setSelectedLogoFile(file);
     convertToPNG(file, setConvertedLogoFile);
   };
 
+  const handleDownload = () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = "/sample-file.csv";
+    downloadLink.download = "sample.csv";
+    downloadLink.click();
+  };
 
-    const handleDownload = () => {
-      const downloadLink = document.createElement("a");
-      downloadLink.href = "/sample-file.csv";
-      downloadLink.download = "sample.csv";
-      downloadLink.click();
-    };
-   const handleUploadLogo =()=>{
+  const handleUploadLogo = () => {
+    logoUploadApi()
+  };
 
-   }
-   const handleUploadBanner =()=>{
-     
-  }
+  const handleUploadBanner = () => {
+    BanneraUploadApi()
+  };
+console.log(logoUpload,BannerUpload);
   return (
     <div>
       <Header />
-      <div className="flex w-full mt-20">
-        <div className="flex flex-col m-2">
-          <div className="text-black">Upload ZIP Files</div>
-          <div className="flex m-2">
-            <input
-              type="file"
-              accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
-              className="text-black"
-              onChange={handleUpload}
-            />
-            {/* <div className="text-black">{selectedFile}</div> */}
-          </div>
-          <div className="flex flex-col">
-            <div className="text-black">Upload Csv Files</div>
-            <div className="flex m-2">
+      <Container className={classes.root}>
+        <Grid container spacing={4} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <div className={classes.imageUpload}>
+              <Typography variant="h6">Upload ZIP Files</Typography>
+              <input
+                type="file"
+                accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
+                className="text-black"
+                onChange={handleUpload}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <div className={classes.imageUpload}>
+              <Typography variant="h6">Upload CSV Files</Typography>
               <input
                 type="file"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                 className="text-black"
                 onChange={handleCSVUpload}
               />
-              {/* <div className="text-black">{selectedCSVFile}</div> */}
             </div>
-          </div>
-          <Button variant="contained" onClick={uploadApi} disabled={isDisabled}>
-            Upload
+          </Grid>
+        </Grid>
+        <Button
+          variant="contained"
+          onClick={uploadApi}
+          disabled={isDisabled}
+          className={classes.uploadButton}
+        >
+          Upload
+        </Button>
+        <div className={classes.section}>
+          <Button variant="contained" onClick={handleDownload}>
+            Download Sample CSV
           </Button>
-          <div className="mt-2">
-          <Button variant="contained"  onClick={handleDownload}>Download Sample CSV</Button>
-          </div>
-       
         </div>
-        <div>
-          <Container>
-            <div className="text-black">Upload Banner Image</div>
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Grid item xs={12}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBannerChange}
-                  className="text-black"
-                  id="image-upload"
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <div className={classes.imageUpload}>
+              <Typography variant="h6">Upload Banner Image</Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+                className="text-black"
+              />
+            </div>
+            {convertedFile && (
+              <>
+                <Typography variant="h6">Converted Image:</Typography>
+                <img
+                  src={URL.createObjectURL(convertedFile)}
+                  alt="Converted"
+                  style={{ maxWidth: "100%", height: "auto" }}
                 />
-                {/* <label htmlFor="image-upload">
-                  <Button variant="contained" component="span">
-                    Upload Image
-                  </Button>
-                </label> */}
-              </Grid>
-              {/* {selectedBannerFile && (
-                <Grid item xs={12}>
-                  <Typography variant="h6">Selected Image:</Typography>
-                  <img
-                    src={URL.createObjectURL(selectedBannerFile)}
-                    alt="Selected"
-                    style={{ maxWidth: "100%",height:"6rem"  }}
-                  />
-                </Grid>
-              )} */}
-              {convertedFile && (
-                <>
-                <Grid item xs={12}>
-                  <Typography variant="h6">Converted Image:</Typography>
-                  <img
-                    src={URL.createObjectURL(convertedFile)}
-                    alt="Converted"
-                    style={{ maxWidth: "100%", height: "6rem" }}
-                  />
-                </Grid>
-                <Button variant="contained"  onClick={handleUploadBanner}>Upload Banner</Button>
-                </>
-              )}
-            </Grid>
-          </Container>
-        </div>
-        <div>
-          <Container>
-            <div className="text-black">Upload Logo Image</div>
-            <Grid
-              container
-              spacing={2}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Grid item xs={12}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoChange}
-                  className="text-black"
-                  id="image-upload"
+                <Button
+                  variant="contained"
+                  onClick={handleUploadBanner}
+                  className={classes.uploadButton}
+                >
+                  Upload Banner
+                </Button>
+              </>
+            )}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <div className={classes.imageUpload}>
+              <Typography variant="h6">Upload Logo Image</Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleLogoChange}
+                className="text-black"
+              />
+            </div>
+            {convertedLogoFile && (
+              <>
+                <Typography variant="h6">Converted Image:</Typography>
+                <img
+                  src={URL.createObjectURL(convertedLogoFile)}
+                  alt="Converted"
+                  style={{ maxWidth: "100%", height: "100px" }}
                 />
-              </Grid>
-              {convertedLogoFile && (
-                <>
-                <Grid item xs={12}>
-                  <Typography variant="h6">Converted Image:</Typography>
-                  <img
-                    src={URL.createObjectURL(convertedLogoFile)}
-                    alt="Converted"
-                    style={{ maxWidth: "100%", height: "6rem" }}
-                  />
-                </Grid>
-                <Button variant="contained"  onClick={handleUploadLogo}>Upload Logo</Button>
-                </>
-              )}
+                <Button
+                  variant="contained"
+                  onClick={handleUploadLogo}
+                  className={classes.uploadButton}
+                >
+                  Upload Logo
+                </Button>
+              </>
+            )}
+          </Grid>
+        </Grid>
+        <div className={classes.section}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate("/swipe4win/ViewResult");
+                }}
+              >
+                View Result
+              </Button>
             </Grid>
-          </Container>
+            <Grid item xs={6}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate("/swipe4win/ViewEntity");
+                }}
+              >
+                View Entities
+              </Button>
+            </Grid>
+          </Grid>
         </div>
-       
-        <div className="flex flex-col justify-around mt-3">
-          <div className="p-4 font-bold">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                navigate("/swipe4win/ViewResult");
-              }}
-            >
-              View Result
-            </Button>
-          </div>
-
-          <div className="p-4">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                navigate("/swipe4win/ViewEntity");
-              }}
-            >
-              View Entities
-            </Button>
-          </div>
-        </div>
-      </div>
+      </Container>
     </div>
   );
 }
