@@ -15,7 +15,7 @@ import useFetch from "../../Utilities/useFetch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(10),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     padding: theme.spacing(2),
     color: "black",
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   uploadButton: {
     marginTop: theme.spacing(2),
   },
+ 
 }));
 
 function MultiQuestion() {
@@ -119,7 +120,7 @@ function MultiQuestion() {
   };
 console.log(logoUpload,BannerUpload);
   return (
-    <div>
+    <div >
       <Header />
       <Container className={classes.root}>
         <Grid container spacing={4} alignItems="center">
@@ -146,6 +147,8 @@ console.log(logoUpload,BannerUpload);
             </div>
           </Grid>
         </Grid>
+        <Grid container spacing={4}>
+        <Grid item xs={12} sm={6}>
         <Button
           variant="contained"
           onClick={uploadApi}
@@ -154,11 +157,13 @@ console.log(logoUpload,BannerUpload);
         >
           Upload
         </Button>
-        <div className={classes.section}>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <Button variant="contained" onClick={handleDownload}>
             Download Sample CSV
           </Button>
-        </div>
+       </Grid>
+        </Grid>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
             <div className={classes.imageUpload}>
