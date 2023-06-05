@@ -5,8 +5,8 @@ export const API_URLS = {
     opertordata: API_BASE_URL + "data/alloperators",
     Edit: API_BASE_URL + "cms/questions/edit",
     Delete: API_BASE_URL + "cms/questions/delete",
-    Start: API_BASE_URL + "quiz/start",
-    End: API_BASE_URL + "quiz/end",
+    LogoUpload: API_BASE_URL + "cms/upload/logo",
+    BannerUpload: API_BASE_URL + "cms/upload/banner",
     LeaderBoard: API_BASE_URL + "user/leaderboard",
     OTP: API_BASE_URL + "prelogin/user/generateotp",
     VerifyOTP: API_BASE_URL + "prelogin/user/verifyotp"

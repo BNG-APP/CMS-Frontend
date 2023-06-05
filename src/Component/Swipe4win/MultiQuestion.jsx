@@ -21,6 +21,7 @@ function MultiQuestion() {
     imageFile: selectedFile,
     csvFile:  selectedCSVFile,
   });
+  
   const navigate = useNavigate();
 
   const handleUpload = (e) => {
@@ -67,6 +68,12 @@ function MultiQuestion() {
       downloadLink.download = "sample.csv";
       downloadLink.click();
     };
+   const handleUploadLogo =()=>{
+
+   }
+   const handleUploadBanner =()=>{
+     
+  }
   return (
     <div>
       <Header />
@@ -136,6 +143,7 @@ function MultiQuestion() {
                 </Grid>
               )} */}
               {convertedFile && (
+                <>
                 <Grid item xs={12}>
                   <Typography variant="h6">Converted Image:</Typography>
                   <img
@@ -144,6 +152,8 @@ function MultiQuestion() {
                     style={{ maxWidth: "100%", height: "6rem" }}
                   />
                 </Grid>
+                <Button variant="contained"  onClick={handleUploadBanner}>Upload Banner</Button>
+                </>
               )}
             </Grid>
           </Container>
@@ -167,6 +177,7 @@ function MultiQuestion() {
                 />
               </Grid>
               {convertedLogoFile && (
+                <>
                 <Grid item xs={12}>
                   <Typography variant="h6">Converted Image:</Typography>
                   <img
@@ -175,6 +186,8 @@ function MultiQuestion() {
                     style={{ maxWidth: "100%", height: "6rem" }}
                   />
                 </Grid>
+                <Button variant="contained"  onClick={handleUploadLogo}>Upload Logo</Button>
+                </>
               )}
             </Grid>
           </Container>
