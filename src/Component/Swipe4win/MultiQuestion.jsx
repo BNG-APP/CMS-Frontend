@@ -53,14 +53,13 @@ function MultiQuestion() {
     imageFile: selectedFile,
     csvFile: selectedCSVFile,
   });
+  const imageData=new FormData()
+  imageData.append("imageFile",convertedFile)
   const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload, {
-    imageFile: convertedFile&&convertedFile,
+     imageData,
     "operatorId": op
   });
-  const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload, {
-    imageFile: convertedLogoFile&&convertedLogoFile,
-    "operatorId": op
-  });
+  const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload);
 
   const navigate = useNavigate();
 
@@ -75,11 +74,20 @@ function MultiQuestion() {
   }, [selectedCSVFile, selectedFile]);
 
   const uploadApi = () => {
-    const data = {
-      imageFile: selectedFile,
-      csvFile: selectedCSVFile,
-    };
-    POST(API_URLS.dataUpload, data)
+    console.log(selectedFile,selectedCSVFile);
+   
+   
+    const formData=new FormData()
+    formData.append("imageFile",JSON.stringify(selectedFile))
+    formData.append("csvFile",JSON.stringify(selectedCSVFile))
+    // const data = {
+    //   imageFile: formData,
+    //   csvFile: selectedCSVFile,
+    // };
+    console.log("Form Data:", formData);
+
+    
+    POST(API_URLS.dataUpload, formData)
       .then((res) => {
         console.log(res);
       })
@@ -112,13 +120,16 @@ function MultiQuestion() {
   };
 
   const handleUploadLogo = () => {
-    logoUploadApi()
+    let logoImage=new FormData()
+    logoImage.append("imageFile",convertedLogoFile)
+    console.log(logoImage.getAll("imageFile"),"@@@@@@@@@@@@@@@logoImage>>>>>>>>>>",convertedLogoFile);
+    logoUploadApi({imageFile:convertedLogoFile, "operatorId": op})
   };
 
   const handleUploadBanner = () => {
     BanneraUploadApi()
   };
-console.log(logoUpload,BannerUpload);
+
   return (
     <div >
       <Header />
@@ -126,7 +137,7 @@ console.log(logoUpload,BannerUpload);
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
             <div className={classes.imageUpload}>
-              <Typography variant="h6">Upload ZIP Files</Typography>
+              <Typography variant="h6">Upload Question (Zip Files)</Typography>
               <input
                 type="file"
                 accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"

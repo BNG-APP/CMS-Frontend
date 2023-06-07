@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #ccc", // Border style
     borderRadius: 4, // Optional: Adding border radius
   },
-  button:{
+  button: {
     margin: theme.spacing(1.5),
   },
 }));
@@ -43,93 +43,97 @@ function Swipe4win() {
   const navigate = useNavigate();
   const classes = useStyles();
   const [selectedItem, setSelectedItem] = useState("");
-  const [selectedOp,setSelectedOp]=useState("")
+  const [selectedOp, setSelectedOp] = useState("")
   const [isDisabled, setIsDisabled] = useState(true);
   const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata, {
-    serviceName:  "swipe4win",
+    serviceName: "swipe4win",
   });
-  
+
   useEffect(() => {
     getOperator()
   }, [])
-  
+
   console.log(oprData);
   const handleChange = (event) => {
     setSelectedItem(event.target.value);
-   setIsDisabled(false)
+    setIsDisabled(false)
   };
   const handleChangeOp = (event) => {
     setSelectedOp(event.target.value);
-   
+
   };
   useEffect(() => {
-  if(selectedOp){
-localStorage.setItem("op",oprData[selectedItem].operators[0].operatorId)
-  }
+    if (selectedOp) {
+      localStorage.setItem("op", oprData[selectedItem].operators[0].operatorId)
+    }
   }, [selectedOp])
-  
-  
+  useEffect(() => {
+    if (selectedItem && oprData && oprData[selectedItem].operators?.length === 1) {
+      setSelectedOp(oprData[selectedItem].operators[0].operatorName);
+    }
+  }, [oprData, selectedItem]);
+
   return (
     <div>
-      {loading?<Loader />:
-      <>
-      <Header />
-      <div className="flex justify-center items-center w-full mt-20">
-        <div className="bg-white rounded-md drop-shadow-2xl w-[90%] ">
-          <div className="flex justify-around w-full">
-            <div className="flex flex-row">
-              <h3 className="text-black mt-7 font-semibold">Country</h3>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-customized-select-label">
-                  Select
-                </InputLabel>
-                <Select
-                  value={selectedItem}
-                  onChange={handleChange}
-                  className={classes.select}
-                  labelId="demo-customized-select-label"
-                  id="demo-customized-select"
-                  MenuProps={MenuProps}
-                >
-                  {oprData&&Object.values(oprData?.countrylist).map((name) => (
-                    <MenuItem key={name?._id} value={name?._id}>
-                      {name?._id}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
+      {loading ? <Loader /> :
+        <>
+          <Header />
+          <div className="flex justify-center items-center w-full mt-20">
+            <div className="bg-white rounded-md drop-shadow-2xl w-[90%] ">
+              <div className="flex justify-around w-full">
+                <div className="flex flex-row">
+                  <h3 className="text-black mt-7 font-semibold">Country</h3>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-customized-select-label">
+                      Select
+                    </InputLabel>
+                    <Select
+                      value={selectedItem}
+                      onChange={handleChange}
+                      className={classes.select}
+                      labelId="demo-customized-select-label"
+                      id="demo-customized-select"
+                      MenuProps={MenuProps}
+                    >
+                      {oprData && Object.values(oprData?.countrylist).map((name) => (
+                        <MenuItem key={name?._id} value={name?._id}>
+                          {name?._id}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
 
-            <div className="flex flex-row">
-              <h3 className="text-black mt-7 font-semibold">Operator Id</h3>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-customized-select-label">
-                  Select
-                </InputLabel>
-                <Select
-                  value={selectedOp}
-                  onChange={handleChangeOp}
-                  className={classes.select}
-                  labelId="demo-customized-select-label"
-                  id="demo-customized-select"
-                  MenuProps={MenuProps}
-                  disabled={isDisabled}
-                >
-                  {console.log((oprData&&selectedItem)&&oprData[selectedItem])}
-                   {(oprData&&selectedItem)&&oprData[selectedItem].operators?.map((name) => (
-                   
-                    <MenuItem key={name.operatorName} value={name.operatorName}>
-                      {name.operatorName}
-                    </MenuItem>
-                  ))} 
-                </Select>
-              </FormControl>
+                <div className="flex flex-row">
+                  <h3 className="text-black mt-7 font-semibold">Operator Id</h3>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-customized-select-label">
+                      Select
+                    </InputLabel>
+                    <Select
+
+                      value={selectedOp}
+                      onChange={handleChangeOp}
+                      className={classes.select}
+                      labelId="demo-customized-select-label"
+                      id="demo-customized-select"
+                      MenuProps={MenuProps}
+                      disabled={isDisabled}
+                    >
+                      {(oprData && selectedItem) && oprData[selectedItem]?.operators?.map((name) => (
+
+                        <MenuItem key={name.operatorName} value={name.operatorName}>
+                          {name.operatorName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <Button className={classes.button} variant="outlined" onClick={() => { navigate("/swipe4win/MultiQuestion") }}>Show</Button>
+              </div>
             </div>
-            <Button className={classes.button} variant="outlined" onClick={()=>{navigate("/swipe4win/MultiQuestion")}}>Show</Button>
           </div>
-        </div>
-      </div>
-      </>}
+        </>}
     </div>
   );
 }
