@@ -10,6 +10,11 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   container: {
     margin: "20px",
+    backgroundColor: "#f9f9f9", // Add your desired background color or image here
+    minHeight: "100vh", // Set a minimum height to cover the entire viewport
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   formControl: {
     marginBottom: "20px",
@@ -26,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
     color: "#333",
     width: "100%",
     marginBottom: "10px",
+    fontSize: "18px", // Increase the font size
+    lineHeight: "1.5",
   },
   modalContainer: {
     backgroundColor: "#fff",
@@ -74,13 +81,22 @@ const EditEntity = () => {
     boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
   };
 
+  // const modalStyles = {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   width: '100%',
+  //   height: '100%',
+  //   outline: 'none',
+  // };
   const modalStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    outline: 'none',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    outline: "none",
+    overflow: "auto", // Add overflow to allow scrolling if modal content exceeds the screen height
   };
 
   const modalContainerStyles = {
@@ -225,6 +241,7 @@ const EditEntity = () => {
           fullWidth
           multiline
           margin="normal"
+          placeholder="Enter decoded question text"
         />
 
         <FormControl className={classes.formControl}>

@@ -34,13 +34,13 @@ const useStyles = makeStyles((theme) => ({
   uploadButton: {
     marginTop: theme.spacing(2),
   },
- 
+
 }));
 
 function MultiQuestion() {
   const classes = useStyles();
   const location = useLocation();
-  const op=window.localStorage.getItem("op")
+  const op = window.localStorage.getItem("op")
   const MAX_FILE_SIZE_KB = 1024;
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCSVFile, setSelectedCSVFile] = useState(null);
@@ -53,10 +53,10 @@ function MultiQuestion() {
     imageFile: selectedFile,
     csvFile: selectedCSVFile,
   });
-  const imageData=new FormData()
-  imageData.append("imageFile",convertedFile)
+  const imageData = new FormData()
+  imageData.append("imageFile", convertedFile)
   const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload, {
-     imageData,
+    imageData,
     "operatorId": op
   });
   const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload);
@@ -74,19 +74,19 @@ function MultiQuestion() {
   }, [selectedCSVFile, selectedFile]);
 
   const uploadApi = () => {
-    console.log(selectedFile,selectedCSVFile);
-   
-   
-    const formData=new FormData()
-    formData.append("imageFile",JSON.stringify(selectedFile))
-    formData.append("csvFile",JSON.stringify(selectedCSVFile))
+    console.log(selectedFile, selectedCSVFile);
+
+
+    const formData = new FormData()
+    formData.append("imageFile", JSON.stringify(selectedFile))
+    formData.append("csvFile", JSON.stringify(selectedCSVFile))
     // const data = {
     //   imageFile: formData,
     //   csvFile: selectedCSVFile,
     // };
     console.log("Form Data:", formData);
 
-    
+
     POST(API_URLS.dataUpload, formData)
       .then((res) => {
         console.log(res);
@@ -120,10 +120,10 @@ function MultiQuestion() {
   };
 
   const handleUploadLogo = () => {
-    let logoImage=new FormData()
-    logoImage.append("imageFile",convertedLogoFile)
-    console.log(logoImage.getAll("imageFile"),"@@@@@@@@@@@@@@@logoImage>>>>>>>>>>",convertedLogoFile);
-    logoUploadApi({imageFile:convertedLogoFile, "operatorId": op})
+    let logoImage = new FormData()
+    logoImage.append("imageFile", convertedLogoFile)
+    console.log(logoImage.getAll("imageFile"), "@@@@@@@@@@@@@@@logoImage>>>>>>>>>>", convertedLogoFile);
+    logoUploadApi({ imageFile: convertedLogoFile, "operatorId": op })
   };
 
   const handleUploadBanner = () => {
@@ -159,21 +159,21 @@ function MultiQuestion() {
           </Grid>
         </Grid>
         <Grid container spacing={4}>
-        <Grid item xs={12} sm={6}>
-        <Button
-          variant="contained"
-          onClick={uploadApi}
-          disabled={isDisabled}
-          className={classes.uploadButton}
-        >
-          Upload
-        </Button>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button variant="contained" onClick={handleDownload}>
-            Download Sample CSV
-          </Button>
-       </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              variant="contained"
+              onClick={uploadApi}
+              disabled={isDisabled}
+              className={classes.uploadButton}
+            >
+              Upload
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button variant="contained" onClick={handleDownload}>
+              Download Sample CSV
+            </Button>
+          </Grid>
         </Grid>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
