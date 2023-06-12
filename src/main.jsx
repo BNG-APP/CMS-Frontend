@@ -105,6 +105,10 @@ const router = createBrowserRouter([
     element: <ProtectedRoute Component={EducationPortal} />,
     errorElement:<Error />
   },
+ { path: "/error",
+  element: <ProtectedRoute Component={Error} />,
+  errorElement:<Error />
+},
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
