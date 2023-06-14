@@ -46,16 +46,16 @@ function Swipe4win() {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedOp, setSelectedOp] = useState("")
   const [isDisabled, setIsDisabled] = useState(true);
-  // const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata , {
-  //   serviceName: "swipe4win",
-  // });
+  const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata , {
+    serviceName: "swipe4win",
+  });
 
-  // useEffect(() => {
-  //   getOperator()
-  // }, [])
+  useEffect(() => {
+    getOperator()
+  }, [])
 
 
-  const [oprData , setOprData] = useState(allOperators)
+  // const [oprData , setOprData] = useState(allOperators)
 
   console.log(oprData);
   const handleChange = (event) => {
@@ -70,11 +70,18 @@ function Swipe4win() {
     if (selectedOp) {
       localStorage.setItem("op", oprData[selectedItem].operators[0].operatorId)
     }
+    POST("https://swip4winapiv1.bngrenew.com:5081/swipe4win/config",{operatorId
+    : 
+    "zainlibyana_libya",
+    userId
+    : 
+    "917428689305"}).then((res)=>console.log(res)).catch((err)=>console.log(err))
   }, [selectedOp])
   useEffect(() => {
     if (selectedItem && oprData && oprData[selectedItem].operators?.length === 1) {
       setSelectedOp(oprData[selectedItem].operators[0].operatorName);
     }
+    
   }, [oprData, selectedItem]);
 
   return (
@@ -133,7 +140,7 @@ function Swipe4win() {
                     </Select>
                   </FormControl>
                 </div>
-                <Button className={classes.button} variant="outlined" onClick={() => { navigate("/swipe4win/MultiQuestion") }}>Show</Button>
+                <Button className={classes.button} disabled={(selectedItem&&selectedOp)?false:true} variant="outlined" onClick={() => { navigate("/swipe4win/MultiQuestion",{state:{country:selectedItem}}) }}>Show</Button>
               </div>
             </div>
           </div>

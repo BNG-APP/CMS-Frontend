@@ -96,21 +96,21 @@ const ViewEntity = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loader,setLoader]=useState(true)
   const [selectedItemId, setSelectedItemId] = useState(null);
-  // const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
-  //   operatorId: op,
-  // });
+  const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
+    operatorId: op,
+  });
 
 
-  // useEffect(() => {
-    //   updateConfig();
-    //   if(loading==false){
-      //     setLoader(false)
-      //   }
-      // }, []);
+  useEffect(() => {
+      updateConfig();
+      if(loading==false){
+          setLoader(false)
+        }
+      }, []);
 
 
 
-  const [update , setUpdate] = useState(allEntries)
+  // const [update , setUpdate] = useState(allEntries)
   const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedItemId(id);

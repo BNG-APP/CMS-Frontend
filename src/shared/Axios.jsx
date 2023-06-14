@@ -3,7 +3,7 @@ const ROOT_URL = ""
 
 const getHeaders = () => {
   const defaultHeaders = {
-    'Content-Type': 'multipart/form-data',
+    'Content-Type': 'application/json',
     "accept": 'application/json'
   };
 

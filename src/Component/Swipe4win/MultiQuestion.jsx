@@ -64,7 +64,7 @@ function MultiQuestion() {
   const navigate = useNavigate();
 
   const handleUpload = (e) => {
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(URL.createObjectURL(e.target.files[0]));
   };
 
   useEffect(() => {
@@ -74,17 +74,17 @@ function MultiQuestion() {
   }, [selectedCSVFile, selectedFile]);
 
   const uploadApi = () => {
-    console.log(selectedFile, selectedCSVFile);
+    console.log(typeof selectedFile, selectedCSVFile,"both file");
 
 
     const formData = new FormData()
     formData.append("imageFile", JSON.stringify(selectedFile))
     formData.append("csvFile", JSON.stringify(selectedCSVFile))
     // const data = {
-    //   imageFile: formData,
-    //   csvFile: selectedCSVFile,
+    //   imageFile:selectedFile ,
+    //   csvFile:selectedCSVFile,
     // };
-    console.log("Form Data:", formData);
+    // console.log("Form Data:", formData);
 
 
     POST(API_URLS.dataUpload, formData)
@@ -122,7 +122,7 @@ function MultiQuestion() {
   const handleUploadLogo = () => {
     let logoImage = new FormData()
     logoImage.append("imageFile", convertedLogoFile)
-    console.log(logoImage.getAll("imageFile"), "@@@@@@@@@@@@@@@logoImage>>>>>>>>>>", convertedLogoFile);
+    console.log(logoImage.getAll("imageFile"), "@@@@@@@@@@@@@@@logoImage>>>>>>>>>>", convertedLogoFile,logoImage);
     logoUploadApi({ imageFile: convertedLogoFile, "operatorId": op })
   };
 

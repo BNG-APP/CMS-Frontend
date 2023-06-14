@@ -3,6 +3,7 @@ import { Grid, Typography, FormControl, OutlinedInput, InputAdornment, Button } 
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import { GET } from "../../shared/Axios";
 
 const ViewResult = () => {
   const [startDate, setStartDate] = useState(null);
@@ -28,6 +29,8 @@ const ViewResult = () => {
 
   const handleSubmit = () => {
     // Handle submit logic here
+    console.log(startDate,endDate);
+    GET(`https://swip4winapiv1.bngrenew.com:5081/swipe4win/cms/report/leaderboard?operatorId=zainlibyana_libya&gtDate=${startDate}&ltDate=${endDate}`).then((res) => console.log(res)).catch((err) => console.log(err))
   };
 
   return (
@@ -41,7 +44,7 @@ const ViewResult = () => {
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
-              format="MM/dd/yyyy"
+              format="MM-dd-yyyy"
               margin="normal"
               id="start-date-picker"
               value={startDate}
@@ -77,7 +80,7 @@ const ViewResult = () => {
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
-              format="MM/dd/yyyy"
+              format="MM-dd-yyyy"
               margin="normal"
               id="end-date-picker"
               value={endDate}

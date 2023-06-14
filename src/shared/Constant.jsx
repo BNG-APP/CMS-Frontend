@@ -8,6 +8,6 @@ export const API_URLS = {
     LogoUpload: API_BASE_URL + "cms/upload/logo",
     BannerUpload: API_BASE_URL + "cms/upload/banner",
     LeaderBoard: API_BASE_URL + "user/leaderboard",
-    OTP: API_BASE_URL + "prelogin/user/generateotp",
+    result: API_BASE_URL + "prelogin/user/generateotp",
     VerifyOTP: API_BASE_URL + "prelogin/user/verifyotp"
 }
