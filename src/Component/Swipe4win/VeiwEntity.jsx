@@ -19,23 +19,68 @@ import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
 import { allEntries } from "../../data/allEntries";
-
+import clsx from "clsx";
+import "tailwindcss/tailwind.css";
 const useStyles = makeStyles((theme) => ({
+
+ 
+    // ...
+    table: {
+      minWidth: 650,
+    },
+    tableContainer: {
+      margin: "5px",
+      border: "solid gray 2px",
+      overflowX: "hidden",
+
+    },
+    imageCell: {
+      padding: 0,
+    },
+    image: {
+      width: "80px",
+      height: "auto",
+      objectFit: "cover",
+      borderRadius: "8px",
+      padding: "10px",
+    },
+    header: {
+      backgroundColor: "gray",
+      fontSize: "24px",
+      textTransform: "uppercase",
+      fontWeight: "600",
+      textAlign: "center", 
+    },
+    actionButton: {
+      padding: theme.spacing(1),
+    },
+ 
+  
   menu: {
     marginTop: theme.spacing(2),
+    zIndex:1111
   },
-  tableContainer: {
-    margin: "10px",
-  },
-  imageCell: {
-    padding: 0,
-  },
-  image: {
-    width: "100px",
-    height: "auto",
-    objectFit: "cover",
-    borderRadius: "4px",
-  },
+  // tableContainer: {
+  //   margin: "5px",
+  //   border: "solid gray 2px",
+  //   overflowX:"hidden"
+  // },
+  // imageCell: {
+  //   padding: 0,
+  // },
+  // image: {
+  //   width: "80px",
+  //   height: "auto",
+  //   objectFit: "cover",
+  //   borderRadius: "8px",
+  //   padding:"10px"
+  // },
+  // header:{
+  //   backgroundColor:"gray",
+  //   fontSize:"24px",
+  //   textTransform:"uppercase",
+  //   fontWeight:"600"
+  // }
 }));
 
 const ViewEntity = () => {
@@ -124,10 +169,10 @@ const ViewEntity = () => {
     <>
       <Header />
       {false ? <Loader /> :
-        <div className="mt-20">
-          <TableContainer className={classes.tableContainer}>
-            <Table aria-label="simple table">
-              <TableHead>
+        <div className="mt-20 overflow-x-hidden">
+          <TableContainer className={clsx(classes.tableContainer, "mt-20")}>
+            <Table  className={classes.table} aria-label="simple table">
+              <TableHead className={classes.header}>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
                   {Object.keys(mappedObject).map((key) => (
@@ -166,6 +211,7 @@ const ViewEntity = () => {
                       aria-label="more"
                       aria-controls="menu"
                       aria-haspopup="true"
+                      className={classes.actionButton}
                       onClick={(event) => handleMenuClick(event, item._id)}
                     >
                       <MoreVertIcon />
