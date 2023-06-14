@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
+import { allEntries } from "../../data/allEntries";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -45,17 +46,21 @@ const ViewEntity = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loader,setLoader]=useState(true)
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
-    operatorId: op,
-  });
+  // const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
+  //   operatorId: op,
+  // });
 
-  useEffect(() => {
-    updateConfig();
-    if(loading==false){
-      setLoader(false)
-    }
-  }, []);
-  
+
+  // useEffect(() => {
+    //   updateConfig();
+    //   if(loading==false){
+      //     setLoader(false)
+      //   }
+      // }, []);
+
+
+
+  const [update , setUpdate] = useState(allEntries)
   const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
     setSelectedItemId(id);
@@ -114,11 +119,11 @@ const ViewEntity = () => {
     answer,
     operatorId,
   };
-console.log(loading,"loading");
+// console.log(loading,"loading");
   return (
     <>
       <Header />
-      {loader ? <Loader /> :
+      {false ? <Loader /> :
         <div className="mt-20">
           <TableContainer className={classes.tableContainer}>
             <Table aria-label="simple table">

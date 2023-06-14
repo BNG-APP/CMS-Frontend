@@ -12,6 +12,7 @@ import { Header, Card, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
 import { API_BASE_URL, API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
+import { allOperators } from "../../data/allOperators";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -45,13 +46,16 @@ function Swipe4win() {
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedOp, setSelectedOp] = useState("")
   const [isDisabled, setIsDisabled] = useState(true);
-  const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata, {
-    serviceName: "swipe4win",
-  });
+  // const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata , {
+  //   serviceName: "swipe4win",
+  // });
 
-  useEffect(() => {
-    getOperator()
-  }, [])
+  // useEffect(() => {
+  //   getOperator()
+  // }, [])
+
+
+  const [oprData , setOprData] = useState(allOperators)
 
   console.log(oprData);
   const handleChange = (event) => {
@@ -75,7 +79,7 @@ function Swipe4win() {
 
   return (
     <div>
-      {loading ? <Loader /> :
+      {false ? <Loader /> :
         <>
           <Header />
           <div className="flex justify-center items-center w-full mt-20">
