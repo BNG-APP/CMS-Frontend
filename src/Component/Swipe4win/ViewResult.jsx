@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Typography, FormControl, OutlinedInput, InputAdornment, Button } from "@material-ui/core";
+import { Grid, Typography, FormControl, OutlinedInput, InputAdornment, Button, TableContainer } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
@@ -10,9 +10,11 @@ const ViewResult = () => {
   const [endDate, setEndDate] = useState(null);
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
   const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
-
+  const [reportData, setReportData] = useState({})
   const handleStartDateChange = (date) => {
-    setStartDate(date);
+    const ndate = new Date(date)
+    console.log(ndate.toISOString())
+    setStartDate(ndate);
   };
 
   const handleEndDateChange = (date) => {
@@ -29,8 +31,8 @@ const ViewResult = () => {
 
   const handleSubmit = () => {
     // Handle submit logic here
-    console.log(startDate,endDate);
-    GET(`https://swip4winapiv1.bngrenew.com:5081/swipe4win/cms/report/leaderboard?operatorId=zainlibyana_libya&gtDate=${startDate}&ltDate=${endDate}`).then((res) => console.log(res)).catch((err) => console.log(err))
+    console.log(startDate, endDate);
+    GET(`https://swip4winapiv1.bngrenew.com:5081/swipe4win/cms/report/leaderboard?operatorId=zainlibyana_libya&gtDate=${startDate?.toISOString().split("T")[0]}&ltDate=${endDate?.toISOString().split("T")[0]}`).then((res) => setReportData(res)).catch((err) => console.log(err))
   };
 
   return (
@@ -114,6 +116,7 @@ const ViewResult = () => {
           </Grid>
         </Grid>
       </MuiPickersUtilsProvider>
+      {reportData && <TableContainer></TableContainer>}
     </div>
   );
 };

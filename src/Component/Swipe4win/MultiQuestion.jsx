@@ -49,14 +49,15 @@ function MultiQuestion() {
   const [convertedFile, setConvertedFile] = useState(null);
   const [convertedLogoFile, setConvertedLogoFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [dataUpload, dataUploadApi, loading] = useFetch(API_URLS.dataUpload, {
+  const [dataUpload, dataUploadApi, loading] = useFetch("https://cmsn.bngrenew.com/cms/cmsUploadAllMultipartFile"
+    , {
     imageFile: selectedFile,
     csvFile: selectedCSVFile,
   });
   const imageData = new FormData()
   imageData.append("imageFile", convertedFile)
   const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload, {
-    imageData,
+    imageFile: imageData,
     "operatorId": op
   });
   const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload);
@@ -87,7 +88,7 @@ function MultiQuestion() {
     // console.log("Form Data:", formData);
 
 
-    POST(API_URLS.dataUpload, formData)
+    POST("https://cmsn.bngrenew.com/cms/cmsUploadAllMultipartFile", formData)
       .then((res) => {
         console.log(res);
       })
@@ -121,9 +122,9 @@ function MultiQuestion() {
 
   const handleUploadLogo = () => {
     let logoImage = new FormData()
-    logoImage.append("imageFile", convertedLogoFile)
+    logoImage.append("imageFile", "convertedLogoFile")
     console.log(logoImage.getAll("imageFile"), "@@@@@@@@@@@@@@@logoImage>>>>>>>>>>", convertedLogoFile,logoImage);
-    logoUploadApi({ imageFile: convertedLogoFile, "operatorId": op })
+    logoUploadApi({ imageFile:URL.createObjectURL( convertedLogoFile), "operatorId": op })
   };
 
   const handleUploadBanner = () => {
