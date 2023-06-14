@@ -9,7 +9,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Menu as MenuIcon } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector,useDispatch } from "react-redux";
+import { setIsSideMenuOpen } from "../redux/appSlice";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -55,16 +56,20 @@ const useStyles = makeStyles((theme) => ({
 
 function Sidebar() {
   const classes = useStyles();
+  const dispatch=useDispatch();
   const theme = useTheme();
   const navigate=useNavigate()
-  const [open, setOpen] = React.useState(false);
+  const sideMenu =useSelector(store=>store.app.isSideMenuOpen)
+  // const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    dispatch(setIsSideMenuOpen(true))
+    // setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    dispatch(setIsSideMenuOpen(false))
+    // setOpen(false);
   };
 
   return (
@@ -74,7 +79,7 @@ function Sidebar() {
         variant="persistent"
         anchor="left"
         color="primary"
-        open={open}
+        open={sideMenu}
         classes={{
           paper: classes.drawerPaper
         }}
