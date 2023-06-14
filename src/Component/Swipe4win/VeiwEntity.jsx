@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     tableContainer: {
       margin: "5px",
       border: "solid gray 2px",
-      overflowX: "hidden",
+      // overflowX: "hidden",
 
     },
     imageCell: {
@@ -60,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     zIndex:1111
   },
+  tablecell:{
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  }
   // tableContainer: {
   //   margin: "5px",
   //   border: "solid gray 2px",
@@ -195,7 +200,7 @@ const ViewEntity = () => {
                         );
                       } else if (key === "questionText Ar") {
                         const decodedValue = item.questionText?.ar ? DecodeBase64(item.questionText.ar) : "";
-                        return <TableCell key={key}>{decodedValue}</TableCell>;
+                        return <TableCell key={key} className={classes.tablecell}>{decodedValue}</TableCell>;
                       } else if (key == "answerOption option1") {
                         return <TableCell key={key}>{item.answerOption.option1}</TableCell>
                       }
