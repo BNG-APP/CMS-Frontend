@@ -54,12 +54,8 @@ function MultiQuestion() {
     imageFile: selectedFile,
     csvFile: selectedCSVFile,
   });
-  const imageData = new FormData()
-  imageData.append("imageFile", convertedFile)
-  const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload, {
-    imageFile: imageData,
-    "operatorId": op
-  });
+  
+  const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(API_URLS.BannerUpload);
   const [logoUpload, logoUploadApi, Logoloading] = useFetch(API_URLS.LogoUpload);
 
   const navigate = useNavigate();
@@ -78,9 +74,9 @@ function MultiQuestion() {
     console.log(typeof selectedFile, selectedCSVFile,"both file");
 
 
-    const formData = new FormData()
-    formData.append("imageFile", JSON.stringify(selectedFile))
-    formData.append("csvFile", JSON.stringify(selectedCSVFile))
+    // const formData = new FormData()
+    // formData.append("imageFile", JSON.stringify(selectedFile))
+    // formData.append("csvFile", JSON.stringify(selectedCSVFile))
     // const data = {
     //   imageFile:selectedFile ,
     //   csvFile:selectedCSVFile,
@@ -88,7 +84,7 @@ function MultiQuestion() {
     // console.log("Form Data:", formData);
 
 
-    POST("https://cmsn.bngrenew.com/cms/cmsUploadAllMultipartFile", formData)
+    POST(API_URLS.dataUpload, {imageFile:URL.createObjectURL(selectedFile),csvFile:URL.createObjectURL(selectedCSVFile)})
       .then((res) => {
         console.log(res);
       })
@@ -128,7 +124,7 @@ function MultiQuestion() {
   };
 
   const handleUploadBanner = () => {
-    BanneraUploadApi()
+    BanneraUploadApi({ imageFile:URL.createObjectURL( convertedLogoFile), "operatorId": op })
   };
 
   return (
@@ -193,7 +189,7 @@ function MultiQuestion() {
                 <img
                   src={URL.createObjectURL(convertedFile)}
                   alt="Converted"
-                  style={{ maxWidth: "100%", height: "auto" }}
+                  style={{ maxWidth: "100%", height: "100px" }}
                 />
                 <Button
                   variant="contained"
