@@ -18,6 +18,9 @@ import fs from 'fs/promises';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+        outDir: 'build'
+      },
   esbuild: {
     loader: 'jsx',
   },
