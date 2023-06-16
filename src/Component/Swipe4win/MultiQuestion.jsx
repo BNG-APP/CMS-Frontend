@@ -16,7 +16,7 @@ import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(20),
+    marginTop: theme.spacing(12),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     padding: theme.spacing(2),
     color: "black",
