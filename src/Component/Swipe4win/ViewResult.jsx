@@ -9,6 +9,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "tailwindcss/tailwind.css";
 import { Header } from "../../CommonComponent";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 const useStyles = makeStyles((theme) => ({
 
 
@@ -128,6 +129,7 @@ const ViewResult = () => {
   return (
     <div className="mx-4 my-2">
       <Header />
+      <Breadcrumbs />
       <div className="mt-20">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container spacing={4} alignItems="center">

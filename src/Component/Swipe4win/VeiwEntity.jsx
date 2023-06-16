@@ -21,6 +21,7 @@ import { POST } from "../../shared/Axios";
 import { allEntries } from "../../data/allEntries";
 import clsx from "clsx";
 import "tailwindcss/tailwind.css";
+import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 const useStyles = makeStyles((theme) => ({
 
  
@@ -164,8 +165,6 @@ const ViewEntity = () => {
     "questionText Ar": questionText?.ar,
     "answerOption option1": answerOption?.option1,
     "answerOption option2": answerOption?.option2,
-    level,
-    priority,
     answer,
     operatorId,
   };
@@ -173,6 +172,7 @@ const ViewEntity = () => {
   return (
     <>
       <Header />
+      <Breadcrumbs />
       {false ? <Loader /> :
         <div className="mt-20 overflow-x-hidden">
           <TableContainer className={clsx(classes.tableContainer, "mt-20")}>

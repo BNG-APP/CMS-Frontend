@@ -7,6 +7,8 @@ import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import useFetch from "../../Utilities/useFetch";
 import { API_URLS } from "../../shared/Constant";
 import { makeStyles } from "@material-ui/core/styles";
+import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
+import { Header } from "../../CommonComponent";
 const useStyles = makeStyles((theme) => ({
   container: {
     margin: "20px",
@@ -195,6 +197,9 @@ const EditEntity = () => {
   };
 
   return (
+    <>
+    <Header />
+    <Breadcrumbs />
     <div className={classes.container}>
       <h2>Edit Row</h2>
       <form onSubmit={handleSubmit}>
@@ -385,6 +390,7 @@ const EditEntity = () => {
         </Button>
       </form>
     </div>
+    </>
   );
 };
 
