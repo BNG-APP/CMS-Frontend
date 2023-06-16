@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1.5),
+    backgroundColor:"green",
+    color:"white"
   },
 }));
 const ITEM_HEIGHT = 40;

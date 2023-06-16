@@ -204,7 +204,7 @@ const ViewResult = () => {
           <Grid item xs={12} sm={3}>
             <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
           </Grid>
-          {reportData!=={} && <Grid item xs={12} sm={3}>
+          {reportData?.winners?.length > 0  && <Grid item xs={12} sm={3}>
             <Button variant="outlined" onClick={handleExport}>Export</Button>
           </Grid>}
         </Grid>
@@ -215,7 +215,7 @@ const ViewResult = () => {
             <TableRow>
               <TableCell>S.No.</TableCell>
 
-              <TableCell>portalAccessCount</TableCell>
+              <TableCell>portal Access Count</TableCell>
               <TableCell>rank</TableCell>
               <TableCell>score</TableCell>
               <TableCell>total Correct Answers</TableCell>
