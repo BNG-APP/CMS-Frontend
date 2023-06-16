@@ -13,7 +13,7 @@ import { POST } from "../../shared/Axios";
 import { API_BASE_URL, API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
 import { allOperators } from "../../data/allOperators";
-
+import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1.5),
     backgroundColor:"green",
-    color:"white"
+    color:"black"
   },
 }));
 const ITEM_HEIGHT = 40;
@@ -91,6 +91,7 @@ function Swipe4win() {
       {false ? <Loader /> :
         <>
           <Header />
+          <Breadcrumbs />
           <div className="flex justify-center items-center w-full mt-20">
             <div className="bg-white rounded-md drop-shadow-2xl w-[90%] ">
               <div className="flex justify-around w-full">

@@ -12,16 +12,17 @@ import { convertToPNG } from "../../CommonComponent/CovertToPNG";
 import { POST } from "../../shared/Axios";
 import { API_URLS } from "../../shared/Constant";
 import useFetch from "../../Utilities/useFetch";
+import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(20),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     padding: theme.spacing(2),
     color: "black",
     borderRadius: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(4),
     },
   },
   section: {
@@ -130,6 +131,7 @@ function MultiQuestion() {
   return (
     <div >
       <Header />
+      <Breadcrumbs />
       <Container className={classes.root}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>

@@ -27,6 +27,80 @@ import ViewResult from "./Component/Swipe4win/ViewResult.jsx";
 
 import "./index.css";
 import Error from "./CommonComponent/Error.jsx";
+const rountes=[ 
+{
+  path: "/home",
+  element: <ProtectedRoute Component={App} />,
+  breadcrumb:"Home"
+},
+{
+  path: "/xgame",
+  element: <ProtectedRoute Component={GameTable} />,
+  breadcrumb:"XGames"
+},
+{
+  path: "/addgame",
+  element: <ProtectedRoute Component={AddGame} />,
+  breadcrumb:"Add Game"
+},
+{
+  path: "/swipe4win",
+  element: <ProtectedRoute Component={Swipe4win} />,
+  breadcrumb:"Swipe4win"
+},
+{
+  path: "/swipe4win/MtnZambia",
+  element: <MtnZambia />,
+  errorElement:<Error />
+},
+{
+  path: "/swipe4win/EditDetails",
+  element: <EditDetails />,
+  breadcrumb:"Edit Details"
+},
+
+{
+  path: "/swipe4win/SingleQuestion",
+  element: <SingleQuestion />,
+  breadcrumb:"Upload Singal Question "
+},
+{
+  path: "/swipe4win/MultiQuestion",
+  element: <MultiQuestion />,
+  breadcrumb:"Upload MultiQuestions"
+
+},
+{
+  path: "/swipe4win/ViewEntity",
+  element: <VeiwEntity />,
+  breadcrumb:"View Entity"
+},
+{
+  path: "/swipe4win/edit/:id",
+  element: <EditEntity />,
+  breadcrumb:"Edit Entity"
+},
+{
+  path: "/swipe4win/ViewResult",
+  Component: <ViewResult />,
+  breadcrumb:"View Results"
+},
+{
+  path: "/christianity",
+  Component: <ProtectedRoute Component={Christianity} />,
+  breadcrumb:"Christianity"
+},
+{
+  path: "/ibadat",
+  Component: <ProtectedRoute Component={Ibadat} />,
+  breadcrumb:"IBadat"
+},
+{
+  path: "/educ",
+  Component: <ProtectedRoute Component={EducationPortal} />,
+  breadcrumb:"Education Portal"
+},
+]
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -120,3 +194,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </Provider>
   </React.StrictMode>
 );
+export const generateBreadcrumbs = (pathname) => {
+  const breadcrumbs = [{ path: '/', breadcrumb: 'Home' }];
+  const pathSnippets = pathname.split('/').filter((x) => x);
+
+  pathSnippets.forEach((_, index) => {
+    const path = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    const route = rountes?.find((r) => r.path === path);
+
+    if (route) {
+      breadcrumbs.push(route);
+    }
+  });
+
+  return breadcrumbs;
+};

@@ -8,6 +8,7 @@ import clsx from "clsx";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "tailwindcss/tailwind.css";
 import { Header } from "../../CommonComponent";
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
 
 
@@ -76,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const ViewResult = () => {
   const classes = useStyles();
+  const navigate=useNavigate()
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
@@ -204,9 +206,9 @@ const ViewResult = () => {
           <Grid item xs={12} sm={3}>
             <Button variant="outlined" onClick={handleSubmit}>Submit</Button>
           </Grid>
-          {reportData?.winners?.length > 0  && <Grid item xs={12} sm={3}>
+          {/* {reportData?.winners?.length > 0  && <Grid item xs={12} sm={3}>
             <Button variant="outlined" onClick={handleExport}>Export</Button>
-          </Grid>}
+          </Grid>} */}
         </Grid>
       </MuiPickersUtilsProvider>
       {reportData?.winners?.length > 0 && <TableContainer className={(classes.tableContainer, "mt-20")}>
@@ -220,7 +222,7 @@ const ViewResult = () => {
               <TableCell>score</TableCell>
               <TableCell>total Correct Answers</TableCell>
               <TableCell>total Question Attempted</TableCell>
-
+              <TableCell>User Id</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -234,6 +236,7 @@ const ViewResult = () => {
                   <TableCell>{item.score}</TableCell>
                   <TableCell>{item.totalCorrectAnswers}</TableCell>
                   <TableCell>{item.totalQuestionAttempted}</TableCell>
+                  <TableCell>{item.userid}</TableCell>
                   <IconButton
                     aria-label="more"
                     aria-controls="menu"

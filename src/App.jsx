@@ -3,12 +3,14 @@ import React from "react"
 import "./App.css";
 import { Card, Header } from "./CommonComponent";
 import { useSelector } from "react-redux";
+import Breadcrumbs from "./CommonComponent/Breadcrumbs";
 function App() {
   const navigate = useNavigate();
   const sideMenu=useSelector(store=>store.app.isSideMenuOpen)
   return (
     <div className="App w-full">
       <Header />
+     
       <div className="flex justify-center items-center w-full mt-20">
       <div className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${sideMenu?'ml-[240px] w-[80%]':''}`}>
         <div className="text-black py-5 px-5 font-bold text-lg">All Projects</div>
