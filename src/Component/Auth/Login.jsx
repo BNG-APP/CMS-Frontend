@@ -40,7 +40,7 @@ function Login() {
     setPassword(e.target.value)
   }
   const handleSubmit=()=>{
-    if(email=="Sonali.jain@blackngreen.com"&&password=="1234"){
+    if(email=="cms@blackngreen.com"&&password=="Cms@!234"){
       navigate("/home")
       localStorage.setItem("login",true)
     }
