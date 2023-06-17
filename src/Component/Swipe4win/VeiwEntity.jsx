@@ -27,14 +27,16 @@ const useStyles = makeStyles((theme) => ({
  
     // ...
     table: {
-      minWidth: 650,
+      minWidth: 600,
+      borderRadius: "8px",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
     },
     tableContainer: {
-      margin: "5px",
+      margin: "5px 20px", // Add margin to the left and right sides of the table
       border: "solid gray 2px",
-      // overflowX: "hidden",
-
+      overflowX: "hidden",
     },
+  
     imageCell: {
       padding: 0,
     },
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
       backgroundColor: "gray",
-      fontSize: "24px",
+      fontSize: "20px",
       textTransform: "uppercase",
       fontWeight: "600",
       textAlign: "center", 
@@ -61,11 +63,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     zIndex:1111
   },
-  tablecell:{
+  tablecell: {
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
-  }
+    padding: "8px", // Adjust the padding value as per your preference
+  },
+  questionTextCell: {
+    maxWidth: "200px",
+   // width: "100px",  Set the desired width here
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
   // tableContainer: {
   //   margin: "5px",
   //   border: "solid gray 2px",
@@ -154,17 +164,15 @@ const ViewEntity = () => {
     imageUrl,
     questionText,
     answerOption,
-    level,
-    priority,
     answer,
     operatorId,
   } = data;
 
   const mappedObject = {
-    imageUrl,
+    "image url":imageUrl,
     "questionText Ar": questionText?.ar,
-    "answerOption option1": answerOption?.option1,
-    "answerOption option2": answerOption?.option2,
+    "answer Option option1": answerOption?.option1,
+    "answer Option option2": answerOption?.option2,
     answer,
     operatorId,
   };
@@ -172,9 +180,8 @@ const ViewEntity = () => {
   return (
     <>
       <Header />
-      <Breadcrumbs />
       {false ? <Loader /> :
-        <div className="mt-20 overflow-x-hidden">
+        <div className="mt-10 overflow-x-hidden">
           <TableContainer className={clsx(classes.tableContainer, "mt-20")}>
             <Table  className={classes.table} aria-label="simple table">
               <TableHead className={classes.header}>
@@ -191,20 +198,19 @@ const ViewEntity = () => {
                   <TableRow key={item.id}>
                     <TableCell>{idx + 1}</TableCell>
                     {Object.entries(mappedObject).map(([key, value]) => {
-
-                      if (key === "imageUrl") {
+                      if (key === "image url") {
                         return (
                           <TableCell key={key} className={classes.imageCell}>
-                            <img src={item[key]} alt="Question" className={classes.image} />
+                            <img src={item.imageUrl} alt="Question" className={classes.image} />
                           </TableCell>
                         );
                       } else if (key === "questionText Ar") {
                         const decodedValue = item.questionText?.ar ? DecodeBase64(item.questionText.ar) : "";
-                        return <TableCell key={key} className={classes.tablecell}>{decodedValue}</TableCell>;
-                      } else if (key == "answerOption option1") {
+                        return <TableCell key={key} className={classes.questionTextCell}>{decodedValue}</TableCell>;
+                      } else if (key == "answer Option option1") {
                         return <TableCell key={key}>{item.answerOption.option1}</TableCell>
                       }
-                      else if (key == "answerOption option2") {
+                      else if (key == "answer Option option2") {
                         return <TableCell key={key}>{item.answerOption.option2}</TableCell>
                       }
                       else {

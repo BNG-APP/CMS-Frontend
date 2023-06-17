@@ -129,7 +129,6 @@ const ViewResult = () => {
   return (
     <div className="mx-4 my-2">
       <Header />
-      <Breadcrumbs />
       <div className="mt-20">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container spacing={4} alignItems="center">

@@ -11,7 +11,7 @@ import { Menu as MenuIcon } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { setIsSideMenuOpen } from "../redux/appSlice";
-const drawerWidth = 240;
+const drawerWidth = 10;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     position: 'absolute',
     top: 0,
-    left: 160,
+    left: 10,
     color: 'white',
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },

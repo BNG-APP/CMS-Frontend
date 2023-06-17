@@ -8,7 +8,7 @@ const Breadcrumbs = () => {
 
   return (
     <nav className="bg-white text-black mt-16 z-10">
-      <ul className="flex items-center justify-end space-x-2">
+      <ul className="flex items-center space-x-2">
         {breadcrumbs.map((breadcrumb, index) => (
           <li key={index} className="flex items-center">
             <Link

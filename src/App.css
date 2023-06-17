@@ -1,15 +1,12 @@
-
-
 .App {
-  max-width:100%;
+  max-width: 100%;
   margin: 0 auto;
   overflow: hidden;
   min-height: 100vh;
-background-color: azure;
-
+  background-color: lightgray;
 }
 .MuiInputLabel-shrink {
-  transform: translate(14px, -4px) scale(.75);
+  transform: translate(14px, -4px) scale(0.75);
   transform-origin: top left;
 }
 .MuiInputLabel-formControl {
