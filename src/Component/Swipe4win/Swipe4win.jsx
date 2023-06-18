@@ -33,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4, // Optional: Adding border radius
   },
   button: {
-    margin: theme.spacing(1.5),
+    margin: theme.spacing(2),
     backgroundColor: "green",
     color: "black",
+    width:"126px"
   },
   root: {
     marginTop: theme.spacing(4),
@@ -166,7 +167,7 @@ function Swipe4win() {
 
   const handleUploadBanner = () => {
     BanneraUploadApi({
-      imageFile: URL.createObjectURL(convertedLogoFile),
+      imageFile: URL.createObjectURL(convertedFile),
       operatorId: op,
     });
   };
@@ -285,6 +286,7 @@ function Swipe4win() {
         </>
       )}
       {showDetails && (
+        <div className=" flex justify-center items-center w-full">
         <Container className={classes.root}>
           <Typography
             variant="h4"
@@ -445,6 +447,7 @@ function Swipe4win() {
             </Grid>
           </div>
         </Container>
+        </div>
       )}
     </div>
   );

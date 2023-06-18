@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#333",
     width: "100%",
     marginBottom: "10px",
-    fontSize: "18px", // Increase the font size
-    lineHeight: "1.5",
   },
   modalContainer: {
     backgroundColor: "#fff",

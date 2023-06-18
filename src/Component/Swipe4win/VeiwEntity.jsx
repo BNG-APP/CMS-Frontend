@@ -18,10 +18,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
-import { allEntries } from "../../data/allEntries";
 import clsx from "clsx";
 import "tailwindcss/tailwind.css";
-import Breadcrumbs from "../../CommonComponent/Breadcrumbs";
 const useStyles = makeStyles((theme) => ({
 
  
@@ -30,11 +28,13 @@ const useStyles = makeStyles((theme) => ({
       minWidth: 600,
       borderRadius: "8px",
       boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+  
     },
     tableContainer: {
-      margin: "5px 20px", // Add margin to the left and right sides of the table
+      margin: "5px 10px", // Add margin to the left and right sides of the table
       border: "solid gray 2px",
       overflowX: "hidden",
+
     },
   
     imageCell: {
@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
       textTransform: "uppercase",
       fontWeight: "600",
       textAlign: "center", 
+     
     },
     actionButton: {
       padding: theme.spacing(1),
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
     padding: "8px", // Adjust the padding value as per your preference
+    
   },
   questionTextCell: {
     maxWidth: "200px",
@@ -76,27 +78,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
   },
-  // tableContainer: {
-  //   margin: "5px",
-  //   border: "solid gray 2px",
-  //   overflowX:"hidden"
-  // },
-  // imageCell: {
-  //   padding: 0,
-  // },
-  // image: {
-  //   width: "80px",
-  //   height: "auto",
-  //   objectFit: "cover",
-  //   borderRadius: "8px",
-  //   padding:"10px"
-  // },
-  // header:{
-  //   backgroundColor:"gray",
-  //   fontSize:"24px",
-  //   textTransform:"uppercase",
-  //   fontWeight:"600"
-  // }
+  row:{
+    padding:"10px 0 10px 5px",
+    lineHeight: "1rem"
+  }
 }));
 
 const ViewEntity = () => {
@@ -181,16 +166,16 @@ const ViewEntity = () => {
     <>
       <Header />
       {false ? <Loader /> :
-        <div className="mt-10 overflow-x-hidden">
+        <div className="mt-20 border-4 border-black overflow-x-hidden">
           <TableContainer className={clsx(classes.tableContainer, "mt-20")}>
             <Table  className={classes.table} aria-label="simple table">
               <TableHead className={classes.header}>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
+                <TableRow >
+                  <TableCell className={classes.row}>S.No.</TableCell>
                   {Object.keys(mappedObject).map((key) => (
-                    <TableCell key={key}>{key}</TableCell>
+                    <TableCell key={key} className={classes.row}>{key}</TableCell>
                   ))}
-                  <TableCell>Action</TableCell>
+                  <TableCell className={classes.row}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
