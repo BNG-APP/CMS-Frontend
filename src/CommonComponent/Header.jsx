@@ -16,7 +16,7 @@ function Header() {
   };
   
   return (
-    <div className="flex justify-start mb-6 items-center bg-gray-700 h-16 fixed top-0 left-0 w-full">
+    <div className="flex justify-start mb-6 items-center bg-gray-700 h-16 fixed top-0 left-0 w-full z-20">
        <Sidebar />
       <img src={Logo} width="50" height={"20px"} className="rounded-xl h-10 mx-2 " />
       <div className="text-lg text-white font-semibold mr-2 " onClick={() => navigate("/home")}>CMS Portal</div>

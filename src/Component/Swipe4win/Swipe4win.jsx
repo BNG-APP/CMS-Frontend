@@ -5,11 +5,10 @@ import {
   MenuItem,
   Select,
   Button,
- 
+  CircularProgress,
   Container,
   Grid,
   Typography,
-  
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
@@ -35,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1.5),
-    backgroundColor:"green",
-    color:"black"
+    backgroundColor: "green",
+    color: "black",
   },
   root: {
     marginTop: theme.spacing(4),
@@ -74,6 +73,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "darkblue",
     },
   },
+  buttonProgress: {
+    color: theme.palette.primary.main,
+    // position: "absolute",
+    // top: "50%",
+    // left: "50%",
+    // marginTop: -12,
+     marginLeft: 12,
+  },
 }));
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 6;
@@ -84,29 +91,36 @@ const MenuProps = {
       width: 250,
     },
   },
-  
 };
 
 function Swipe4win() {
   const navigate = useNavigate();
   const classes = useStyles();
+  const op = window.localStorage.getItem("op");
   const [selectedItem, setSelectedItem] = useState("");
-  const [selectedOp, setSelectedOp] = useState("")
+  const [selectedOp, setSelectedOp] = useState("");
   const [isDisabledShow, setIsDisabledShow] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCSVFile, setSelectedCSVFile] = useState(null);
   const [selectedBannerFile, setSelectedBannerFile] = useState(null);
   const [selectedLogoFile, setSelectedLogoFile] = useState(null);
-  const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata , {
+  const [oprData, getOperator, loading] = useFetch(API_URLS.opertordata, {
     serviceName: "swipe4win",
   });
   const [convertedFile, setConvertedFile] = useState(null);
   const [convertedLogoFile, setConvertedLogoFile] = useState(null);
-   const [isDisabled, setIsDisabled] = useState(true);
-const [showDetails,setShowDetails]=useState(false)
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
+  const [BannerUpload, BanneraUploadApi, Bannerloading] = useFetch(
+    API_URLS.BannerUpload
+  );
+  const [logoUpload, logoUploadApi, Logoloading] = useFetch(
+    API_URLS.LogoUpload
+  );
+
   useEffect(() => {
-    getOperator()
-  }, [])
+    getOperator();
+  }, []);
   useEffect(() => {
     if (selectedCSVFile && selectedFile) {
       setIsDisabled(false);
@@ -167,33 +181,37 @@ const [showDetails,setShowDetails]=useState(false)
   console.log(oprData);
   const handleChange = (event) => {
     setSelectedItem(event.target.value);
-    setIsDisabledShow(false)
+    setIsDisabledShow(false);
   };
   const handleChangeOp = (event) => {
     setSelectedOp(event.target.value);
-
   };
   useEffect(() => {
     if (selectedOp) {
-      localStorage.setItem("op", oprData[selectedItem].operators[0].operatorId)
+      localStorage.setItem("op", oprData[selectedItem].operators[0].operatorId);
     }
-    POST("https://swip4winapiv1.bngrenew.com:5081/swipe4win/config",{operatorId
-    : 
-    "zainlibyana_libya",
-    userId
-    : 
-    "917428689305"}).then((res)=>console.log(res)).catch((err)=>console.log(err))
-  }, [selectedOp])
+    POST("https://swip4winapiv1.bngrenew.com:5081/swipe4win/config", {
+      operatorId: "zainlibyana_libya",
+      userId: "917428689305",
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, [selectedOp]);
   useEffect(() => {
-    if (selectedItem && oprData && oprData[selectedItem].operators?.length === 1) {
+    if (
+      selectedItem &&
+      oprData &&
+      oprData[selectedItem].operators?.length === 1
+    ) {
       setSelectedOp(oprData[selectedItem].operators[0].operatorName);
     }
-    
   }, [oprData, selectedItem]);
 
   return (
     <div>
-      {loading ? <Loader /> :
+      {loading ? (
+        <Loader />
+      ) : (
         <>
           <Header />
           <div className="flex justify-center items-center w-full mt-20">
@@ -213,11 +231,12 @@ const [showDetails,setShowDetails]=useState(false)
                       id="demo-customized-select"
                       MenuProps={MenuProps}
                     >
-                      {oprData && Object.values(oprData?.countrylist).map((name) => (
-                        <MenuItem key={name?._id} value={name?._id}>
-                          {name?._id}
-                        </MenuItem>
-                      ))}
+                      {oprData &&
+                        Object.values(oprData?.countrylist).map((name) => (
+                          <MenuItem key={name?._id} value={name?._id}>
+                            {name?._id}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </div>
@@ -229,7 +248,6 @@ const [showDetails,setShowDetails]=useState(false)
                       Select
                     </InputLabel>
                     <Select
-
                       value={selectedOp}
                       onChange={handleChangeOp}
                       className={classes.select}
@@ -238,166 +256,196 @@ const [showDetails,setShowDetails]=useState(false)
                       MenuProps={MenuProps}
                       disabled={isDisabledShow}
                     >
-                      {(oprData && selectedItem) && oprData[selectedItem]?.operators?.map((name) => (
-
-                        <MenuItem key={name.operatorName} value={name.operatorName}>
-                          {name.operatorName}
-                        </MenuItem>
-                      ))}
+                      {oprData &&
+                        selectedItem &&
+                        oprData[selectedItem]?.operators?.map((name) => (
+                          <MenuItem
+                            key={name.operatorName}
+                            value={name.operatorName}
+                          >
+                            {name.operatorName}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </div>
-                <Button className={classes.button} disabled={(selectedItem&&selectedOp)?false:true} variant="outlined" onClick={() => {  setShowDetails(true)}}>Show</Button>
+                <Button
+                  className={classes.button}
+                  disabled={selectedItem && selectedOp ? false : true}
+                  variant="outlined"
+                  onClick={() => {
+                    setShowDetails(true);
+                  }}
+                >
+                  Show
+                </Button>
               </div>
-
             </div>
           </div>
-        </>}
-      {  showDetails&&<Container className={classes.root}>
-        <Typography variant="h4" align="center" gutterBottom style={{ fontSize: "24px",marginBottom:"10px" }}>
-          Upload Files
-        </Typography>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={4}>
-            <div className={classes.imageUpload}>
-              <Typography variant="h6" style={{ fontSize: "18px" }}>Upload Question Images(Zip Files)</Typography>
-              <input
-                type="file"
-                accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
-                className="text-black"
-                onChange={handleUpload}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <div className={classes.imageUpload}>
-              <Typography variant="h6" style={{ fontSize: "18px" }}>Upload CSV Files</Typography>
-              <input
-                type="file"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                className="text-black"
-                onChange={handleCSVUpload}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<CloudUploadIcon />}
-              onClick={uploadApi}
-              disabled={isDisabled}
-              className={classes.uploadButton}
-            >
-              Upload
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<DescriptionIcon />}
-              onClick={handleDownload}
-            >
-              Download Sample CSV
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6}>
-            <div className={classes.imageUpload}>
-              <Typography variant="h6">Upload Banner Image</Typography>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleBannerChange}
-                className="text-black"
-              />
-            </div>
-            {convertedFile && (
-              <>
-                <Typography variant="h6">Preview Image:</Typography>
-                <img
-                  src={URL.createObjectURL(convertedFile)}
-                  alt="Converted"
-                  style={{ maxWidth: "100%", height: "100px" }}
+        </>
+      )}
+      {showDetails && (
+        <Container className={classes.root}>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
+            style={{ fontSize: "24px", marginBottom: "10px" }}
+          >
+            Upload Files
+          </Typography>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <div className={classes.imageUpload}>
+                <Typography variant="h6" style={{ fontSize: "18px" }}>
+                  Upload Question Images(Zip Files)
+                </Typography>
+                <input
+                  type="file"
+                  accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
+                  className="text-black"
+                  onChange={handleUpload}
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CloudUploadIcon />}
-                  onClick={handleUploadBanner}
-                  className={classes.uploadButton}
-                >
-                  Upload Banner
-                </Button>
-              </>
-            )}
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <div className={classes.imageUpload}>
-              <Typography variant="h6">Upload Logo Image</Typography>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleLogoChange}
-                className="text-black"
-              />
-            </div>
-            {convertedLogoFile && (
-              <>
-                <Typography variant="h6">Preview Image:</Typography>
-                <img
-                  src={URL.createObjectURL(convertedLogoFile)}
-                  alt="Converted"
-                  style={{ maxWidth: "100%", height: "100px" }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CloudUploadIcon />}
-                  onClick={handleUploadLogo}
-                  className={classes.uploadButton}
-                >
-                  Upload Logo
-                </Button>
-              </>
-            )}
-          </Grid>
-        </Grid>
-        <div className={classes.section}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Button
-                variant="outlined"
-                color="success"
-                className={classes.viewResultButton}
-                onClick={() => {
-                  navigate("/swipe4win/ViewResult");
-                }}
-              >
-                <VisibilityIcon style={{ marginRight: "0.5rem" }} />
-                View Result
-              </Button>
+              </div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={4}>
+              <div className={classes.imageUpload}>
+                <Typography variant="h6" style={{ fontSize: "18px" }}>
+                  Upload CSV Files
+                </Typography>
+                <input
+                  type="file"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  className="text-black"
+                  onChange={handleCSVUpload}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12} md={4}>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
-                onClick={() => {
-                  navigate("/swipe4win/ViewEntity");
-                }}
-                className={classes.viewEntityButton}
+                startIcon={<CloudUploadIcon />}
+                onClick={uploadApi}
+                disabled={isDisabled}
+                className={classes.uploadButton}
               >
-                <BusinessIcon style={{ marginRight: "0.5rem" }} />
-                View Entities
+                Upload
               </Button>
             </Grid>
           </Grid>
-        </div>
-      </Container>}
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DescriptionIcon />}
+                onClick={handleDownload}
+              >
+                Download Sample CSV
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <div className={classes.imageUpload}>
+                <Typography variant="h6">Upload Banner Image</Typography>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerChange}
+                  className="text-black"
+                />
+              </div>
+              {convertedFile && (
+                <>
+                  <Typography variant="h6">Preview Image:</Typography>
+                  {Bannerloading ? (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    /> // Show loader during upload
+                  ): <img
+                    src={URL.createObjectURL(convertedFile)}
+                    alt="Converted"
+                    style={{ maxWidth: "100%", height: "100px" }}
+                  />}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<CloudUploadIcon />}
+                    onClick={handleUploadBanner}
+                    className={classes.uploadButton}
+                  >
+                    Upload Banner
+                  </Button>
+                 
+                </>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <div className={classes.imageUpload}>
+                <Typography variant="h6">Upload Logo Image</Typography>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className="text-black"
+                />
+              </div>
+              {convertedLogoFile && (
+                <>
+                  <Typography variant="h6">Preview Image:</Typography>
+                  <img
+                    src={URL.createObjectURL(convertedLogoFile)}
+                    alt="Converted"
+                    style={{ maxWidth: "100%", height: "100px" }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<CloudUploadIcon />}
+                    onClick={handleUploadLogo}
+                    className={classes.uploadButton}
+                  >
+                    Upload Logo
+                  </Button>
+                </>
+              )}
+            </Grid>
+          </Grid>
+          <div className={classes.section}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  className={classes.viewResultButton}
+                  onClick={() => {
+                    navigate("/swipe4win/ViewResult");
+                  }}
+                >
+                  <VisibilityIcon style={{ marginRight: "0.5rem" }} />
+                  View Result
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => {
+                    navigate("/swipe4win/ViewEntity");
+                  }}
+                  className={classes.viewEntityButton}
+                >
+                  <BusinessIcon style={{ marginRight: "0.5rem" }} />
+                  View Entities
+                </Button>
+              </Grid>
+            </Grid>
+          </div>
+        </Container>
+      )}
     </div>
   );
 }
