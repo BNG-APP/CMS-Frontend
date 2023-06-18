@@ -36,12 +36,14 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
     backgroundColor: "green",
     color: "black",
-    width:"126px"
+    width: "126px"
   },
   root: {
     marginTop: theme.spacing(4),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
-    padding: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
     color: "black",
     borderRadius: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
@@ -52,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   section: {
     marginBottom: theme.spacing(4),
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(4),
   },
   imageUpload: {
     marginBottom: theme.spacing(2),
@@ -80,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     // top: "50%",
     // left: "50%",
     // marginTop: -12,
-     marginLeft: 12,
+    marginLeft: 12,
   },
 }));
 const ITEM_HEIGHT = 40;
@@ -286,167 +288,173 @@ function Swipe4win() {
         </>
       )}
       {showDetails && (
-        <div className=" flex justify-center items-center w-full">
-        <Container className={classes.root}>
-          <Typography
-            variant="h4"
-            align="center"
-            gutterBottom
-            style={{ fontSize: "24px", marginBottom: "10px" }}
-          >
-            Upload Files
-          </Typography>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={4}>
-              <div className={classes.imageUpload}>
-                <Typography variant="h6" style={{ fontSize: "18px" }}>
-                  Upload Question Images(Zip Files)
-                </Typography>
-                <input
-                  type="file"
-                  accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
-                  className="text-black"
-                  onChange={handleUpload}
-                />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <div className={classes.imageUpload}>
-                <Typography variant="h6" style={{ fontSize: "18px" }}>
-                  Upload CSV Files
-                </Typography>
-                <input
-                  type="file"
-                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                  className="text-black"
-                  onChange={handleCSVUpload}
-                />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<CloudUploadIcon />}
-                onClick={uploadApi}
-                disabled={isDisabled}
-                className={classes.uploadButton}
-              >
-                Upload
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<DescriptionIcon />}
-                onClick={handleDownload}
-              >
-                Download Sample CSV
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6}>
-              <div className={classes.imageUpload}>
-                <Typography variant="h6">Upload Banner Image</Typography>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBannerChange}
-                  className="text-black"
-                />
-              </div>
-              {convertedFile && (
-                <>
-                  <Typography variant="h6">Preview Image:</Typography>
-                  {Bannerloading ? (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    /> // Show loader during upload
-                  ): <img
-                    src={URL.createObjectURL(convertedFile)}
-                    alt="Converted"
-                    style={{ maxWidth: "100%", height: "100px" }}
-                  />}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CloudUploadIcon />}
-                    onClick={handleUploadBanner}
-                    className={classes.uploadButton}
-                  >
-                    Upload Banner
-                  </Button>
-                 
-                </>
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <div className={classes.imageUpload}>
-                <Typography variant="h6">Upload Logo Image</Typography>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoChange}
-                  className="text-black"
-                />
-              </div>
-              {convertedLogoFile && (
-                <>
-                  <Typography variant="h6">Preview Image:</Typography>
-                  <img
-                    src={URL.createObjectURL(convertedLogoFile)}
-                    alt="Converted"
-                    style={{ maxWidth: "100%", height: "100px" }}
+        <div className=" flex justify-center items-center w-full drop-shadow-2xl">
+          <Container className={classes.root}>
+            <Typography
+              variant="h4"
+              align="center"
+              gutterBottom
+              style={{ fontSize: "24px", marginBottom: "10px" }}
+            >
+              Upload Files
+            </Typography>
+            <Grid container spacing={4} alignItems="center">
+              <Grid item xs={12} md={4}>
+                <div className={classes.imageUpload}>
+                  <Typography variant="h6" style={{ fontSize: "18px" }}>
+                    Upload Question Images(Zip Files)
+                  </Typography>
+                  <input
+                    type="file"
+                    accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
+                    className="text-black"
+                    onChange={handleUpload}
                   />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CloudUploadIcon />}
-                    onClick={handleUploadLogo}
-                    className={classes.uploadButton}
-                  >
-                    Upload Logo
-                  </Button>
-                </>
-              )}
-            </Grid>
-          </Grid>
-          <div className={classes.section}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Button
-                  variant="outlined"
-                  color="success"
-                  className={classes.viewResultButton}
-                  onClick={() => {
-                    navigate("/swipe4win/ViewResult");
-                  }}
-                >
-                  <VisibilityIcon style={{ marginRight: "0.5rem" }} />
-                  View Result
-                </Button>
+                </div>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={4}>
+                <div className={classes.imageUpload}>
+                  <Typography variant="h6" style={{ fontSize: "18px" }}>
+                    Upload CSV Files
+                  </Typography>
+                  <input
+                    type="file"
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    className="text-black"
+                    onChange={handleCSVUpload}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
-                  onClick={() => {
-                    navigate("/swipe4win/ViewEntity");
-                  }}
-                  className={classes.viewEntityButton}
+                  startIcon={<CloudUploadIcon />}
+                  onClick={uploadApi}
+                  disabled={isDisabled}
+                  className={classes.uploadButton}
                 >
-                  <BusinessIcon style={{ marginRight: "0.5rem" }} />
-                  View Entities
+                  Upload
                 </Button>
               </Grid>
             </Grid>
-          </div>
-        </Container>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<DescriptionIcon />}
+                  onClick={handleDownload}
+                >
+                  Download Sample CSV
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                <div className={classes.imageUpload}>
+                  <Typography variant="h6">Upload Banner Image</Typography>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBannerChange}
+                    className="text-black"
+                  />
+                </div>
+                {convertedFile && (
+                  <>
+                    <Typography variant="h6">Preview Image:</Typography>
+                    {Bannerloading ? (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      /> // Show loader during upload
+                    ) : <img
+                      src={URL.createObjectURL(convertedFile)}
+                      alt="Converted"
+                      style={{ maxWidth: "100%", height: "100px" }}
+                    />}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<CloudUploadIcon />}
+                      onClick={handleUploadBanner}
+                      className={classes.uploadButton}
+                    >
+                      Upload Banner
+                    </Button>
+
+                  </>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <div className={classes.imageUpload}>
+                  <Typography variant="h6">Upload Logo Image</Typography>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="text-black"
+                  />
+                </div>
+                {convertedLogoFile && (
+                  <>
+                    <Typography variant="h6">Preview Image:</Typography>
+                    {Logoloading ? (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      /> // Show loader during upload
+                    ) : <img
+                      src={URL.createObjectURL(convertedLogoFile)}
+                      alt="Converted"
+                      style={{ maxWidth: "100%", height: "100px" }}
+                    />}
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<CloudUploadIcon />}
+                      onClick={handleUploadLogo}
+                      className={classes.uploadButton}
+                    >
+                      Upload Logo
+                    </Button>
+                  </>
+                )}
+              </Grid>
+            </Grid>
+            <div className={classes.section}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    className={classes.viewResultButton}
+                    onClick={() => {
+                      navigate("/swipe4win/ViewResult");
+                    }}
+                  >
+                    <VisibilityIcon style={{ marginRight: "0.5rem" }} />
+                    View Result
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      navigate("/swipe4win/ViewEntity");
+                    }}
+                    className={classes.viewEntityButton}
+                  >
+                    <BusinessIcon style={{ marginRight: "0.5rem" }} />
+                    View Entities
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
+          </Container>
         </div>
       )}
     </div>

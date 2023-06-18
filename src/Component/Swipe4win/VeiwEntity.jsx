@@ -10,6 +10,7 @@ import {
   MenuItem,
   IconButton,
   makeStyles,
+  TablePagination
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useFetch from "../../Utilities/useFetch";
@@ -26,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
     // ...
     table: {
       minWidth: 600,
-      borderRadius: "8px",
-      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+      // borderRadius: "8px",
+      // boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
   
     },
     tableContainer: {
-      margin: "5px 10px", // Add margin to the left and right sides of the table
-      border: "solid gray 2px",
+      //  margin: "5px 10px", // Add margin to the left and right sides of the table
+      // border: "solid gray 2px",
       overflowX: "hidden",
 
     },
@@ -59,7 +60,11 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(1),
     },
  
-  
+    pagination: {
+      display: "flex",
+      justifyContent: "flex-end",
+      marginTop: theme.spacing(2),
+    },
   menu: {
     marginTop: theme.spacing(2),
     zIndex:1111
@@ -79,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   row:{
-    padding:"10px 0 10px 5px",
+    padding:"15px 0 15px 5px",
     lineHeight: "1rem"
   }
 }));
@@ -94,7 +99,24 @@ const ViewEntity = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [update, updateConfig, loading] = useFetch(API_URLS.getQuestion, {
     operatorId: op,
-  });
+  }); 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const slicedData = update?.questions?.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
 
 
   useEffect(() => {
@@ -142,7 +164,7 @@ const ViewEntity = () => {
 
   if (!data) {
     // Handle the case when update.questions[0] is undefined or null
-    return <div>No data available</div>;
+    return <div className="text-black">No data available</div>;
   }
 
   const {
@@ -166,8 +188,8 @@ const ViewEntity = () => {
     <>
       <Header />
       {false ? <Loader /> :
-        <div className="mt-20 border-4 border-black overflow-x-hidden">
-          <TableContainer className={clsx(classes.tableContainer, "mt-20")}>
+        <div className="mt-20 mx-8 bg-white overflow-x-hidden rounded-xl">
+          <TableContainer className={classes.tableContainer}>
             <Table  className={classes.table} aria-label="simple table">
               <TableHead className={classes.header}>
                 <TableRow >
@@ -179,9 +201,9 @@ const ViewEntity = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {update?.questions?.map((item, idx) => (
+                {slicedData?.map((item, idx) => (
                   <TableRow key={item.id}>
-                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{(page * rowsPerPage) + idx + 1}.</TableCell>
                     {Object.entries(mappedObject).map(([key, value]) => {
                       if (key === "image url") {
                         return (
@@ -231,6 +253,18 @@ const ViewEntity = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <div className={classes.pagination}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={update?.questions?.length || 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
+
         </div>}
     </>
   );
