@@ -3,7 +3,7 @@
   margin: 0 auto;
   overflow: hidden;
   min-height: 100vh;
-  background-color: lightgray;
+  background-color: #EAEDED;
 }
 .MuiInputLabel-shrink {
   transform: translate(14px, -4px) scale(0.75);

@@ -34,22 +34,48 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(2),
-    backgroundColor: "green",
-    color: "black",
+    backgroundColor: "#2E86C1",
+    color: "white",
     width: "126px"
   },
   root: {
-    marginTop: theme.spacing(4),
+    // marginTop: theme.spacing(4),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
+    minWidth:"500px",
+    paddingBottom: theme.spacing(6),
+     marginLeft:"40px",
+    // marginRight:"90px",
+    marginBottom:"40px",
     color: "black",
     borderRadius: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing(8),
-      marginLeft: theme.spacing(2),
+      // marginTop: theme.spacing(8),
+      // marginLeft: theme.spacing(2),
       marginRight: theme.spacing(2),
+      marginBottom:theme.spacing(2)
+    },
+  },
+  rootUpload: {
+    // marginTop: theme.spacing(4),
+    background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+    minWidth:"500px",
+    paddingBottom: theme.spacing(6),
+    marginLeft:"20px",
+     marginRight:"140px",
+    marginBottom:"40px",
+    color: "black",
+    borderRadius: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      // marginTop: theme.spacing(8),
+      // marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      marginBottom:theme.spacing(2)
     },
   },
   section: {
@@ -61,17 +87,22 @@ const useStyles = makeStyles((theme) => ({
   },
   uploadButton: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   viewResultButton: {
-    backgroundColor: "green",
+    backgroundColor: "#2E86C1",
     color: "white",
+    margin: theme.spacing(2),
+    width: "176px",
     "&:hover": {
       backgroundColor: "darkgreen",
     },
   },
   viewEntityButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#2E86C1",
     color: "white",
+    margin: theme.spacing(2),
+    width: "186px",
     "&:hover": {
       backgroundColor: "darkblue",
     },
@@ -120,7 +151,7 @@ function Swipe4win() {
   const [logoUpload, logoUploadApi, Logoloading] = useFetch(
     API_URLS.LogoUpload
   );
-
+const [selectedCountry,setSelectedCountry]=useState("")
   useEffect(() => {
     getOperator();
   }, []);
@@ -209,7 +240,20 @@ function Swipe4win() {
       setSelectedOp(oprData[selectedItem].operators[0].operatorName);
     }
   }, [oprData, selectedItem]);
-
+  useEffect(() => {
+    if (oprData) {
+      // Find the country with displaybydefault = true
+      const defaultCountry = Object.values(oprData?.countrylist).find(
+        (country) => country.displaybydefault
+      );
+  
+      if (defaultCountry) {
+        setSelectedItem(defaultCountry._id);
+        setIsDisabledShow(false);
+      }
+    }
+  }, [oprData]);
+  
   return (
     <div>
       {loading ? (
@@ -233,7 +277,7 @@ function Swipe4win() {
                       labelId="demo-customized-select-label"
                       id="demo-customized-select"
                       MenuProps={MenuProps}
-                    >
+                    >{console.log(selectedCountry,"[selectedCountry]")}
                       {oprData &&
                         Object.values(oprData?.countrylist).map((name) => (
                           <MenuItem key={name?._id} value={name?._id}>
@@ -280,21 +324,49 @@ function Swipe4win() {
                     setShowDetails(true);
                   }}
                 >
-                  Show
+                 Edit Assets
                 </Button>
+              
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    className={classes.viewResultButton}
+                    onClick={() => {
+                      navigate("/swipe4win/ViewResult");
+                    }}
+                  >
+                    <VisibilityIcon style={{ marginRight: "0.5rem" }} />
+                    View Result
+                  </Button>
+                
+                
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      navigate("/swipe4win/ViewEntity");
+                    }}
+                    className={classes.viewEntityButton}
+                  >
+                    <BusinessIcon style={{ margin: "0.5rem" }} />
+                    View Entities
+                  </Button>
+               
+              
+           
               </div>
             </div>
           </div>
         </>
       )}
       {showDetails && (
-        <div className=" flex justify-center items-center w-full drop-shadow-2xl">
-          <Container className={classes.root}>
+        <div className=" flex mt-4 w-full drop-shadow-2xl mb-4 mx-12">
+          <Container className={classes.root} maxWidth={false}>
             <Typography
               variant="h4"
               align="center"
               gutterBottom
-              style={{ fontSize: "24px", marginBottom: "10px" }}
+              style={{ fontSize: "24px", marginBottom: "24px" }}
             >
               Upload Files
             </Typography>
@@ -350,6 +422,16 @@ function Swipe4win() {
                 </Button>
               </Grid>
             </Grid>
+          </Container>
+          <Container className={classes.rootUpload} maxWidth={false}>
+          <Typography
+              variant="h4"
+              align="center"
+              gutterBottom
+              style={{ fontSize: "24px", marginBottom: "24px" }}
+            >
+              Upload Images
+            </Typography>
             <Grid container spacing={4}>
               <Grid item xs={12} sm={6}>
                 <div className={classes.imageUpload}>
@@ -424,36 +506,7 @@ function Swipe4win() {
                 )}
               </Grid>
             </Grid>
-            <div className={classes.section}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    className={classes.viewResultButton}
-                    onClick={() => {
-                      navigate("/swipe4win/ViewResult");
-                    }}
-                  >
-                    <VisibilityIcon style={{ marginRight: "0.5rem" }} />
-                    View Result
-                  </Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => {
-                      navigate("/swipe4win/ViewEntity");
-                    }}
-                    className={classes.viewEntityButton}
-                  >
-                    <BusinessIcon style={{ marginRight: "0.5rem" }} />
-                    View Entities
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
+          
           </Container>
         </div>
       )}

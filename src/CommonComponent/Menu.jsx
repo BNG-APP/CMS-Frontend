@@ -11,7 +11,7 @@ import { Menu as MenuIcon } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { setIsSideMenuOpen } from "../redux/appSlice";
-const drawerWidth = 10;
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme) => ({
   root: {

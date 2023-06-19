@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
   // ...
   table: {
     minWidth: 650,
-    borderTopLeftRadius:"1rem",
-    borderTopRightRadius:"1rem",
   },
   tableContainer: {
     margin: "5px",
@@ -130,7 +128,7 @@ const ViewResult = () => {
   return (
     <div className="mx-2 my-2">
       <Header />
-      <div className="mt-24 mx-16 px-4 bg-white drop-shadow-2xl rounded-xl">
+      <div className="mt-24 mx-16 pl-4 bg-white drop-shadow-2xl rounded-xl">
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} sm={3}>
@@ -224,13 +222,13 @@ const ViewResult = () => {
               <TableHead className={classes.header}>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
-                  <TableCell>portal Access Count</TableCell>
+                  {/* <TableCell>portal Access Count</TableCell> */}
                   <TableCell>rank</TableCell>
                   <TableCell>score</TableCell>
                   <TableCell>total Correct Answers</TableCell>
                   <TableCell>total Question Attempted</TableCell>
                   <TableCell>User Id</TableCell>
-                  <TableCell>Action</TableCell>
+                  {/* <TableCell>Action</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -238,13 +236,13 @@ const ViewResult = () => {
                   reportData.winners.map((item, idx) => {
                     return (<TableRow key={item.rank}>
                       <TableCell>{idx + 1}.</TableCell>
-                      <TableCell key={item.rank}>{item.portalAccessCount}</TableCell>
+                      {/* <TableCell key={item.rank}>{item.portalAccessCount}</TableCell> */}
                       <TableCell>{item.rank}</TableCell>
                       <TableCell>{item.score}</TableCell>
                       <TableCell>{item.totalCorrectAnswers}</TableCell>
                       <TableCell>{item.totalQuestionAttempted}</TableCell>
                       <TableCell>{item.userId}</TableCell>
-                      <IconButton
+                      {/* <IconButton
                         aria-label="more"
                         aria-controls="menu"
                         aria-haspopup="true"
@@ -252,8 +250,8 @@ const ViewResult = () => {
                         onClick={(event) => handleMenuClick(event, item.rank)}
                       >
                         <MoreVertIcon />
-                      </IconButton>
-                      <Menu
+                      </IconButton> 
+                       <Menu
                         id="menu"
                         anchorEl={anchorEl}
                         keepMounted
@@ -261,10 +259,9 @@ const ViewResult = () => {
                         onClose={handleMenuClose}
                         className={classes.menu}
                       >
-                        {/* onClick={()=>handleEdit(item,idx)} */}
                         <MenuItem onClick={() => navigate("/swipe4win/EditDetails", { state: item })}>Edit</MenuItem>
                         <MenuItem onClick={() => handleDelete(item)}>Delete</MenuItem>
-                      </Menu>
+                      </Menu> */}
 
                     </TableRow>)
                   })
