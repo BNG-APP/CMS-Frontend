@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
   },
   header: {
-    backgroundColor: "gray",
+    backgroundColor: "#BBDEFB",
     fontSize: "24px",
     textTransform: "uppercase",
     fontWeight: "600",
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   submit: {
-    backgroundColor: "#1E739E",
+    backgroundColor: "#BBDEFB",
     color: "black",
     width: "120px"
   }
@@ -171,7 +171,41 @@ const ViewResult = () => {
               <Typography variant="subtitle1" style={{ color: "black" }}>
                 End Date
               </Typography>
-              <KeyboardDatePicker
+              <DatePicker
+                disableToolbar
+                variant="inline"
+                format="MM-dd-yyyy"
+                margin="normal"
+                id="end-date-picker"
+                value={endDate}
+                onChange={handleEndDateChange}
+                open={openEndDatePicker}
+                onOpen={() => setOpenEndDatePicker(true)}
+                onClose={() => setOpenEndDatePicker(false)}
+                TextFieldComponent={(props) => (
+                  <OutlinedInput
+                    {...props}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon
+                          style={{ color: "black" }}
+                          onClick={handleEndDateIconClick}
+                        />
+                      </InputAdornment>
+                    }
+                  />
+                )}
+                inputProps={{
+                  readOnly: true, // Make the input field readOnly
+                }}
+              />
+           
+           
+          
+ 
+
+
+              {/* <KeyboardDatePicker
                 disableToolbar
                 variant="inline"
                 format="MM-dd-yyyy"
@@ -201,7 +235,7 @@ const ViewResult = () => {
                 keyboardInputProps={{
                   readOnly: true, // Make the input field readOnly
                 }}
-              />
+              /> */}
             </Grid>
             <Grid item xs={12} sm={3}>
               <Button variant="outlined" className={classes.submit} onClick={handleSubmit}>Submit</Button>

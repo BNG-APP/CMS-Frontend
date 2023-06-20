@@ -19,7 +19,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DecodeBase64 } from "../../CommonComponent/DecodeBase64";
 import { Header, Loader } from "../../CommonComponent";
 import { POST } from "../../shared/Axios";
-import clsx from "clsx";
 import "tailwindcss/tailwind.css";
 const useStyles = makeStyles((theme) => ({
 
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px",
     },
     header: {
-      backgroundColor: "gray",
+      backgroundColor: "#BBDEFB",
       fontSize: "20px",
       textTransform: "uppercase",
       fontWeight: "600",
@@ -164,7 +163,7 @@ const ViewEntity = () => {
 
   if (!data) {
     // Handle the case when update.questions[0] is undefined or null
-    return <div className="text-black">No data available</div>;
+    return <Loader />;
   }
 
   const {
@@ -187,7 +186,7 @@ const ViewEntity = () => {
   return (
     <>
       <Header />
-      {false ? <Loader /> :
+      { false? <Loader /> :
         <div className="mt-20 mx-8 bg-white overflow-x-hidden rounded-xl">
           <TableContainer className={classes.tableContainer}>
             <Table  className={classes.table} aria-label="simple table">

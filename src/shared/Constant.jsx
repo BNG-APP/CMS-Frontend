@@ -1,4 +1,6 @@
 export const API_BASE_URL = "https://swip4winapiv1.bngrenew.com:5081/swipe4win/"
+//"https://cmsapis.bngrenew.com/"
+
 export const API_URLS = {
     getQuestion: API_BASE_URL + "getquestions/uploadeddata",
     dataUpload: API_BASE_URL + "servicedata/zip/upload",

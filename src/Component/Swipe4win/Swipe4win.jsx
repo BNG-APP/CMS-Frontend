@@ -34,19 +34,19 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(2),
-    backgroundColor: "#2E86C1",
-    color: "white",
-    width: "126px"
+    backgroundColor: "#BBDEFB",
+    color: "black",
+    width: "136px"
   },
   root: {
     // marginTop: theme.spacing(4),
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(6),
-    paddingRight: theme.spacing(6),
+    paddingLeft: theme.spacing(2.5),
+    paddingRight: theme.spacing(0),
     minWidth:"500px",
-    paddingBottom: theme.spacing(6),
-     marginLeft:"40px",
+    paddingBottom: theme.spacing(4),
+     marginLeft:"30px",
     // marginRight:"90px",
     marginBottom:"40px",
     color: "black",
@@ -63,11 +63,11 @@ const useStyles = makeStyles((theme) => ({
     background: "linear-gradient(180deg, #FFFFFF 0%, #F4F6FC 100%)",
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(6),
-    paddingRight: theme.spacing(6),
+    paddingRight: theme.spacing(5),
     minWidth:"500px",
     paddingBottom: theme.spacing(6),
     marginLeft:"20px",
-     marginRight:"140px",
+     marginRight:"120px",
     marginBottom:"40px",
     color: "black",
     borderRadius: theme.spacing(2),
@@ -90,8 +90,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   viewResultButton: {
-    backgroundColor: "#2E86C1",
-    color: "white",
+    backgroundColor: "#BBDEFB",
+    color: "Black",
     margin: theme.spacing(2),
     width: "176px",
     "&:hover": {
@@ -99,8 +99,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   viewEntityButton: {
-    backgroundColor: "#2E86C1",
-    color: "white",
+    backgroundColor: "#BBDEFB    ",
+    color: "Black",
     margin: theme.spacing(2),
     width: "186px",
     "&:hover": {
