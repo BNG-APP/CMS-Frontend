@@ -5,7 +5,7 @@ function EducationPortal() {
   return (
     <div>
       <Header />
-      <div>EducationPortal</div>
+      <div className='mt-20 text-black'>upcoming EducationPortal</div>
     </div>
   )
 }

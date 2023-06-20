@@ -5,7 +5,7 @@ function Christianity() {
   return (
     <div>
       <Header />
-      <div>Christianity</div>
+      <div className='mt-20 text-black'>Upcoming Christianity</div>
     </div>
   )
 }

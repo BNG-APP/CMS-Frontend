@@ -78,7 +78,7 @@ function AddGame() {
   return (
     <div>
       <Header />
-      <div className="flex justify-center item-center">
+      <div className="mt-20 flex justify-center item-center">
         <form
           autoComplete="off"
           onSubmit={handleSubmit}

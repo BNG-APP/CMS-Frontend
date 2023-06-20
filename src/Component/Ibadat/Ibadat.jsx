@@ -5,7 +5,7 @@ function Ibadat() {
   return (
     <div>
       <Header />
-      <div className='mt-40 text-black'>Ibadat</div>
+      <div className='mt-20 text-black'>Upcoming Ibadat</div>
     </div>
   )
 }
