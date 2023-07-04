@@ -347,7 +347,6 @@ const MultiQuestion = () => {
               );
             },
           });
-  
           uploadedImages.push(response.data.url);
         } catch (error) {
           errors.push(`Failed to upload ${file.name}`);
