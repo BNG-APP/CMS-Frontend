@@ -253,6 +253,40 @@ const [selectedCountry,setSelectedCountry]=useState("")
       }
     }
   }, [oprData]);
+  const [images, setImages] = useState([]);
+
+  const handleImageChange = async (event) => {
+    const selectedFiles = event.target.files;
+    const imagesArray = [];
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+
+      if (file.size <= 20000) {
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+          const imageDataUrl = e.target.result;
+          imagesArray.push(imageDataUrl);
+          setImages([...imagesArray]);
+          console.log(imageDataUrl,"imageDataUrl");
+          // Send image to the API
+          // try {
+          //   const response = await axios.post('YOUR_API_ENDPOINT', {
+          //     image: imageDataUrl,
+          //   });
+          //   console.log('Image upload successful:', response.data);
+          // } catch (error) {
+          //   console.error('Image upload failed:', error);
+          // }
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        console.log(`Image "${file.name}" exceeds the maximum size of 20KB.`);
+      }
+    }
+  };
   
   return (
     <div>
@@ -321,7 +355,7 @@ const [selectedCountry,setSelectedCountry]=useState("")
                   disabled={selectedItem && selectedOp ? false : true}
                   variant="outlined"
                   onClick={() => {
-                    setShowDetails(true);
+                    navigate("/swipe4win/MultiQuestion")
                   }}
                 >
                  Edit Assets
@@ -362,54 +396,17 @@ const [selectedCountry,setSelectedCountry]=useState("")
       {showDetails && (
         <div className=" flex mt-4 w-full drop-shadow-2xl mb-4 mx-12">
           <Container className={classes.root} maxWidth={false}>
-            <Typography
-              variant="h4"
-              align="center"
-              gutterBottom
-              style={{ fontSize: "24px", marginBottom: "24px" }}
-            >
-              Upload Files
-            </Typography>
-            <Grid container spacing={4} alignItems="center">
-              <Grid item xs={12} md={4}>
-                <div className={classes.imageUpload}>
-                  <Typography variant="h6" style={{ fontSize: "18px" }}>
-                    Upload Question Images(Zip Files)
-                  </Typography>
-                  <input
-                    type="file"
-                    accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
-                    className="text-black"
-                    onChange={handleUpload}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <div className={classes.imageUpload}>
-                  <Typography variant="h6" style={{ fontSize: "18px" }}>
-                    Upload CSV Files
-                  </Typography>
-                  <input
-                    type="file"
-                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    className="text-black"
-                    onChange={handleCSVUpload}
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CloudUploadIcon />}
-                  onClick={uploadApi}
-                  disabled={isDisabled}
-                  className={classes.uploadButton}
-                >
-                  Upload
-                </Button>
-              </Grid>
-            </Grid>
+          <input type="file" multiple onChange={handleImageChange} accept="image/*" />
+
+{images.length > 0 && (
+  <div>
+    <h3>Uploaded Images:</h3>
+    {images.map((image, index) => (
+      <img key={index} src={image} alt={`Image ${index + 1}`} />
+    ))}
+  </div>
+)}
+             
             <Grid container spacing={4}>
               <Grid item xs={12} sm={6}>
                 <Button
