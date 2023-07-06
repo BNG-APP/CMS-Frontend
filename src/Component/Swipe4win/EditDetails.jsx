@@ -197,7 +197,7 @@ const EditEntity = () => {
   return (
     <>
     <Header />
-    <Breadcrumbs />
+
     <div className={classes.container}>
       <h2>Edit Row</h2>
       <form onSubmit={handleSubmit}>

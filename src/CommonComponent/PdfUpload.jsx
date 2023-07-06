@@ -5,7 +5,7 @@ const PdfUpload = () => {
   return (
     <Box>
         <Header title="" subtitle=""/>
-        Pdjhvsjhdjhg
+      <h1 className='text-black'>Pdf Upload</h1>  
     </Box>
   )
 }
