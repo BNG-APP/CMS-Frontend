@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
+import { Stack } from "@mui/material";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -22,13 +23,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
-import AddGame from "./AddGame";
 import Header from "../../CommonComponent/Header";
+import { DataGrid ,GridColumnMenu,GridToolbar} from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Navigate, useNavigate } from "react-router-dom";
+import CustomGridToolbar from "./CustomGridToolbar";
+
 function createData(number, GameUrl, OperatorID, price) {
   return { number, GameUrl, OperatorID, price };
 }
-const rows = [
+const data = [
   {
     id: 1,
     type: "html",
@@ -352,210 +357,151 @@ const useStyles = makeStyles({
     padding:"10px"
   }
 });
+function CustomColumnMenu(props) {
+  return (
+    <GridColumnMenu
+      {...props}
+      slots={{
+        // Hide `columnMenuColumnsItem`
+        columnMenuColumnsItem: null,
+      }}
+    />
+  );
+}
 
 function GameTable() {
-  const [page, setPage] = useState(0);
-  const [rowPerPage, setROwPerPage] = useState(5);
-  const [oprId, setOprId] = useState(Array(rows.length).fill([]));
-  const [searchText, setSearchText] = useState("");
-  const [addGame, setAddGame] = useState(false);
-  const navigate=useNavigate()
-  const handleChangePage = (e, newpg) => {
-    setPage(newpg);
-  };
-
-  const handleChangeRowsPerPage = (e) => {
-    setROwPerPage(parseInt(e.target.value, 5));
-    setPage(0);
-  };
-  const OperatorIdList = ["Congo", "IC", "Camron", "Zambia", "Libyana"];
-  const handleSelectOption = (e, index) => {
-    const value = e.target.value;
-    setOprId((prevSelectedOptions) => {
-      const newSelectedOptions = [...prevSelectedOptions];
-      newSelectedOptions[index] = value;
-      return newSelectedOptions;
-    });
-  };
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 200,
-      }
+  const [isLoading,setIsLoading]=useState(false)
+   
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.5,
     },
-  };
-  const handleSearchTextChange = (event) => {
-    setSearchText(event.target.value);
-  };
-  const filteredData = rows.filter((row) => {
-    const name = row.url.toLowerCase();
-    // const email = row.email.toLowerCase();
-    const searchTextLowerCase = searchText.toLowerCase();
-    return name.includes(searchTextLowerCase);
-  });
-  const classes = useStyles();
-  const onHandleAdd = () => {
-   navigate("/addgame")
-  };
+    {
+      field: "category",
+      headerName: "Category",
+      flex: 0.5,
+      sortable:false
+    },
+    {
+      field: "mode",
+      headerName: "Mode",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "operator",
+      headerName: "Operator",
+      flex: 1,
+      sortable:false,
+      renderCell: (params) => {
+        const countries = params.value;
+        const formattedCountries = Array.isArray(countries) ? countries.join(', ') : countries;
+        return <div>{formattedCountries}</div>;
+      },
+    },
+    {
+      field: "gameName",
+      headerName: "Game Name",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "ratings",
+      headerName: "Ratings",
+      flex: 0.5,
+      sortable: false,
+      // renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
+    },
+    {
+      field: "gamePlayed",
+      headerName: "Game Played",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "url",
+      headerName: "Game Url",
+      flex: 1,
+      sortable: false,
+    },
+    {
+      field: "gameImage",
+      headerName: "Game Image",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "bannerImage",
+      headerName: "Banner Image",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "gameDescription",
+      headerName: "Game Description",
+      flex: 1,
+      sortable: false,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {
+          const currentRow = params.row;
+          return alert(JSON.stringify(currentRow, null, 4));
+        };
+        
+        return (
+          <Stack direction="row" spacing={1}>
+            <Button variant="contained" 
+            size="small" onClick={onClick} color="primary" startIcon={<EditIcon />} sx={{marginRight:"1rem"}}>Edit</Button>
+            <Button variant="contained" color="secondary" startIcon={<DeleteIcon />}   size="small" onClick={onClick}>Delete</Button>
+          </Stack>
+        );
+    },
+    },
+  ];
   return (
-    <div>
+    <Box>
       <Header />
-      <div className="mt-20 w-[90%] flex justify-center">
-      <Paper>
-        <TableContainer component={Paper}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px",
-            }}
-          >
-            <Button variant="contained" onClick={onHandleAdd}>
-              ADD GAME
-            </Button>
-            <TextField
-              label="Search"
-              variant="outlined"
-              size="small"
-              value={searchText}
-              onChange={handleSearchTextChange}
-            />
-          </div>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <Typography variant="h6" className="font-extrabold">
-                    S.No
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h6" className="font-extrabold">
-                    Game Name
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h6" className="font-extrabold">
-                    Game Urls
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h6" className="font-extrabold">
-                    Category
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h6" className="font-extrabold">
-                    Operator list
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography variant="h6" className="font-extrabold">
-                    Operator ID
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredData
-                .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
-                .map((row, index) => (
-                  <TableRow key={row.id}  classes={{
-                    root: classes.row,
-                  }}>
-                    <TableCell component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell align="center">{row.gameName}</TableCell>
-                    <TableCell align="center">{row.url}</TableCell>
-                    <TableCell align="center">{row.category}</TableCell>
-                    <TableCell align="center">
-                      {row.operator.length > 0 ? (
-                        row.operator.join(", ")
-                      ) : (
-                        <div>...</div>
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      <FormControl sx={{ m: 1, width: 500 }}>
-                        <InputLabel
-                          id="demo-multiple-chip-label"
-                          classes={{
-                            root: classes.inputLabel,
-                          }}
-                        >
-                          Select
-                        </InputLabel>
-                        <Select
-                          labelId="demo-multiple-checkbox-label"
-                          id="demo-multiple-checkbox"
-                          multiple
-                          value={oprId[row.id - 1]}
-                          onChange={(event) =>
-                            handleSelectOption(event, row.id - 1)
-                          }
-                          input={<OutlinedInput label="Select..." />}
-                          renderValue={(selected) => (
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: 0.5,
-                              }}
-                            >
-                              {selected.map((value) => (
-                                <Chip key={value} label={value} />
-                              ))}
-                            </Box>
-                          )}
-                          MenuProps={MenuProps}
-                          classes={{
-                            root: classes.root,
-                          }}
-                        >
-                          {/* {console.log(oprId[row.id])} */}
-                          {OperatorIdList?.map((name, idx) => (
-                            <MenuItem key={name} value={name}>
-                              {/* { console.log(idx)} */}
-                              <Checkbox
-                                checked={
-                                  oprId?.[row.id - 1]?.length > 0 &&
-                                  oprId[row.id - 1].indexOf(name) > -1
-                                }
-                              />
-                              <ListItemText primary={name} />
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowPerPage}
-          page={page}
-          backIconButtonProps={{
-            "aria-label": "Previous Page",
+      <div className="mt-20  h-[85vh] w-[98%] overflow-x-scroll ml-auto mr-auto">     
+        <DataGrid
+          loading={isLoading || !data}
+          sx={{
+            '& .MuiDataGrid-columnHeaders': {
+              color:'primary.contrastText',
+              backgroundColor:'primary.main',
+              overflowX: 'scroll',
+              "& .MuiDataGrid-horizontalScroller": {
+                overflow: "scroll"
+              }
+            },
           }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page",
+          getRowId={(row) => row.id}
+          rows={data || []}
+          columns={columns}
+          slots={{ columnMenu: CustomColumnMenu,
+            toolbar: CustomGridToolbar
           }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      </div>
+          disableColumnMenu
+          getRowHeight={() => 'auto'}
+          
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+           >
+        </DataGrid>
+      
     </div>
+    </Box>
   );
 }
 

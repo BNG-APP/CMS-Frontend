@@ -27,6 +27,10 @@ import ViewResult from "./Component/Swipe4win/ViewResult.jsx";
 
 import "./index.css";
 import Error from "./CommonComponent/Error.jsx";
+import AudioUpload from "./CommonComponent/AudioUpload.jsx";
+import PdfUpload from "./CommonComponent/PdfUpload.jsx";
+import VideoUpload from "./CommonComponent/VideoUpload.jsx";
+import ImageUpload from "./CommonComponent/ImageUpload.jsx";
 const rountes=[ 
 {
   path: "/home",
@@ -41,7 +45,8 @@ const rountes=[
 {
   path: "/addgame",
   element: <ProtectedRoute Component={AddGame} />,
-  breadcrumb:"Add Game"
+  breadcrumb:"Add Game",
+  
 },
 {
   path: "/swipe4win",
@@ -96,7 +101,7 @@ const rountes=[
   breadcrumb:"IBadat"
 },
 {
-  path: "/educ",
+  path: "/education",
   Component: <ProtectedRoute Component={EducationPortal} />,
   breadcrumb:"Education Portal"
 },
@@ -113,6 +118,30 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <ProtectedRoute Component={App} />,
+    errorElement:<Error />
+  },
+  {
+    path: "/audio",
+    element: <ProtectedRoute Component={AudioUpload} />,
+    breadcrumb:"Audio",
+    errorElement:<Error />
+  },
+  {
+    path: "/video",
+    element: <ProtectedRoute Component={VideoUpload} />,
+    breadcrumb:"Video",
+    errorElement:<Error />
+  },
+  {
+    path: "/image",
+    element: <ProtectedRoute Component={ImageUpload} />,
+    breadcrumb:"Image",
+    errorElement:<Error />
+  },
+  {
+    path: "/pdf",
+    element: <ProtectedRoute Component={PdfUpload} />,
+    breadcrumb:"Pdf",
     errorElement:<Error />
   },
   {
@@ -178,7 +207,7 @@ const router = createBrowserRouter([
     errorElement:<Error />
   },
   {
-    path: "/educ",
+    path: "/education",
     element: <ProtectedRoute Component={EducationPortal} />,
     errorElement:<Error />
   },

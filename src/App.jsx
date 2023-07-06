@@ -13,28 +13,27 @@ function App() {
      
       <div className="flex justify-center items-center w-full mt-20">
       <div className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${sideMenu?'ml-[240px] w-[80%]':''}`}>
-        <div className="text-black py-5 px-5 font-bold text-lg">All Projects</div>
+        <div className="text-black py-5 px-5 font-bold text-lg">Uploads</div>
         <div className="flex flex-wrap justify-center my-1 mx-4 ">
           <Card
-            item={"XGame"}
+            item={"Image"}
             style={{ backgroundColor: "rgb(217, 251, 255)" }}
-            handleClick={() => navigate("/xgame")}
+            handleClick={() => navigate("/image")}
           />
           <Card
-            item={"Swipe4win"}
+            item={"Audio"}
             style={{ backgroundColor: "rgb(255, 253, 195)" }}
-            handleClick={() => navigate("/swipe4win")}
+            handleClick={() => navigate("/audio")}
           />
-          {/* <Card item ={"Christianity"} style={{ backgroundColor: 'orange' }} handleClick={()=>navigate("/christianity")}  /> */}
           <Card
-            item={"Ibadat"}
+            item={"Video"}
             style={{ backgroundColor: "rgb(255, 225, 225)" }}
-            handleClick={() => navigate("/ibadat")}
+            handleClick={() => navigate("/video")}
           />
           <Card
-            item={"Education-Portal"}
+            item={"Pdfs"}
             style={{ backgroundColor: "rgb(222, 246, 232)" }}
-            handleClick={() => navigate("/educ")}
+            handleClick={() => navigate("/pdf")}
           />
         </div>
       </div>

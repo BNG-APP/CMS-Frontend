@@ -1,18 +1,47 @@
-import React from "react";
+import React,{useState} from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import List from "@material-ui/core/List";
+import { ListItemIcon } from "@material-ui/core";
+import { ListItemButton } from "@mui/material";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Menu as MenuIcon } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { setIsSideMenuOpen } from "../redux/appSlice";
+import QuizIcon from '@mui/icons-material/Quiz';
+import SchoolIcon from '@mui/icons-material/School';
+import ChurchIcon from '@mui/icons-material/Church';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 const drawerWidth = 230;
-
+const navItems=[
+  {
+    id:0,
+    text:"swipe4win",
+    icon:<QuizIcon/>
+  },
+  {
+    id:0,
+    text:"xgame",
+    icon:<SportsEsportsIcon/>
+  },
+  {
+    id:0,
+    text:"christianity",
+    icon:<ChurchIcon/>
+  },
+  {
+    id:0,
+    text:"education",
+    icon:<SchoolIcon/>
+  },
+  
+  
+]
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex"
@@ -40,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-     padding: theme.spacing(3),
+    padding: theme.spacing(3),
   },
   menuButton: {
     position: 'absolute',
@@ -55,13 +84,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Sidebar() {
+  const [active,setActive]=useState("")
   const classes = useStyles();
   const dispatch=useDispatch();
   const theme = useTheme();
   const navigate=useNavigate()
   const sideMenu =useSelector(store=>store.app.isSideMenuOpen)
   // const [open, setOpen] = React.useState(false);
-
+  console.log("active is:::",active)
   const handleDrawerOpen = () => {
     dispatch(setIsSideMenuOpen(true))
     // setOpen(true);
@@ -85,7 +115,7 @@ function Sidebar() {
         }}
       >
         <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose} style={{color: 'white'}}>
+          <IconButton onClick={handleDrawerClose} style={{color: 'white'}} sx={{margin:'auto'}}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
@@ -93,13 +123,31 @@ function Sidebar() {
             )}
           </IconButton>
         </div>
-        <List>
-          {["swipe4win","xgame","christianity","ibadat","educ"].map((item, index) => (
-            <ListItem button key={index} onClick={()=>{navigate(`/${item}`)}}>
-              <ListItemText primary={item}  />
-            </ListItem>
-          ))}
-        </List>
+           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} disablePadding>
+           {navItems && navItems.map((item,index)=>
+            {
+             return <ListItem
+             sx={{
+               backgroundColor: active === item.text ? 'red' : ''
+             }}
+           >
+             <ListItemButton key={index} onClick={() => {
+               navigate(`/${item.text}`);
+               setActive(item.text);
+             }} sx={{ textTransform: 'capitalize' }}>
+               <ListItemIcon sx={{
+                 color: active === item.text ? 'primary.contrastText' : '',
+                 '& .MuiSvgIcon-root': {
+                   color: active === item.text ? 'primary.contrastText' : ''
+                 }
+               }}>
+                 {item.icon}
+               </ListItemIcon>
+               <ListItemText>{item.text}</ListItemText>
+             </ListItemButton>
+           </ListItem>
+            })}
+    </List>
       </Drawer>
       <main className={classes.content}>
         <IconButton
