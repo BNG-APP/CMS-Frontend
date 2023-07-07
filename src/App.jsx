@@ -102,7 +102,7 @@ function App() {
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
             <TableContainer component={Paper} className="mt-4">
               <Table>
-                <TableHead>
+                <TableHead className={theme.head}>
                   <TableRow>
                     <TableCell>S.NO.</TableCell>
                     <TableCell>Image</TableCell>
@@ -122,8 +122,8 @@ function App() {
                         <TableCell>
                           <img
                             src={result.dimensions.imgHighPixel.imageUrl}
-                            width={100}
-                            height={100}
+                            width={"100px"}
+                            height={"100px"}
                             className="rounded-xl m-2"
                           />
                         </TableCell>
