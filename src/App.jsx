@@ -4,42 +4,47 @@ import "./App.css";
 import { Card, Header } from "./CommonComponent";
 import { useSelector } from "react-redux";
 import { POST } from "./shared/Axios";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {
+  Table,
+  createTheme,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  TablePagination,
+} from "@mui/material";
 
 function App() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const sideMenu = useSelector((store) => store.app.isSideMenuOpen);
-  const dummydata=[  {
-    "title": "Image 1",
-    "description": "This is the description of Image 1",
-    "tags": ["tag1", "tag2", "tag3"],
-    "category": "Category 1"
-  },
-  {
-    "title": "Image 2",
-    "description": "This is the description of Image 2",
-    "tags": ["tag4", "tag5"],
-    "category": "Category 2"
-  },
-  {
-    "title": "Image 2",
-    "description": "This is the description of Image 2",
-    "tags": ["tag4", "tag5"],
-    "category": "Category 2"
-  },]
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const fetchSearchResults = async (searchTerm) => {
-    const data =  {
+    const data = {
       tags: [searchTerm],
-     
     };
+    setIsLoading(true);
     try {
-      POST(`https://cmsapis.bngrenew.com/images/search`, data).then(
+      await POST(`https://cmsapis.bngrenew.com/images/search`, data).then(
         (res) => {
           const results = res.metadata.map((result) => ({
             ...result,
-            dimensions: `${result.width} x ${result.height}`,
+            // dimensions: `${result.dimensions.imgHighPixel.width} x ${result.dimensions.imgHighPixel.height}`,
           }));
           setSearchResults(results);
         }
@@ -47,14 +52,26 @@ function App() {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
-  console.log(searchResults, "search",searchTerm);
+  console.log(searchResults, "search", searchTerm);
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const handleSearchSubmit = () => {
-    fetchSearchResults(searchTerm);
+  const handleSearchSubmit = async () => {
+    setIsLoading(true);
+    await fetchSearchResults(searchTerm);
   };
+  const theme = createTheme({
+    overrides: {
+      MuiTableCell: {
+        head: {
+          backgroundColor: "lightgray",
+          fontWeight: "bold",
+        },
+      },
+    },
+  });
   return (
     <div className="App w-full">
       <Header />
@@ -68,42 +85,75 @@ function App() {
             onChange={handleSearchInputChange}
           />
           <button
-            className="bg-gray-400 text-white m-2 py-2 px-4 rounded-lg"
+            className={`bg-gray-400 text-white m-2 py-2 px-4 rounded-lg ${
+              isLoading ? "loader-button" : ""
+            }`}
             onClick={handleSearchSubmit}
+            disabled={isLoading}
           >
-            Search
+            {isLoading ? <CircularProgress size={20} /> : "Search"}
           </button>
         </div>
-        {searchResults.length > 0 ? (
+        {isLoading ? (
+          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-4 text-center flex flex-col items-center justify-center">
+            <CircularProgress size={30} />
+          </div>
+        ) : searchResults.length > 0 ? (
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
-           
             <TableContainer component={Paper} className="mt-4">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Tags</TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Dimensions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {searchResults.map((result, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{result.title}</TableCell>
-                    <TableCell>{result.description}</TableCell>
-                    <TableCell>{result.tags.join(", ")}</TableCell>
-                    <TableCell>{result.category}</TableCell>
-                    <TableCell>{result.dimensions}</TableCell>
+              <Table>
+                <TableHead className={theme.head}>
+                  <TableRow>
+                    <TableCell>S.NO.</TableCell>
+                    <TableCell>Image</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Tags</TableCell>
+                    <TableCell>Category</TableCell>
+                    <TableCell>Dimensions</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {searchResults
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((result, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{index+1}</TableCell>
+                        <TableCell>
+                          <img
+                            src={result.dimensions.imgHighPixel.imageUrl}
+                            width={"100px"}
+                            height={"100px"}
+                            className="rounded-xl m-2"
+                          />
+                        </TableCell>
+                        <TableCell>{result.title}</TableCell>
+                        <TableCell>{result.description}</TableCell>
+                        <TableCell>{result.tags.join(", ")}</TableCell>
+                        <TableCell>{result.category}</TableCell>
+                        <TableCell>
+                          {result.dimensions.imgHighPixel.width} x{" "}
+                          {result.dimensions.imgHighPixel.height}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={searchResults.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </div>
         ) : (
-          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">No data found</div>
+          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
+            No data found
+          </div>
         )}
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
