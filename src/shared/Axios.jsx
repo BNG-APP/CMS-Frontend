@@ -5,7 +5,7 @@ const getHeaders = () => {
   const defaultHeaders = {
     'Content-Type': 'application/json',
     "accept": 'application/json',
-    "Access-Control-Allow-Origin":"*"
+    
   };
 
   return defaultHeaders;

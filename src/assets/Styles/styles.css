@@ -33,3 +33,7 @@
   .MuiTableHead-root {
     background-color: #d8c5c5;
   }
+  .loader-button {
+    width: 100px;
+    height: 40px;
+  }
