@@ -4,7 +4,8 @@ const ROOT_URL = ""
 const getHeaders = () => {
   const defaultHeaders = {
     'Content-Type': 'application/json',
-    "accept": 'application/json'
+    "accept": 'application/json',
+    "Access-Control-Allow-Origin":"*"
   };
 
   return defaultHeaders;
