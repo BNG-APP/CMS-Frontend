@@ -30,7 +30,7 @@ export async function POST(path, data, options = {}) {
 const op=window.localStorage.getItem("op")
   const headers = {
      defaultlanguage:"en",
-   operatorid: op,
+    // operatorid:  "s4w_demo",
     timezone: "+1",
     ...getHeaders()
   };

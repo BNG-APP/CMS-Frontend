@@ -30,16 +30,18 @@ function App() {
     "category": "Category 2"
   },]
   const fetchSearchResults = async (searchTerm) => {
-    const data = {
-      tags: searchTerm,
-      category: searchTerm,
-      subCategory: searchTerm,
+    const data =  {
+      tags: [searchTerm],
+     
     };
     try {
-      POST(`https://cmsapis.bngrenew.com/cms/images/search`, data).then(
+      POST(`https://cmsapis.bngrenew.com/images/search`, data).then(
         (res) => {
-          console.log(res,"res");
-          setSearchResults(res.metadata);
+          const results = res.metadata.map((result) => ({
+            ...result,
+            dimensions: `${result.width} x ${result.height}`,
+          }));
+          setSearchResults(results);
         }
       );
     } catch (error) {
@@ -72,7 +74,7 @@ function App() {
             Search
           </button>
         </div>
-        {searchResults>0 ? (
+        {searchResults.length > 0 ? (
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
            
             <TableContainer component={Paper} className="mt-4">
@@ -83,6 +85,7 @@ function App() {
                   <TableCell>Description</TableCell>
                   <TableCell>Tags</TableCell>
                   <TableCell>Category</TableCell>
+                  <TableCell>Dimensions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -92,13 +95,16 @@ function App() {
                     <TableCell>{result.description}</TableCell>
                     <TableCell>{result.tags.join(", ")}</TableCell>
                     <TableCell>{result.category}</TableCell>
+                    <TableCell>{result.dimensions}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
           </div>
-        ):<div>No data found</div>}
+        ) : (
+          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">No data found</div>
+        )}
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
             sideMenu ? "ml-[240px] w-[80%]" : ""
