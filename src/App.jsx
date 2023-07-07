@@ -44,7 +44,7 @@ function App() {
         (res) => {
           const results = res.metadata.map((result) => ({
             ...result,
-            dimensions: `${result.width} x ${result.height}`,
+            // dimensions: `${result.dimensions.imgHighPixel.width} x ${result.dimensions.imgHighPixel.height}`,
           }));
           setSearchResults(results);
         }
@@ -104,6 +104,7 @@ function App() {
               <Table>
                 <TableHead>
                   <TableRow>
+                  <TableCell>Image</TableCell>
                     <TableCell>Title</TableCell>
                     <TableCell>Description</TableCell>
                     <TableCell>Tags</TableCell>
@@ -114,11 +115,12 @@ function App() {
                 <TableBody>
                   {searchResults.map((result, index) => (
                     <TableRow key={index}>
+                      <TableCell><img src={result.dimensions.imgHighPixel.imageUrl} width={200} height={200} className="rounded-xl m-2"/></TableCell>
                       <TableCell>{result.title}</TableCell>
                       <TableCell>{result.description}</TableCell>
                       <TableCell>{result.tags.join(", ")}</TableCell>
                       <TableCell>{result.category}</TableCell>
-                      <TableCell>{result.dimensions}</TableCell>
+                      <TableCell>{result.dimensions.imgHighPixel.width} x {result.dimensions.imgHighPixel.height}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
