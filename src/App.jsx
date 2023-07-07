@@ -3,22 +3,50 @@ import React, { useState } from "react";
 import "./App.css";
 import { Card, Header } from "./CommonComponent";
 import { useSelector } from "react-redux";
-import Breadcrumbs from "./CommonComponent/Breadcrumbs";
+import { POST } from "./shared/Axios";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+
 function App() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const sideMenu = useSelector((store) => store.app.isSideMenuOpen);
+  const dummydata=[  {
+    "title": "Image 1",
+    "description": "This is the description of Image 1",
+    "tags": ["tag1", "tag2", "tag3"],
+    "category": "Category 1"
+  },
+  {
+    "title": "Image 2",
+    "description": "This is the description of Image 2",
+    "tags": ["tag4", "tag5"],
+    "category": "Category 2"
+  },
+  {
+    "title": "Image 2",
+    "description": "This is the description of Image 2",
+    "tags": ["tag4", "tag5"],
+    "category": "Category 2"
+  },]
   const fetchSearchResults = async (searchTerm) => {
+    const data = {
+      tags: searchTerm,
+      category: searchTerm,
+      subCategory: searchTerm,
+    };
     try {
-      const response = await axios.get(
-        `YOUR_API_ENDPOINT?search=${searchTerm}`
+      POST(`https://cmsapis.bngrenew.com/cms/images/search`, data).then(
+        (res) => {
+          console.log(res,"res");
+          setSearchResults(res.metadata);
+        }
       );
-      setSearchResults(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(searchResults, "search",searchTerm);
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -44,13 +72,33 @@ function App() {
             Search
           </button>
         </div>
-        {searchResults.length > 0 && (
+        {searchResults>0 ? (
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
-            {searchResults.map((result) => (
-              <div key={result.id}>{result.title}</div>
-            ))}
+           
+            <TableContainer component={Paper} className="mt-4">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Tags</TableCell>
+                  <TableCell>Category</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {searchResults.map((result, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{result.title}</TableCell>
+                    <TableCell>{result.description}</TableCell>
+                    <TableCell>{result.tags.join(", ")}</TableCell>
+                    <TableCell>{result.category}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           </div>
-        )}
+        ):<div>No data found</div>}
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
             sideMenu ? "ml-[240px] w-[80%]" : ""
