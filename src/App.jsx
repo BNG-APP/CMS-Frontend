@@ -14,7 +14,7 @@ import {
   TableRow,
   Paper,
   CircularProgress,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
- 
+
   const fetchSearchResults = async (searchTerm) => {
     const data = {
       tags: [searchTerm],
@@ -96,7 +96,7 @@ function App() {
         </div>
         {isLoading ? (
           <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-4 text-center flex flex-col items-center justify-center">
-          <CircularProgress size={30} />
+            <CircularProgress size={30} />
           </div>
         ) : searchResults.length > 0 ? (
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
@@ -104,7 +104,8 @@ function App() {
               <Table>
                 <TableHead>
                   <TableRow>
-                  <TableCell>Image</TableCell>
+                    <TableCell>S.NO.</TableCell>
+                    <TableCell>Image</TableCell>
                     <TableCell>Title</TableCell>
                     <TableCell>Description</TableCell>
                     <TableCell>Tags</TableCell>
@@ -114,20 +115,28 @@ function App() {
                 </TableHead>
                 <TableBody>
                   {searchResults
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((result, index) => (
-                    <TableRow key={index}>
-                      <TableCell><img src={result.dimensions.imgHighPixel.imageUrl} width={200} height={200} className="rounded-xl m-2"/></TableCell>
-                      <TableCell>{result.title}</TableCell>
-                      <TableCell>{result.description}</TableCell>
-                      <TableCell>{result.tags.join(", ")}</TableCell>
-                      <TableCell>{result.category}</TableCell>
-                      <TableCell>{result.dimensions.imgHighPixel.width} x {result.dimensions.imgHighPixel.height}</TableCell>
-                    </TableRow>
-                  ))}
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((result, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{index+1}</TableCell>
+                        <TableCell>
+                          <img
+                            src={result.dimensions.imgHighPixel.imageUrl}
+                            width={100}
+                            height={100}
+                            className="rounded-xl m-2"
+                          />
+                        </TableCell>
+                        <TableCell>{result.title}</TableCell>
+                        <TableCell>{result.description}</TableCell>
+                        <TableCell>{result.tags.join(", ")}</TableCell>
+                        <TableCell>{result.category}</TableCell>
+                        <TableCell>
+                          {result.dimensions.imgHighPixel.width} x{" "}
+                          {result.dimensions.imgHighPixel.height}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
