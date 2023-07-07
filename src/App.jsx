@@ -113,7 +113,12 @@ function App() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {searchResults.map((result, index) => (
+                  {searchResults
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((result, index) => (
                     <TableRow key={index}>
                       <TableCell><img src={result.dimensions.imgHighPixel.imageUrl} width={200} height={200} className="rounded-xl m-2"/></TableCell>
                       <TableCell>{result.title}</TableCell>
