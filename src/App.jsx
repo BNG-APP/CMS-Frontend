@@ -65,9 +65,13 @@ function App() {
   const theme = createTheme({
     overrides: {
       MuiTableCell: {
-        head: {
-          backgroundColor: "lightgray",
-          fontWeight: "bold",
+        root: {
+          padding: "8px", // Adjust the padding value as per your preference
+        },
+      },
+      MuiTableRow: {
+        root: {
+          height: "40px", // Adjust the height value as per your preference
         },
       },
     },
@@ -101,7 +105,7 @@ function App() {
         ) : searchResults.length > 0 ? (
           <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
             <TableContainer component={Paper} className="mt-4">
-              <Table>
+              <Table theme={theme}>
                 <TableHead className={theme.head}>
                   <TableRow>
                     <TableCell>S.NO.</TableCell>

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import Header from "./Header";
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export default function ImageUpload() {
@@ -12,8 +20,11 @@ export default function ImageUpload() {
   const [altText, setAltText] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
-  const [tags, setTags] = useState("");
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
+  const [description, setDescription] = useState("");
+  const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
 
   const handleSingleImageSection = () => {
     setIsSingleExpanded(true);
@@ -37,12 +48,27 @@ export default function ImageUpload() {
   };
 
   const handleImageUpload = (file) => {
+    console.log(file);
     if (file && file.size <= 20480) {
-      setSelectedImage(URL.createObjectURL(file));
+      setSelectedImage(file);
       setSelectedImageSize(file.size);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageSrc = reader.result; // Get the data URL of the image
+        setSelectedImage(imageSrc);
+      };
+      reader.readAsDataURL(file);
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const imageWidth = img.naturalWidth;
+        const imageHeight = img.naturalHeight;
+        setDimensions(`${imageWidth} x ${imageHeight}`);
+      };
     } else {
       setSelectedImage(null);
-      setSelectedImageSize(null);
+      setSelectedImageSize(file ? file.size : null);
+      setDimensions("");
     }
   };
 
@@ -66,12 +92,88 @@ export default function ImageUpload() {
     setSubcategory(event.target.value);
   };
 
-  const handleTagsChange = (event) => {
-    setTags(event.target.value);
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
 
-  const handleDimensionsChange = (event) => {
-    setDimensions(event.target.value);
+  const handleSubmit = () => {
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    formData.append("title", title);
+    formData.append("altText", altText);
+    formData.append("category", category);
+    formData.append("subcategory", subcategory);
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("dimensions", dimensions);
+    formData.append("description", description);
+
+    console.log(
+      formData.getAll("image", "title", "altText", "description"),
+      "formdata"
+    );
+
+    // TODO: Send the formData to your API endpoint using fetch or axios
+    fetch("your-api-endpoint", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Handle successful response
+        } else {
+          // Handle error response
+        }
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+
+    // Reset form fields
+    setSelectedImage(null);
+    setSelectedImageSize(null);
+    setTitle("");
+    setAltText("");
+    setCategory("");
+    setSubcategory("");
+    setTags([]);
+    setTagInput("");
+    setDimensions("");
+    setDescription("");
+  };
+
+  const handleViewJson = () => {
+    setJsonDialogOpen(true);
+  };
+
+  const handleCloseJsonDialog = () => {
+    setJsonDialogOpen(false);
+  };
+
+  const jsonData = JSON.stringify(
+    {
+      image: selectedImage,
+      title,
+      altText,
+      category,
+      subcategory,
+      tags,
+      dimensions,
+      description,
+    },
+    null,
+    2
+  );
+
+  const handleTagInputChange = (event) => {
+    setTagInput(event.target.value);
+  };
+
+  const addTag = () => {
+    if (tagInput.trim() !== "") {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
   };
 
   return (
@@ -109,11 +211,7 @@ export default function ImageUpload() {
                   style={{ display: "none" }}
                 />
                 <span>Drag and drop an image here</span>
-                <Button
-                  variant="contained"
-                  component="label"
-                  className="mt-2"
-                >
+                <Button variant="contained" component="label" className="mt-2">
                   Choose Image
                   <input
                     type="file"
@@ -123,15 +221,26 @@ export default function ImageUpload() {
                   />
                 </Button>
               </Box>
+              {selectedImageSize > 20480 && (
+                <div className="mt-2 text-red-500">
+                  The selected image exceeds the maximum file size of 20KB.
+                  Please choose a smaller image.
+                </div>
+              )}
             </div>
           )}
           {isSingleExpanded && selectedImage && (
             <div className="mt-4">
-              <img
-                src={selectedImage}
-                alt="Selected"
-                style={{ maxWidth: "100%", maxHeight: "260px" }}
-              />
+              <div className="flex gap-4">
+                <img
+                  src={selectedImage}
+                  alt="Selected"
+                  style={{ maxWidth: "100%", maxHeight: "260px" }}
+                />
+                <div className="mt-4">
+                  Image Size: {(selectedImageSize / 1024).toFixed(2)} KB
+                </div>
+              </div>
               <div className="mt-4">
                 <div className="flex gap-4">
                   <TextField
@@ -141,15 +250,11 @@ export default function ImageUpload() {
                     onChange={handleTitleChange}
                   />
                   <TextField
-                    label="Alt Text"
+                   label="Alt Text"
                     variant="outlined"
                     value={altText}
                     onChange={handleAltTextChange}
                   />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="flex gap-4">
                   <TextField
                     label="Category"
                     variant="outlined"
@@ -165,32 +270,77 @@ export default function ImageUpload() {
                 </div>
               </div>
               <div className="mt-4">
-                <TextField
-                  label="Tags"
+                <div className="flex gap-4">
+                  <TextField
+                    label="Tags"
+                    variant="outlined"
+                    value={tagInput}
+                    onChange={handleTagInputChange}
+                  />
+                  <Button variant="contained" onClick={addTag}>
+                    Add Tag
+                  </Button>
+                  <TextField
+                  label="Description"
                   variant="outlined"
-                  value={tags}
-                  onChange={handleTagsChange}
-                  fullWidth
+                  value={description}
+                  onChange={handleDescriptionChange}
                 />
-              </div>
-              <div className="mt-4">
                 <TextField
                   label="Dimensions"
                   variant="outlined"
                   value={dimensions}
-                  onChange={handleDimensionsChange}
-                  fullWidth
+                  disabled
                 />
+                </div>
+                <div className="mt-2">
+                  {tags.map((tag, index) => (
+                    <span key={index} className="mr-2 bg-gray-200 px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className="mt-4">
-                Image Size: {(selectedImageSize / 1024).toFixed(2)} KB
+              <div className="flex gap-4">
+              
               </div>
-              {selectedImageSize > 20480 && (
-                <div className="mt-2 text-red-500">
-                  The selected image exceeds the maximum file size of 20KB.
-                  Please choose a smaller image.
-                </div>
-              )}
+              </div>
+              <div className="mt-4">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleSubmit}
+                  disabled={
+                    !selectedImage ||
+                    !title ||
+                    !altText ||
+                    !category ||
+                    !subcategory ||
+                    !tags.length ||
+                    !description
+                  }
+                >
+                  Submit
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleViewJson}
+                  disabled={
+                    !selectedImage ||
+                    !title ||
+                    !altText ||
+                    !category ||
+                    !subcategory ||
+                    tags.length === 0 ||
+                    !description
+                  }
+                  style={{ marginLeft: "10px" }}
+                >
+                  View JSON
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -204,6 +354,23 @@ export default function ImageUpload() {
           Multiple Image Upload
         </div>
       </div>
+
+      {/* Dialog to display JSON data */}
+      <Dialog open={jsonDialogOpen} onClose={handleCloseJsonDialog}>
+        <DialogTitle>Form Data JSON</DialogTitle>
+        <DialogContent>
+          <code>
+            <pre>{jsonData}</pre>
+          </code>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseJsonDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
+
+
