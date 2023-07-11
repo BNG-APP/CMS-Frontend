@@ -35,7 +35,7 @@ const rountes=[
 {
   path: "/home",
   element: <ProtectedRoute Component={App} />,
-  breadcrumb:"Home"
+  breadcrumb:"dashboard"
 },
 {
   path: "/xgame",
@@ -135,7 +135,7 @@ const router = createBrowserRouter([
   {
     path: "/image",
     element: <ProtectedRoute Component={ImageUpload} />,
-    breadcrumb:"Image",
+    breadcrumb:"Image upload",
     errorElement:<Error />
   },
   {
