@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Header from "../CommonComponent/Header"
 import { Box ,Button,TextField} from '@mui/material';
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -32,14 +32,15 @@ const VideoUpload = () => {
   };
 
   const handleVideoUpload = (file) => {
+    // console.log("url is::",file)
     if (file && file.size <= 5242880) {
-      setselectedVideo(URL.createObjectURL(file));
+      setselectedVideo(URL.createObjectURL(file));    
       setVideoObject({...videoObject,size:file.size})
       // setselectedAudioSize(file.size);
     } else {
       console.log("Selected video is bigger then 5242880KB")
       setselectedVideo(null);
-      setAudioObject({...videoObject,size:null})
+      setVideoObject({...videoObject,size:null})
       setError(true)
       // setselectedAudioSize(null);
     }
@@ -48,13 +49,21 @@ const VideoUpload = () => {
   const preventDefault = (event) => {
     event.preventDefault();
   };
-
-
+  useEffect(() => {
+    if (selectedVideo) {
+      const videoElement = document.createElement('video');
+      videoElement.src = selectedVideo;
+      videoElement.addEventListener('loadedmetadata', () => {
+        setVideoObject({...videoObject,duration:videoElement.duration})
+      });
+    }
+  }, [selectedVideo]);
+  console.log("Selected video is::",videoObject)
   const handleTagsChange = (event) => {
     setTags(event.target.value);
   };
   const handleStateChange = (value, fieldName) => {
-    setAudioObject((prevState) => ({
+    setVideoObject((prevState) => ({
       ...prevState,
       [fieldName]: value,
     }));
@@ -90,7 +99,7 @@ const VideoUpload = () => {
                 <CloudUploadIcon fontSize="large" />
                 <input
                   type="file"
-                  accept="audio/*"
+                  accept="video/*"
                   onChange={handleFileInput}
                   style={{ display: "none" }}
                 />
@@ -103,7 +112,7 @@ const VideoUpload = () => {
                   Choose Video
                   <input
                     type="file"
-                    accept="audio/*"
+                    accept="video/*"
                     onChange={handleFileInput}
                     style={{ display: "none" }}
                   />
@@ -118,15 +127,15 @@ const VideoUpload = () => {
           )}
           {isSingleExpanded && selectedVideo && (
             <div className="mt-4">
-              <audio controls>
-                  <source src={selectedVideo} type="audio/mp3"/>              
-                </audio>
+              <video src={selectedVideo} controls width="400px" height="400px">
+          {/* Your browser does not support the video tag. */}
+        </video>
               <div className="mt-4">
                 <div className="flex gap-4">
                   <TextField
                     label="Title"
                     variant="outlined"
-                    value={audioObject.title}
+                    value={videoObject.title}
                     onChange={(event) => handleStateChange(event.target.value, 'title')}
                   />
                   {/* <TextField
@@ -142,13 +151,13 @@ const VideoUpload = () => {
                   <TextField
                     label="Category"
                     variant="outlined"
-                    value={audioObject.category}
+                    value={videoObject.category}
                     onChange={(event) => handleStateChange(event.target.value, 'category')}
                   />
                   <TextField
                     label="Subcategory"
                     variant="outlined"
-                    value={audioObject.subcategory}
+                    value={videoObject.subcategory}
                     onChange={(event) => handleStateChange(event.target.value, "subcategory")}
                   />
                 </div>
@@ -166,16 +175,20 @@ const VideoUpload = () => {
                 <TextField
                   label="Duration in seconds"
                   variant="outlined"
-                  value={audioObject.duration}
+                  value={videoObject.duration}
+                  InputProps={{
+                    readOnly: true,
+                    disabled:true,
+                  }}     
                   onChange={(event) => handleStateChange(event.target.value, "duration")}
                   fullWidth
                 />
               </div>
               <div className="mt-4">
                 {/* Audio Size: {(selectedAudioSize / 1024).toFixed(2)} KB */}
-                Video Size:{audioObject.size} KB
+                Video Size:{videoObject.size} KB
               </div>
-              {audioObject.size > 5242880 && (
+              {videoObject.size > 5242880 && (
                 <div className="mt-2 text-red-500">
                   The selected video exceeds the maximum file size of 5MB.
                   Please choose a smaller video.
@@ -184,7 +197,8 @@ const VideoUpload = () => {
             <Button variant="contained"
                   component="label"
                   className="mt-2"  onClick={() => {
-                    console.log("AudioObject is::",videoObject)
+                    console.log("videoObject is::",videoObject)
+                    // alert(videoObject)
                   }}> Upload</Button>
             </div>
           )}

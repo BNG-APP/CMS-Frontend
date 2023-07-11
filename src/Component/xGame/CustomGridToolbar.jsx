@@ -27,12 +27,12 @@ const buttonBaseProps = {
   return (
     <GridToolbarContainer>
     <GridToolbarFilterButton />
-    <GridToolbarExport printOptions={{ disableToolbarButton: true }}/>
+    {/* <GridToolbarExport printOptions={{ disableToolbarButton: true }}/> */}
     <Button
         {...buttonBaseProps}
         onClick={() => handleExport({ getRowsToExport: getFilteredRows })}
       >
-        Filtered rows
+        Download
       </Button>
   </GridToolbarContainer>
   )
