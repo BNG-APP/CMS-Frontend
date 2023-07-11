@@ -25,6 +25,7 @@ export default function ImageUpload() {
   const [dimensions, setDimensions] = useState("");
   const [description, setDescription] = useState("");
   const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
+  const [isJsonCopied, setIsJsonCopied] = useState(false);
 
   const handleSingleImageSection = () => {
     setIsSingleExpanded(true);
@@ -34,6 +35,11 @@ export default function ImageUpload() {
   const handleMultiImageSection = () => {
     setIsMultiExpanded(true);
     setIsSingleExpanded(false);
+  };
+
+  const handleCopyJson = () => {
+    navigator.clipboard.writeText(jsonData);
+    setIsJsonCopied(true);
   };
 
   const handleDrop = (event) => {
@@ -105,7 +111,15 @@ export default function ImageUpload() {
     formData.append("category", category);
     formData.append("subcategory", subcategory);
     formData.append("tags", JSON.stringify(tags));
-    formData.append("dimensions", dimensions);
+    formData.append(
+      "dimensions",
+      JSON.stringify({
+        pixel: {
+          width: parseInt(dimensions.split("x")[0].trim()),
+          height: parseInt(dimensions.split("x")[1].trim())
+        }
+      })
+    );
     formData.append("description", description);
 
     console.log(
@@ -158,7 +172,12 @@ export default function ImageUpload() {
       category,
       subcategory,
       tags,
-      dimensions,
+      dimensions: {
+        pixel: {
+          width: dimensions ? parseInt(dimensions.split("x")[0].trim()) : 0,
+          height: dimensions ? parseInt(dimensions.split("x")[1].trim()) : 0,
+        },
+      },
       description,
     },
     null,
@@ -186,7 +205,7 @@ export default function ImageUpload() {
           }`}
           onClick={handleSingleImageSection}
         >
-          Single Image Upload
+          <div className="text-xl font-bold">Single Image Upload</div>
           {isSingleExpanded && !selectedImage && (
             <div className="mt-4">
               <Box
@@ -250,11 +269,21 @@ export default function ImageUpload() {
                     onChange={handleTitleChange}
                   />
                   <TextField
-                   label="Alt Text"
+                    label="Alt Text"
                     variant="outlined"
                     value={altText}
                     onChange={handleAltTextChange}
                   />
+                  <TextField
+                    label="Dimensions"
+                    variant="outlined"
+                    value={dimensions}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="flex gap-4">
                   <TextField
                     label="Category"
                     variant="outlined"
@@ -266,6 +295,12 @@ export default function ImageUpload() {
                     variant="outlined"
                     value={subcategory}
                     onChange={handleSubcategoryChange}
+                  />
+                  <TextField
+                    label="Description"
+                    variant="outlined"
+                    value={description}
+                    onChange={handleDescriptionChange}
                   />
                 </div>
               </div>
@@ -280,31 +315,20 @@ export default function ImageUpload() {
                   <Button variant="contained" onClick={addTag}>
                     Add Tag
                   </Button>
-                  <TextField
-                  label="Description"
-                  variant="outlined"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                />
-                <TextField
-                  label="Dimensions"
-                  variant="outlined"
-                  value={dimensions}
-                  disabled
-                />
                 </div>
                 <div className="mt-2">
                   {tags.map((tag, index) => (
-                    <span key={index} className="mr-2 bg-gray-200 px-2 py-1 rounded">
+                    <span
+                      key={index}
+                      className="mr-2 bg-gray-200 px-2 py-1 rounded"
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
               <div className="mt-4">
-              <div className="flex gap-4">
-              
-              </div>
+                <div className="flex gap-4"></div>
               </div>
               <div className="mt-4">
                 <Button
@@ -357,7 +381,7 @@ export default function ImageUpload() {
 
       {/* Dialog to display JSON data */}
       <Dialog open={jsonDialogOpen} onClose={handleCloseJsonDialog}>
-        <DialogTitle>Form Data JSON</DialogTitle>
+        <DialogTitle style={{fontWeight:700}}>Form Data JSON</DialogTitle>
         <DialogContent>
           <code>
             <pre>{jsonData}</pre>
@@ -368,9 +392,19 @@ export default function ImageUpload() {
             Close
           </Button>
         </DialogActions>
+        <DialogActions
+          style={{ position: "absolute", top: 0, right: 0, margin: "12px",  }}
+        >
+          <Button
+            onClick={handleCopyJson}
+            color="primary"
+            disabled={isJsonCopied}
+            style={{fontWeight:700}}
+          >
+            {isJsonCopied ? "JSON Copied" : "Copy JSON"}
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
 }
-
-
