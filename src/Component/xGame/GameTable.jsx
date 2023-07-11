@@ -484,7 +484,8 @@ function GameTable() {
           getRowId={(row) => row.id}
           rows={data || []}
           columns={columns}
-          slots={{ columnMenu: CustomColumnMenu,
+          slots={{
+            //  columnMenu: CustomColumnMenu,
             toolbar: CustomGridToolbar
           }}
           disableColumnMenu
