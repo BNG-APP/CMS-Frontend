@@ -24,6 +24,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [showNoData, setShowNoData] = useState(false);
   const sideMenu = useSelector((store) => store.app.isSideMenuOpen);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -47,9 +48,11 @@ function App() {
             // dimensions: `${result.dimensions.imgHighPixel.width} x ${result.dimensions.imgHighPixel.height}`,
           }));
           setSearchResults(results);
+         
         }
       );
     } catch (error) {
+      setShowNoData(true)
       console.log(error);
     }
     setIsLoading(false);
@@ -92,6 +95,7 @@ function App() {
             className={`bg-gray-400 text-white m-2 py-2 px-4 rounded-lg ${
               isLoading ? "loader-button" : ""
             }`}
+            style={{ width: "100px" }} 
             onClick={handleSearchSubmit}
             disabled={isLoading}
           >
@@ -154,11 +158,11 @@ function App() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </div>
-        ) : (
+        ) :showNoData ? (
           <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
             No data found
           </div>
-        )}
+        ):null}
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
             sideMenu ? "ml-[240px] w-[80%]" : ""
