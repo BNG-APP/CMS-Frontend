@@ -114,70 +114,72 @@ function App() {
             {isLoading ? <CircularProgress size={20} /> : "Search"}
           </button>
         </div>
-        {isLoading ? (
-          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-4 text-center flex flex-col items-center justify-center">
-            <CircularProgress size={30} />
-          </div>
-        ) : searchResults.length > 0 ? (
-          <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
-            <TableContainer component={Paper} className="mt-4">
-              <Table theme={theme}>
-                <TableHead className={theme.head}>
-                  <TableRow>
-                    <TableCell>S.NO.</TableCell>
-                    <TableCell>Image</TableCell>
-                    <TableCell>Title</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Tags</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Dimensions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {searchResults
-                    .slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                    .map((result, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{getSerialNumber(index)}</TableCell>
-                        <TableCell>
-                          <img
-                            src={result?.dimensions?.imgHighPixel?.imageUrl}
-                            width={"100px"}
-                            height={"100px"}
-                            className="rounded-xl m-2"
-                          />
-                        </TableCell>
-                        <TableCell>{result.title}</TableCell>
-                        <TableCell>{result.description}</TableCell>
-                        <TableCell>{result.tags.join(", ")}</TableCell>
-                        <TableCell>{result.category}</TableCell>
-                        <TableCell>
-                          {result.dimensions.imgHighPixel.width} x{" "}
-                          {result.dimensions.imgHighPixel.height}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={searchResults.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </div>
-        ) : showNoData ? (
-          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
-            No data found
-          </div>
-        ) : null}
+        <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
+          {isLoading ? (
+            <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-4 text-center flex flex-col items-center justify-center">
+              <CircularProgress size={30} />
+            </div>
+          ) : searchResults.length > 0 ? (
+            <div className="table-container">
+              <TableContainer component={Paper} className="mt-4">
+                <Table theme={theme}>
+                  <TableHead className={theme.head}>
+                    <TableRow>
+                      <TableCell>S.NO.</TableCell>
+                      <TableCell>Image</TableCell>
+                      <TableCell>Title</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Tags</TableCell>
+                      <TableCell>Category</TableCell>
+                      <TableCell>Dimensions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {searchResults
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((result, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{getSerialNumber(index)}</TableCell>
+                          <TableCell>
+                            <img
+                              src={result?.dimensions?.imgHighPixel?.imageUrl}
+                              width={"100px"}
+                              height={"100px"}
+                              className="rounded-xl m-2"
+                            />
+                          </TableCell>
+                          <TableCell>{result.title}</TableCell>
+                          <TableCell>{result.description}</TableCell>
+                          <TableCell>{result.tags.join(", ")}</TableCell>
+                          <TableCell>{result.category}</TableCell>
+                          <TableCell>
+                            {result.dimensions.imgHighPixel.width} x{" "}
+                            {result.dimensions.imgHighPixel.height}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={searchResults.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </div>
+          ) : showNoData ? (
+            <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
+              No data found
+            </div>
+          ) : null}
+        </div>
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
             sideMenu ? "ml-[240px] w-[80%]" : ""
