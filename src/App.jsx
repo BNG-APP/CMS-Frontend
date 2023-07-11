@@ -45,57 +45,69 @@ function App() {
         (res) => {
           const results = res.metadata.map((result) => ({
             ...result,
-            // dimensions: `${result.dimensions.imgHighPixel.width} x ${result.dimensions.imgHighPixel.height}`,
           }));
           setSearchResults(results);
-         
         }
       );
     } catch (error) {
-      setShowNoData(true)
+      setShowNoData(true);
       console.log(error);
     }
     setIsLoading(false);
   };
-  console.log(searchResults, "search", searchTerm);
+
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearchSubmit();
+    }
+  };
+
   const handleSearchSubmit = async () => {
     setIsLoading(true);
     await fetchSearchResults(searchTerm);
   };
+
+  const getSerialNumber = (index) => {
+    return index + 1 + page * rowsPerPage;
+  };
+
   const theme = createTheme({
     overrides: {
       MuiTableCell: {
         root: {
-          padding: "8px", // Adjust the padding value as per your preference
+          padding: "8px",
         },
       },
       MuiTableRow: {
         root: {
-          height: "40px", // Adjust the height value as per your preference
+          height: "40px",
         },
       },
     },
   });
+
   return (
     <div className="App w-full">
       <Header />
 
       <div className="flex justify-center items-center flex-col w-full mt-20">
-        <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
+        <div className="sticky top-0 bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
           <input
             type="text"
             value={searchTerm}
-            className="border-2 border-black text-black rounded-lg p-1"
+            className="border-2 border-black text-black bg-white rounded-lg p-1"
             onChange={handleSearchInputChange}
+            onKeyPress={handleKeyPress}
           />
           <button
-            className={`bg-gray-400 text-white m-2 py-2 px-4 rounded-lg ${
+            className={`bg-green-600 text-white m-2 py-2 px-4 rounded-lg ${
               isLoading ? "loader-button" : ""
             }`}
-            style={{ width: "100px" }} 
+            style={{ width: "100px" }}
             onClick={handleSearchSubmit}
             disabled={isLoading}
           >
@@ -103,11 +115,11 @@ function App() {
           </button>
         </div>
         {isLoading ? (
-          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-4 text-center flex flex-col items-center justify-center">
+          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-4 text-center flex flex-col items-center justify-center">
             <CircularProgress size={30} />
           </div>
         ) : searchResults.length > 0 ? (
-          <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
+          <div className="bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
             <TableContainer component={Paper} className="mt-4">
               <Table theme={theme}>
                 <TableHead className={theme.head}>
@@ -123,13 +135,16 @@ function App() {
                 </TableHead>
                 <TableBody>
                   {searchResults
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
                     .map((result, index) => (
                       <TableRow key={index}>
-                        <TableCell>{index+1}</TableCell>
+                        <TableCell>{getSerialNumber(index)}</TableCell>
                         <TableCell>
                           <img
-                            src={result.dimensions.imgHighPixel.imageUrl}
+                            src={result?.dimensions?.imgHighPixel?.imageUrl}
                             width={"100px"}
                             height={"100px"}
                             className="rounded-xl m-2"
@@ -158,11 +173,11 @@ function App() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </div>
-        ) :showNoData ? (
-          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2  p-2">
+        ) : showNoData ? (
+          <div className="text-black bg-white rounded-md drop-shadow-2xl w-[90%] mb-2 p-2">
             No data found
           </div>
-        ):null}
+        ) : null}
         <div
           className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
             sideMenu ? "ml-[240px] w-[80%]" : ""
