@@ -101,9 +101,9 @@ const rountes=[
   breadcrumb:"IBadat"
 },
 {
-  path: "/education",
-  Component: <ProtectedRoute Component={EducationPortal} />,
-  breadcrumb:"Education Portal"
+  path: "/image",
+  Component: <ProtectedRoute Component={ImageUpload} />,
+  breadcrumb:"Image upload"
 },
 ]
 const router = createBrowserRouter([
@@ -224,7 +224,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 export const generateBreadcrumbs = (pathname) => {
-  const breadcrumbs = [{ path: '/', breadcrumb: 'Home' }];
+  const breadcrumbs = [{ path: '/home', breadcrumb: 'dashboard' }];
   const pathSnippets = pathname.split('/').filter((x) => x);
 
   pathSnippets.forEach((_, index) => {

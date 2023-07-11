@@ -12,7 +12,7 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export default function ImageUpload() {
-  const [isSingleExpanded, setIsSingleExpanded] = useState(false);
+  const [isSingleExpanded, setIsSingleExpanded] = useState(true);
   const [isMultiExpanded, setIsMultiExpanded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageSize, setSelectedImageSize] = useState(null);
@@ -370,12 +370,12 @@ export default function ImageUpload() {
         </div>
 
         <div
-          className={`w-[90%] bg-white text-black p-2 m-2 rounded-lg shadow ${
+          className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${
             isMultiExpanded ? "h-80" : ""
           }`}
           onClick={handleMultiImageSection}
         >
-          Multiple Image Upload
+          <div className="text-xl font-bold">  Multiple Image Upload</div>
         </div>
       </div>
 
@@ -388,7 +388,7 @@ export default function ImageUpload() {
           </code>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseJsonDialog} color="primary">
+          <Button onClick={handleCloseJsonDialog} color="primary" style={{fontWeight:700}}>
             Close
           </Button>
         </DialogActions>
