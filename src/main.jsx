@@ -60,9 +60,10 @@ const rountes=[
   errorElement:<Error />
 },
 {
-  path: "/swipe4win/EditDetails",
-  element: <EditDetails />,
-  breadcrumb:"Edit Details"
+  path: "/pdf",
+  element: <ProtectedRoute Component={PdfUpload} />,
+    breadcrumb:"Pdf",
+    errorElement:<Error />
 },
 
 {
