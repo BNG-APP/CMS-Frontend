@@ -70,6 +70,10 @@ function App() {
     setIsLoading(true);
     await fetchSearchResults(searchTerm);
   };
+  const getSerialNumber = (index) => {
+    return index + 1 + page * rowsPerPage;
+  };
+
   const theme = createTheme({
     overrides: {
       MuiTableCell: {
@@ -132,7 +136,7 @@ function App() {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((result, index) => (
                       <TableRow key={index}>
-                        <TableCell>{index+1}</TableCell>
+                        <TableCell>getSerialNumber(index)</TableCell>
                         <TableCell>
                           <img
                             src={result?.dimensions?.imgHighPixel?.imageUrl}
