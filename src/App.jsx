@@ -61,6 +61,11 @@ function App() {
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
   const handleSearchSubmit = async () => {
     setIsLoading(true);
     await fetchSearchResults(searchTerm);
@@ -90,6 +95,7 @@ function App() {
             value={searchTerm}
             className="border-2 border-black text-black bg-white rounded-lg p-1"
             onChange={handleSearchInputChange}
+            onKeyPress={handleKeyPress} 
           />
           <button
             className={`bg-green-600 text-white m-2 py-2 px-4 rounded-lg ${
@@ -129,7 +135,7 @@ function App() {
                         <TableCell>{index+1}</TableCell>
                         <TableCell>
                           <img
-                            src={result.dimensions.imgHighPixel.imageUrl}
+                            src={result?.dimensions?.imgHighPixel?.imageUrl}
                             width={"100px"}
                             height={"100px"}
                             className="rounded-xl m-2"
