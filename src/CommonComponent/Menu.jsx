@@ -132,6 +132,7 @@ function Sidebar() {
              }}
            >
              <ListItemButton key={index} onClick={() => {
+               handleDrawerClose();
                navigate(`/${item.text}`);
                setActive(item.text);
              }} sx={{ textTransform: 'capitalize' }}>
