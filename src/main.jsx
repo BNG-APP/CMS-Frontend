@@ -32,11 +32,11 @@ import PdfUpload from "./CommonComponent/PdfUpload.jsx";
 import VideoUpload from "./CommonComponent/VideoUpload.jsx";
 import ImageUpload from "./CommonComponent/ImageUpload.jsx";
 const rountes=[ 
-{
-  path: "/home",
-  element: <ProtectedRoute Component={App} />,
-  breadcrumb:"dashboard"
-},
+// {
+//   path: "/",
+//   element: <ProtectedRoute Component={App} />,
+//   breadcrumb:"dashboard"
+// },
 {
   path: "/xgame",
   element: <ProtectedRoute Component={GameTable} />,
@@ -49,13 +49,14 @@ const rountes=[
   
 },
 {
-  path: "/swipe4win",
-  element: <ProtectedRoute Component={Swipe4win} />,
-  breadcrumb:"Swipe4win"
+  path: "/video",
+  element: <ProtectedRoute Component={VideoUpload}  />,
+  breadcrumb:"Video"
 },
 {
-  path: "/swipe4win/MtnZambia",
-  element: <MtnZambia />,
+  path: "/audio",
+  element: <ProtectedRoute Component={AudioUpload} />,
+  breadcrumb:"Audio",
   errorElement:<Error />
 },
 {
@@ -224,7 +225,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 export const generateBreadcrumbs = (pathname) => {
-  const breadcrumbs = [{ path: '/home', breadcrumb: 'dashboard' }];
+  const breadcrumbs = [{ path: '/home', breadcrumb: 'Dashboard' }];
   const pathSnippets = pathname.split('/').filter((x) => x);
 
   pathSnippets.forEach((_, index) => {
