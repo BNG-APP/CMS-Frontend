@@ -36,8 +36,9 @@ function App() {
   };
 
   const fetchSearchResults = async (searchTerm) => {
+    const tags = searchTerm.split(",").map((tag) => tag.trim());
     const data = {
-      tags: [searchTerm],
+      tags: tags,
     };
     setIsLoading(true);
     try {
