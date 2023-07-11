@@ -88,11 +88,11 @@ function App() {
           <input
             type="text"
             value={searchTerm}
-            className="border-2 border-black text-black rounded-lg p-1"
+            className="border-2 border-black text-black bg-white rounded-lg p-1"
             onChange={handleSearchInputChange}
           />
           <button
-            className={`bg-gray-400 text-white m-2 py-2 px-4 rounded-lg ${
+            className={`bg-green-600 text-white m-2 py-2 px-4 rounded-lg ${
               isLoading ? "loader-button" : ""
             }`}
             style={{ width: "100px" }} 
