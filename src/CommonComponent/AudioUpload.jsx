@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Box, Button, TextField,Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Header  from './Header';
@@ -26,7 +26,15 @@ const AudioUpload = () => {
   const handleSingleImageSection = () => {
     setIsSingleExpanded(true);
   };
-
+  useEffect(() => {
+    if (selectedAudio) {
+      const audioElement = document.createElement('audio');
+      audioElement.src = selectedAudio;
+      audioElement.addEventListener('loadedmetadata', () => {
+        setAudioObject({...audioObject,duration:audioElement.duration})
+      });
+    }
+  }, [selectedAudio]);
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -174,6 +182,10 @@ const AudioUpload = () => {
                   label="Duration in seconds"
                   variant="outlined"
                   value={audioObject.duration}
+                  InputProps={{
+                    readOnly: true,
+                    disabled:true,
+                  }}                
                   onChange={(event) => handleStateChange(event.target.value, "duration")}
                   fullWidth
                 />

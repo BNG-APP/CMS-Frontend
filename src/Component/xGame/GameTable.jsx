@@ -486,9 +486,10 @@ function GameTable() {
           columns={columns}
           slots={{
             //  columnMenu: CustomColumnMenu,
-            toolbar: CustomGridToolbar
+            toolbar: CustomGridToolbar,
+            columnMenu: CustomColumnMenu
           }}
-          disableColumnMenu
+          // disableColumnMenu
           getRowHeight={() => 'auto'}
           
           initialState={{
