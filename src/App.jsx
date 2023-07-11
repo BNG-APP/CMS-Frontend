@@ -136,7 +136,7 @@ function App() {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((result, index) => (
                       <TableRow key={index}>
-                        <TableCell>getSerialNumber(index)</TableCell>
+                        <TableCell>{getSerialNumber(index)}</TableCell>
                         <TableCell>
                           <img
                             src={result?.dimensions?.imgHighPixel?.imageUrl}
