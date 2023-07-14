@@ -25,6 +25,9 @@ function App() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [showNoData, setShowNoData] = useState(false);
+  const [sortColumn, setSortColumn] = useState(""); // Column to be sorted
+  const [sortDirection, setSortDirection] = useState("asc"); // Sorting direction (asc/desc)
+
   const sideMenu = useSelector((store) => store.app.isSideMenuOpen);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,6 +94,37 @@ function App() {
     },
   });
 
+  const sortTable = (column) => {
+    if (column === sortColumn) {
+      // If the same column is clicked, toggle the sorting direction
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // If a different column is clicked, set it as the sort column and default to ascending direction
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+
+  const getSortedData = () => {
+    let sortedData = [...searchResults];
+
+    // Sort the data based on the selected column and direction
+    if (sortColumn !== "") {
+      console.log(sortColumn,"sortColumn");
+      sortedData.sort((a, b) => {
+        if (sortDirection === "asc") {
+          return a[sortColumn].localeCompare(b[sortColumn]);
+        } else {
+          return b[sortColumn].localeCompare(a[sortColumn]);
+        }
+      });
+    }
+
+    return sortedData;
+  };
+
+
   return (
     <div className="App w-full">
       <Header />
@@ -105,9 +139,8 @@ function App() {
             onKeyPress={handleKeyPress}
           />
           <button
-            className={`bg-green-600 text-white m-2 py-2 px-4 rounded-lg ${
-              isLoading ? "loader-button" : ""
-            }`}
+            className={`bg-green-600 text-white m-2 py-2 px-4 rounded-lg ${isLoading ? "loader-button" : ""
+              }`}
             style={{ width: "100px" }}
             onClick={handleSearchSubmit}
             disabled={isLoading}
@@ -125,17 +158,24 @@ function App() {
               <Table theme={theme}>
                 <TableHead className={theme.head}>
                   <TableRow>
-                    <TableCell>S.NO.</TableCell>
+                    <TableCell >S.NO.
+                    </TableCell>
                     <TableCell>Image</TableCell>
-                    <TableCell>Title</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Tags</TableCell>
-                    <TableCell>Category</TableCell>
+                    <TableCell onClick={() => sortTable("title")}>Title  {sortColumn === "title" && (
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                    )}</TableCell>
+                    <TableCell onClick={() => sortTable("description")}>Description  {sortColumn === "description" && (
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                    )}</TableCell>
+                    <TableCell >Tags</TableCell>
+                    <TableCell onClick={() => sortTable("category")}> Category {sortColumn === "category" && (
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                    )}</TableCell>
                     <TableCell>Dimensions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {searchResults
+                  {getSortedData()
                     .slice(
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage
@@ -180,9 +220,8 @@ function App() {
           </div>
         ) : null}
         <div
-          className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${
-            sideMenu ? "ml-[240px] w-[80%]" : ""
-          }`}
+          className={`bg-white rounded-md drop-shadow-2xl w-[90%] ${sideMenu ? "ml-[240px] w-[80%]" : ""
+            }`}
         >
           <div className="text-black py-5 px-5 font-bold text-lg">Uploads</div>
           <div className="flex flex-wrap justify-center my-1 mx-4 ">
