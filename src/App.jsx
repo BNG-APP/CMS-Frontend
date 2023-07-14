@@ -164,13 +164,13 @@ function App() {
                       <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
                     <TableCell onClick={() => sortTable("description")}>Description  {sortColumn === "description" && (
-                      <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
                     <TableCell onClick={() => sortTable("tags")} >Tags {sortColumn === "tags" && (
-                      <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
                     <TableCell onClick={() => sortTable("category")}> Category {sortColumn === "category" && (
-                      <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
                     <TableCell>Dimensions</TableCell>
                   </TableRow>
