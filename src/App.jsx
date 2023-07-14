@@ -104,11 +104,11 @@ function App() {
       setSortDirection("asc");
     }
   };
-  
+
 
   const getSortedData = () => {
     let sortedData = [...searchResults];
-  
+
     // Sort the data based on the selected column and direction
     if (sortColumn !== "") {
       sortedData.sort((a, b) => {
@@ -119,10 +119,10 @@ function App() {
         }
       });
     }
-  
+
     return sortedData;
   };
-  
+
 
   return (
     <div className="App w-full">
@@ -157,12 +157,11 @@ function App() {
               <Table theme={theme}>
                 <TableHead className={theme.head}>
                   <TableRow>
-                    <TableCell onClick={() => sortTable("serialNumber")}>S.NO. {sortColumn === "serialNumber" && (
-                      <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
-                    )}</TableCell>
+                    <TableCell >S.NO.
+                    </TableCell>
                     <TableCell>Image</TableCell>
                     <TableCell onClick={() => sortTable("title")}>Title  {sortColumn === "title" && (
-                      <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
+                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
                     <TableCell onClick={() => sortTable("description")}>Description  {sortColumn === "description" && (
                       <span>{sortDirection === "asc" ? "▲" : "▼"}</span>
