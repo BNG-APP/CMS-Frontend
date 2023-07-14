@@ -10,11 +10,14 @@ import {
   DialogActions,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Papa from "papaparse";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 
 export default function ImageUpload() {
   const [isSingleExpanded, setIsSingleExpanded] = useState(true);
   const [isMultiExpanded, setIsMultiExpanded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedImageSize, setSelectedImageSize] = useState(null);
   const [title, setTitle] = useState("");
   const [altText, setAltText] = useState("");
@@ -26,6 +29,12 @@ export default function ImageUpload() {
   const [description, setDescription] = useState("");
   const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
   const [isJsonCopied, setIsJsonCopied] = useState(false);
+  const [duplicateImageError, setDuplicateImageError] = useState(false);
+  const [selectedCSVFile, setSelectedCSVFile] = useState(null);
+  const [csvData, setCSVData] = useState([]);
+  const [csvError, setCSVError] = useState(null);
+  const [multiImageJsonDialogOpen, setMultiImageJsonDialogOpen] = useState(false);
+
 
   const handleSingleImageSection = () => {
     setIsSingleExpanded(true);
@@ -41,6 +50,59 @@ export default function ImageUpload() {
     navigator.clipboard.writeText(jsonData);
     setIsJsonCopied(true);
   };
+
+  const handleDropMulti = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    handleImageUploadMulti(files);
+  };
+
+  const handleOpenMultiImageJsonDialog = () => {
+    setMultiImageJsonDialogOpen(true);
+  };
+  const handleCloseMultiImageJsonDialog = () => {
+    setMultiImageJsonDialogOpen(false);
+  };
+
+  const multiImageData = JSON.stringify(
+    {
+      images: selectedFiles.map((file) => file.url),
+      csvFile: selectedCSVFile ? selectedCSVFile.name : null,
+    },
+    null,
+    2
+  );
+
+  const handleMultiFileInput = (event) => {
+    const files = Array.from(event.target.files);
+    handleImageUploadMulti(files);
+  };
+
+
+  const handleImageUploadMulti = (files) => {
+    let hasError = false;
+    Array.from(files).forEach((file) => {
+      const isDuplicate = selectedFiles.some(
+        (selectedFile) => selectedFile.file.name === file.name
+      );
+      if (isDuplicate) {
+        hasError = true;
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setSelectedFiles((prevFiles) => [
+            ...prevFiles,
+            { file: file, url: reader.result }, // Store the image URL directly
+          ]);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    if (hasError) {
+      setDuplicateImageError(true);
+    }
+  };
+  console.log(selectedFiles, "selectedFiles");
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -116,8 +178,8 @@ export default function ImageUpload() {
       JSON.stringify({
         pixel: {
           width: parseInt(dimensions.split("x")[0].trim()),
-          height: parseInt(dimensions.split("x")[1].trim())
-        }
+          height: parseInt(dimensions.split("x")[1].trim()),
+        },
       })
     );
     formData.append("description", description);
@@ -195,14 +257,116 @@ export default function ImageUpload() {
     }
   };
 
+  const handleRemoveImage = (index) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+  };
+
+  const multiImageSectionHeight = () => {
+    if (selectedFiles.length <= 3) {
+      return `h-${120 + selectedFiles.length * 140}`;
+    } else {
+      return "h-auto";
+    }
+  };
+
+  const handleCSVFileInput = (event) => {
+    const file = event.target.files[0];
+    handleCSVUpload(file);
+  };
+
+  const handleCSVUpload = (file) => {
+    console.log(file,"file")
+    setSelectedCSVFile(file)
+    if (file) {
+      
+      Papa.parse(file, {
+        complete: handleCSVData,
+        error: handleCSVError,
+      });
+    } else {
+      setSelectedCSVFile(null);
+      setCSVData([]);
+      setCSVError(null);
+    }
+  };
+
+  const handleCSVData = (results) => {
+    const data = results.data;
+    // Skip the header row if it exists
+    const csvRows =
+      data.length > 0 && Array.isArray(data[0]) ? data.slice(1) : data;
+    setCSVData(csvRows);
+    setCSVError(null);
+  };
+
+  const handleCSVError = (error) => {
+    setCSVData([]);
+    setCSVError(error);
+  };
+
+  const handleMultiSubmit = () => {
+    // Create an array to store the image data
+    const images = selectedFiles.map((file) => {
+      return {
+        name: file.file.name,
+        size: file.file.size,
+        url: file.url, // Add the URL property
+      };
+    });
+
+    // Create a JSON object with the multi-image data
+    const multiImageData = JSON.stringify(
+      {
+        images: selectedFiles.map((file) => file.url),
+        csvFile: selectedCSVFile ? selectedCSVFile.name : null,
+      },
+      null,
+      2
+    );
+    
+    // Convert the JSON object to a string
+    const jsonData = JSON.stringify(
+      {
+        images,
+        csvFile: selectedCSVFile ? selectedCSVFile.name : null,
+      },
+      null,
+      2
+    );
+
+    // Send the formData to your API endpoint using fetch or axios
+    fetch("your-api-endpoint", {
+      method: "POST",
+      body: jsonData, // Send the JSON string in the request body
+      headers: {
+        "Content-Type": "application/json", // Set the Content-Type header to indicate JSON data
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Handle successful response
+        } else {
+          // Handle error response
+        }
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+
+    // Reset form fields
+    setSelectedFiles([]);
+    setSelectedCSVFile(null);
+  };
+  
   return (
     <div>
       <Header />
       <div className="mt-20 flex items-center flex-col">
         <div
-          className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${
-            isSingleExpanded ? "h-auto" : ""
-          }`}
+          className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${isSingleExpanded ? "h-auto" : ""
+            }`}
           onClick={handleSingleImageSection}
         >
           <div className="text-xl font-bold">Single Image Upload</div>
@@ -328,9 +492,6 @@ export default function ImageUpload() {
                 </div>
               </div>
               <div className="mt-4">
-                <div className="flex gap-4"></div>
-              </div>
-              <div className="mt-4">
                 <Button
                   variant="contained"
                   color="success"
@@ -370,41 +531,176 @@ export default function ImageUpload() {
         </div>
 
         <div
-          className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${
-            isMultiExpanded ? "h-80" : ""
-          }`}
+          className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${isMultiExpanded ? multiImageSectionHeight() : ""
+            }`}
           onClick={handleMultiImageSection}
         >
-          <div className="text-xl font-bold">  Multiple Image Upload</div>
+          <div className="text-xl font-bold">Multiple Image Upload</div>
+          {isMultiExpanded && (
+            <div className="mt-4">
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  height: "100%",
+                  border: "2px dashed #ccc",
+                  borderRadius: "4px",
+                  padding: "16px",
+                }}
+                onDrop={handleDropMulti}
+                onDragOver={preventDefault}
+              >
+                <CloudUploadIcon fontSize="large" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleMultiFileInput}
+                  style={{ display: "none" }}
+                  multiple
+                />
+                <span>Drag and drop images here or</span>
+                <Button variant="contained" component="label" className="mt-2">
+                  Choose Images
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleMultiFileInput}
+                    style={{ display: "none" }}
+                    multiple
+                  />
+                </Button>
+              </Box>
+              {isMultiExpanded && selectedFiles.length > 0 && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-3 gap-2">
+                    {selectedFiles.map((file, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={file.url}
+                          alt={`Selected ${index + 1}`}
+                          style={{ width: "80px", objectFit: "cover" }}
+                        />
+                        <button
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-3 py-1"
+                          onClick={() => handleRemoveImage(index)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  {duplicateImageError && (
+                    <div className="mt-2 text-red-500">
+                      One or more images are already uploaded. Please choose different images.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="mt-2 flex">
+                <a href="/sample-file.csv" download="sample-file.csv">
+                <Button variant="contained" component="span" > Download Sample CSV</Button>
+                </a>
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleCSVFileInput}
+                  style={{ display: "none", marginLeft: "15px" }}
+                  id="csv-upload"
+                
+                />
+                <label htmlFor="csv-upload">
+                  <Button variant="contained" component="span" style={{marginLeft:"10px"}}>
+                    Upload CSV
+                  </Button>
+                </label>
+                <div>{selectedCSVFile && (
+                  <div>{selectedCSVFile.name}</div>
+                )}</div>
+                {csvError && <div>Error: {csvError.message}</div>}
+               
+              </div>
+              <div className="mt-4 flex ">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleOpenMultiImageJsonDialog}
+                  disabled={!selectedFiles.length && !selectedCSVFile}
+                >
+                  View JSON
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  style={{ marginLeft: "5px" }}
+                  onClick={handleMultiSubmit}
+                  disabled={!selectedFiles.length && !selectedCSVFile}
+                >
+                  Submit
+                </Button>
+              </div>
+
+            </div>
+          )}
         </div>
       </div>
-
       {/* Dialog to display JSON data */}
       <Dialog open={jsonDialogOpen} onClose={handleCloseJsonDialog}>
-        <DialogTitle style={{fontWeight:700}}>Form Data JSON</DialogTitle>
+        <DialogTitle style={{ fontWeight: 700 }}>Form Data JSON</DialogTitle>
         <DialogContent>
           <code>
             <pre>{jsonData}</pre>
           </code>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseJsonDialog} color="primary" style={{fontWeight:700}}>
+          <Button
+            onClick={handleCloseJsonDialog}
+            color="primary"
+            style={{ fontWeight: 700 }}
+          >
             Close
           </Button>
         </DialogActions>
         <DialogActions
-          style={{ position: "absolute", top: 0, right: 0, margin: "12px",  }}
+          style={{ position: "absolute", top: 0, right: 0, margin: "12px" }}
         >
           <Button
             onClick={handleCopyJson}
             color="primary"
             disabled={isJsonCopied}
-            style={{fontWeight:700}}
+            style={{ fontWeight: 700 }}
           >
             {isJsonCopied ? "JSON Copied" : "Copy JSON"}
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog open={multiImageJsonDialogOpen} onClose={handleCloseMultiImageJsonDialog}>
+        <DialogTitle style={{ fontWeight: 700 }}>Multi-Image Form Data JSON</DialogTitle>
+        <DialogContent>
+          <code>
+            <pre>{multiImageData}</pre>
+          </code>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseMultiImageJsonDialog} color="primary" style={{ fontWeight: 700 }}>
+            Close
+          </Button>
+        </DialogActions>
+        <DialogActions style={{ position: "absolute", top: 0, right: 0, margin: "12px" }}>
+          <Button
+            onClick={() => {
+              navigator.clipboard.writeText(multiImageData);
+            }}
+            color="primary"
+            style={{ fontWeight: 700 }}
+          >
+            Copy JSON
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 }
