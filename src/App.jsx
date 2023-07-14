@@ -167,9 +167,7 @@ function App() {
                     <TableCell onClick={() => sortTable("description")}>Description  {sortColumn === "description" && (
                       <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
-                    <TableCell onClick={() => sortTable("tags")} >Tags {sortColumn === "tags" && (
-                      <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
-                    )}</TableCell>
+                    <TableCell >Tags</TableCell>
                     <TableCell onClick={() => sortTable("category")}> Category {sortColumn === "category" && (
                       <span style={{color:"black"}}>{sortDirection === "asc" ? "▲" : "▼"}</span>
                     )}</TableCell>
