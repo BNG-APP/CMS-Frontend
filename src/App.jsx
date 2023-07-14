@@ -111,6 +111,7 @@ function App() {
 
     // Sort the data based on the selected column and direction
     if (sortColumn !== "") {
+      console.log(sortColumn,"sortColumn");
       sortedData.sort((a, b) => {
         if (sortDirection === "asc") {
           return a[sortColumn].localeCompare(b[sortColumn]);
