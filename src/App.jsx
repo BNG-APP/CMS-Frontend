@@ -104,21 +104,25 @@ function App() {
       setSortDirection("asc");
     }
   };
+  
 
   const getSortedData = () => {
     let sortedData = [...searchResults];
-
+  
     // Sort the data based on the selected column and direction
-    sortedData.sort((a, b) => {
-      if (sortDirection === "asc") {
-        return a[sortColumn].localeCompare(b[sortColumn]);
-      } else {
-        return b[sortColumn].localeCompare(a[sortColumn]);
-      }
-    });
-
+    if (sortColumn !== "") {
+      sortedData.sort((a, b) => {
+        if (sortDirection === "asc") {
+          return a[sortColumn].localeCompare(b[sortColumn]);
+        } else {
+          return b[sortColumn].localeCompare(a[sortColumn]);
+        }
+      });
+    }
+  
     return sortedData;
-  }
+  };
+  
 
   return (
     <div className="App w-full">
