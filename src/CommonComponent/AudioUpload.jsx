@@ -1,29 +1,33 @@
 import React, { useState,useEffect } from 'react';
-import { Box, Button, TextField,Typography } from "@mui/material";
+import { Box, Button, TextField,Typography ,Chip,Stack} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Header  from './Header';
+
 const AudioUpload = () => {
   const [isSingleExpanded, setIsSingleExpanded] = useState(false);
-  const [selectedAudio, setselectedAudio] = useState(null);
-  const [error,setError]=useState(false)
-  // const [selectedAudioSize, setselectedAudioSize] = useState(null);
-  // const [title, setTitle] = useState("");
-  // const [altText, setAltText] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [subcategory, setSubcategory] = useState("");
-  const [tags, setTags] = useState("");
-  // const [duration, setDuration] = useState("");
+  const [selectedAudio, setSelectedAudio] = useState(null);
+  const [error,setError]=useState(false);
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   const [audioObject,setAudioObject]=useState(
     {
        size:"",
        title:"",
        category:"",
        subcategory:"",
-      //  tags:[],
        duration:"",
     }
   )
-  const handleSingleImageSection = () => {
+  const addTag = () => {
+    console.log("Gek")
+    if (tagInput.trim() !== "") {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+      console.log("tags ::",tags)
+    }
+  };
+
+  const handleSingleAudioSection = () => {
     setIsSingleExpanded(true);
   };
   useEffect(() => {
@@ -38,22 +42,35 @@ const AudioUpload = () => {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    handleImageUpload(file);
+    handleAudioUpload(file);
   };
 
   const handleFileInput = (event) => {
     const file = event.target.files[0];
-    handleImageUpload(file);
+    handleAudioUpload(file);
   };
 
-  const handleImageUpload = (file) => {
+  const handleAudioUpload = (file) => {
     if (file && file.size <= 5242880) {
-      setselectedAudio(URL.createObjectURL(file));
+      setSelectedAudio(URL.createObjectURL(file));
       setAudioObject({...audioObject,size:file.size})
-      // setselectedAudioSize(file.size);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const audioSrc = reader.result; // Get the data URL of the image
+        setSelectedAudio(audioSrc);
+      };
+      reader.readAsDataURL(file);
+      const audio = new Audio();
+      audio.src = URL.createObjectURL(file);
+      audio.onload = () => {
+        const audioWidth = audio.naturalWidth;
+        const audioHeight = audio.naturalHeight;
+        console.log("Dimensions are::",`${audioWidth} x ${audioHeight}`)
+        // setDimensions(`${imageWidth} x ${imageHeight}`);
+      };
     } else {
       console.log("Selected audio is bigger then 5242880KB")
-      setselectedAudio(null);
+      setSelectedAudio(null);
       setAudioObject({...audioObject,size:null})
       setError(true)
       // setselectedAudioSize(null);
@@ -64,6 +81,12 @@ const AudioUpload = () => {
     event.preventDefault();
   };
 
+  const handleDelete=(tag)=>
+  {
+    const filteredTags=tags.filter((item)=>item!==tag)
+    setTags(filteredTags)
+    return tags;
+  }
 
   const handleTagsChange = (event) => {
     setTags(event.target.value);
@@ -74,18 +97,19 @@ const AudioUpload = () => {
       [fieldName]: value,
     }));
   };
+ console.log("the tags are :",tags)
   return (
     <div>
       <Header title=""/>
-      <h1 className='txt-black'>Audio</h1>
+      <h1 className='text-black'>Audio</h1>
       <div className="mt-20 flex items-center flex-col">
         <div
           className={`w-[90%] bg-white text-black p-4 m-2 rounded-lg shadow cursor-pointer ${
             isSingleExpanded ? "h-auto" : ""
           }`}
-          onClick={handleSingleImageSection}
+          onClick={handleSingleAudioSection}
         >
-          Single Audio Upload
+         <div className='text-xl font-bold'> Single Audio Upload</div>
           {isSingleExpanded && !selectedAudio && (
             <div className="mt-4">
               <Box
@@ -137,48 +161,27 @@ const AudioUpload = () => {
                   <source src={selectedAudio} type="audio/mp3"/>              
                 </audio>
               <div className="mt-4">
-                <div className="flex gap-4">
+                <div className="flex gap-4 ">
                   <TextField
                     label="Title"
                     variant="outlined"
+                    sx={{width: '25ch'}}
                     value={audioObject.title}
                     onChange={(event) => handleStateChange(event.target.value, 'title')}
                   />
-                  {/* <TextField
-                    label="Alt Text"
-                    variant="outlined"
-                    value={altText}
-                    onChange={handleAltTextChange}
-                  /> */}
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="flex gap-4">
-                  <TextField
+                    <TextField
                     label="Category"
                     variant="outlined"
+                    sx={{width: '25ch'}}
                     value={audioObject.category}
                     onChange={(event) => handleStateChange(event.target.value, 'category')}
                   />
-                  <TextField
-                    label="Subcategory"
-                    variant="outlined"
-                    value={audioObject.subcategory}
-                    onChange={(event) => handleStateChange(event.target.value, "subcategory")}
-                  />
+                  
                 </div>
               </div>
-              <div className="mt-4">
-                <TextField
-                  label="Tags"
-                  variant="outlined"
-                  value={tags}
-                  onChange={handleTagsChange}
-                  fullWidth
-                />
-              </div>
-              <div className="mt-4">
-                <TextField
+              <div className="mt-4"> 
+              <div className="flex gap-4">           
+                 <TextField
                   label="Duration in seconds"
                   variant="outlined"
                   value={audioObject.duration}
@@ -186,12 +189,44 @@ const AudioUpload = () => {
                     readOnly: true,
                     disabled:true,
                   }}                
-                  onChange={(event) => handleStateChange(event.target.value, "duration")}
-                  fullWidth
+                  onChange={(event) => handleStateChange(event.target.value, "duration")}         
                 />
+                 <TextField
+                    label="Subcategory"
+                    variant="outlined"
+                    sx={{width:'25ch'}}
+                    value={audioObject.subcategory}
+                    onChange={(event) => handleStateChange(event.target.value, "subcategory")}
+                  />
+                  </div>
               </div>
               <div className="mt-4">
-                {/* Audio Size: {(selectedAudioSize / 1024).toFixed(2)} KB */}
+                <div className="flex gap-4">
+                  <TextField
+                  label="Tags"
+                  variant="outlined"
+                  value={tagInput}
+                  onChange={(e)=>setTagInput(e.target.value)}
+                  sx={{width: '60ch'}}
+                  
+                />
+                 <Button variant="contained" onClick={addTag}>
+                    Add Tag
+                  </Button>
+                </div>
+                <div className="mt-2 flex">         
+                  <Stack direction="row" spacing={1}>
+                    {
+                      tags && tags.map((tag,index)=>
+                      {
+                        return <Chip key={index} label={tag} onDelete={()=>handleDelete(tag)} />
+                      }
+                    )}
+                </Stack>
+                </div>
+              </div>             
+            
+              <div className="mt-4">
                 Audio Size:{audioObject.size} KB
               </div>
               {audioObject.size > 5242880 && (
@@ -212,7 +247,7 @@ const AudioUpload = () => {
         <div
           className={`w-[90%] bg-white text-black p-2 m-2 rounded-lg shadow`}
         >
-          Multiple Audios Upload
+         <div className='text-xl font-extrabold'>Multiple Audios Upload</div>
         </div>
       </div>
     </div>
